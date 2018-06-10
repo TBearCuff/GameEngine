@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-06-09T12:59:42
+# Project created by QtCreator 2018-06-10T09:17:25
 #
 #-------------------------------------------------
 
@@ -8,8 +8,10 @@ QT       += widgets
 
 TARGET = GameEngine
 TEMPLATE = lib
+CONFIG += staticlib
 
-DEFINES += GAMEENGINE_LIBRARY
+DESTDIR = ../../Lib
+#OBJECTS_DIR = ../../Temp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -23,12 +25,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        GameEngine.cpp
+        GameEngineApp.cpp
 
 HEADERS += \
-        GameEngine.h \
-        gameengine_global.h 
-
+        GameEngineApp.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
