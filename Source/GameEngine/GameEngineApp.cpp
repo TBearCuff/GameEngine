@@ -47,12 +47,12 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
         resourceCheck = true;
     }
-
+#endif
     //register all events
     RegisterEngineEvents();
     VRegisterGameEvents();
 
-
+#if 0
     //Initialize the ResCache
     IResourceFile *zipFile = (m_bIsEditorRunning) ?
             GCC_NEW DevelopmentResourceZipFile("Assets.zip", DevelopmentResourceZipFile::Editor) :
@@ -92,34 +92,39 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
     ScriptExports::Register();
     ScriptProcess::RegisterScriptClass();
-#endif
+
     // The event manager should be created next so that subsystems can hook in as desired.
     // Discussed in Chapter 5, page 144
 //    m_pEventManager = GCC_NEW EventManager("GameApp Event Mgr", true );
-#if 0
+
     if(!m_pEventManager)
     {
         GCC_ERROR("Failed to create EventManager.");
         return false;
     }
 #endif
-#if 0
     QSurfaceFormat format;
     format.setRenderableType(QSurfaceFormat::OpenGL);
     format.setProfile(QSurfaceFormat::CoreProfile);
     format.setVersion(3,3);
 
     window = new MainWindow();
-    window->setTitle(VGetGameTitle());
-    window->setIcon(VGetIcon());
+//    window->setTitle(VGetGameTitle());
+//    window->setIcon(VGetIcon());
     window->setFormat(format);
     window->resize(QSize(800, 600));
     window->show();
 //    window->showFullScreen();
+#if 0
 
     m_gameTimer.start();
     m_bIsRunning = true;
 #endif
     return true;
+}
+
+void GameEngineApp::RegisterEngineEvents()
+{
+
 }
 
