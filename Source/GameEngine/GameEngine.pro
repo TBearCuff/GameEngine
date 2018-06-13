@@ -8,7 +8,7 @@ QT       += widgets
 
 TARGET = GameEngine
 TEMPLATE = lib
-CONFIG += staticlib
+CONFIG += staticlib c++11
 
 DESTDIR = ../../Lib
 #OBJECTS_DIR = ../../Temp
@@ -25,11 +25,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        GameEngineApp.cpp
+        GameEngineApp.cpp \
+    ../MainWindow/MainWindow.cpp \
+    ../MainWindow/Transform3D.cpp
 
 HEADERS += \
-        GameEngineApp.h
+        GameEngineApp.h \
+    ../MainWindow/MainWindow.h \
+    ../MainWindow/Transform3D.h \
+    ../MainWindow/vertex.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+RESOURCES += \
+    resources.qrc

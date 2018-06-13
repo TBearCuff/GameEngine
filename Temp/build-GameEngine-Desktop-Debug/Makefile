@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -m64 -pipe -g -fPIC -Wall -W -D_REENTRANT $(DEFINES)
-CXXFLAGS      = -m64 -pipe -g -fPIC -Wall -W -D_REENTRANT $(DEFINES)
+CXXFLAGS      = -m64 -pipe -g -fPIC -std=c++0x -Wall -W -D_REENTRANT $(DEFINES)
 INCPATH       = -I../../Source/GameEngine -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
 QMAKE         = /usr/lib/x86_64-linux-gnu/qt5/bin/qmake
 DEL_FILE      = rm -f
@@ -33,7 +33,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = GameEngine1.0.0
-DISTDIR = /home/troy/GameEngine/Temp/build-GameEngine-Desktop-Debug/.tmp/GameEngine1.0.0
+DISTDIR = /home/troy/GameDev/GameEngine/Temp/build-GameEngine-Desktop-Debug/.tmp/GameEngine1.0.0
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -45,8 +45,15 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../../Source/GameEngine/GameEngineApp.cpp 
-OBJECTS       = GameEngineApp.o
+SOURCES       = ../../Source/GameEngine/GameEngineApp.cpp \
+		../../Source/MainWindow/MainWindow.cpp \
+		../../Source/MainWindow/Transform3D.cpp qrc_resources.cpp \
+		moc_MainWindow.cpp
+OBJECTS       = GameEngineApp.o \
+		MainWindow.o \
+		Transform3D.o \
+		qrc_resources.o \
+		moc_MainWindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -96,6 +103,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/c++11.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qml_debug.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/warn_on.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt.prf \
@@ -108,7 +116,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../../Source/GameEngine/GameEngine.pro ../../Source/GameEngine/GameEngineApp.h ../../Source/GameEngine/GameEngineApp.cpp
+		../../Source/GameEngine/GameEngine.pro ../../Source/GameEngine/GameEngineApp.h \
+		../../Source/MainWindow/MainWindow.h \
+		../../Source/MainWindow/Transform3D.h \
+		../../Source/MainWindow/vertex.h ../../Source/GameEngine/GameEngineApp.cpp \
+		../../Source/MainWindow/MainWindow.cpp \
+		../../Source/MainWindow/Transform3D.cpp
 QMAKE_TARGET  = GameEngine
 DESTDIR       = ../../Lib/#avoid trailing-slash linebreak
 TARGET        = libGameEngine.a
@@ -195,6 +208,7 @@ Makefile: ../../Source/GameEngine/GameEngine.pro /usr/lib/x86_64-linux-gnu/qt5/m
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/c++11.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qml_debug.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/warn_on.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt.prf \
@@ -208,6 +222,7 @@ Makefile: ../../Source/GameEngine/GameEngine.pro /usr/lib/x86_64-linux-gnu/qt5/m
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../../Source/GameEngine/GameEngine.pro \
+		../../Source/GameEngine/resources.qrc \
 		/usr/lib/x86_64-linux-gnu/libQt5Widgets.prl \
 		/usr/lib/x86_64-linux-gnu/libQt5Gui.prl \
 		/usr/lib/x86_64-linux-gnu/libQt5Core.prl
@@ -261,6 +276,7 @@ Makefile: ../../Source/GameEngine/GameEngine.pro /usr/lib/x86_64-linux-gnu/qt5/m
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/c++11.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qml_debug.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/warn_on.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt.prf:
@@ -274,6 +290,7 @@ Makefile: ../../Source/GameEngine/GameEngine.pro /usr/lib/x86_64-linux-gnu/qt5/m
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf:
 ../../Source/GameEngine/GameEngine.pro:
+../../Source/GameEngine/resources.qrc:
 /usr/lib/x86_64-linux-gnu/libQt5Widgets.prl:
 /usr/lib/x86_64-linux-gnu/libQt5Gui.prl:
 /usr/lib/x86_64-linux-gnu/libQt5Core.prl:
@@ -291,8 +308,9 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../../Source/GameEngine/GameEngineApp.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../Source/GameEngine/GameEngineApp.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../Source/GameEngine/resources.qrc $(DISTDIR)/
+	$(COPY_FILE) --parents ../../Source/GameEngine/GameEngineApp.h ../../Source/MainWindow/MainWindow.h ../../Source/MainWindow/Transform3D.h ../../Source/MainWindow/vertex.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../Source/GameEngine/GameEngineApp.cpp ../../Source/MainWindow/MainWindow.cpp ../../Source/MainWindow/Transform3D.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -313,10 +331,21 @@ mocables: compiler_moc_header_make_all compiler_moc_source_make_all
 
 check: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
-compiler_moc_header_make_all:
+	-$(DEL_FILE) qrc_resources.cpp
+qrc_resources.cpp: ../../Source/GameEngine/resources.qrc \
+		../../Source/GameEngine/shaders/simple.frag \
+		../../Source/GameEngine/shaders/simple.vert
+	/usr/lib/x86_64-linux-gnu/qt5/bin/rcc -name resources ../../Source/GameEngine/resources.qrc -o qrc_resources.cpp
+
+compiler_moc_header_make_all: moc_MainWindow.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_MainWindow.cpp
+moc_MainWindow.cpp: ../../Source/MainWindow/Transform3D.h \
+		../../Source/MainWindow/MainWindow.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/troy/GameDev/GameEngine/Source/GameEngine -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../../Source/MainWindow/MainWindow.h -o moc_MainWindow.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
 compiler_uic_make_all:
@@ -327,12 +356,28 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: 
+compiler_clean: compiler_rcc_clean compiler_moc_header_clean 
 
 ####### Compile
 
-GameEngineApp.o: ../../Source/GameEngine/GameEngineApp.cpp ../../Source/GameEngine/GameEngineApp.h
+GameEngineApp.o: ../../Source/GameEngine/GameEngineApp.cpp ../../Source/GameEngine/GameEngineApp.h \
+		../../Source/MainWindow/MainWindow.h \
+		../../Source/MainWindow/Transform3D.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GameEngineApp.o ../../Source/GameEngine/GameEngineApp.cpp
+
+MainWindow.o: ../../Source/MainWindow/MainWindow.cpp ../../Source/MainWindow/MainWindow.h \
+		../../Source/MainWindow/Transform3D.h \
+		../../Source/MainWindow/vertex.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MainWindow.o ../../Source/MainWindow/MainWindow.cpp
+
+Transform3D.o: ../../Source/MainWindow/Transform3D.cpp ../../Source/MainWindow/Transform3D.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Transform3D.o ../../Source/MainWindow/Transform3D.cpp
+
+qrc_resources.o: qrc_resources.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
+
+moc_MainWindow.o: moc_MainWindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_MainWindow.o moc_MainWindow.cpp
 
 ####### Install
 
