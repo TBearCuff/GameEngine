@@ -104,9 +104,9 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     }
 #endif
     QSurfaceFormat format;
-    format.setRenderableType(QSurfaceFormat::OpenGL);
+    format.setRenderableType(QSurfaceFormat::OpenGLES);
     format.setProfile(QSurfaceFormat::CoreProfile);
-    format.setVersion(3,3);
+    format.setVersion(3,0);
 
     window = new MainWindow();
 //    window->setTitle(VGetGameTitle());
