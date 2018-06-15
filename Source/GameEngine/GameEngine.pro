@@ -34,10 +34,6 @@ HEADERS += \
     ../MainWindow/MainWindow.h \
     ../MainWindow/Transform3D.h \
     ../MainWindow/vertex.h
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
 
 RESOURCES += \
     resources.qrc
