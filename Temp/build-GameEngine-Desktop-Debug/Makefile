@@ -47,11 +47,13 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../../Source/GameEngine/GameEngineApp.cpp \
 		../../Source/MainWindow/MainWindow.cpp \
-		../../Source/MainWindow/Transform3D.cpp qrc_resources.cpp \
+		../../Source/MainWindow/Transform3D.cpp \
+		../../Source/GameEngine/BaseGameLogic.cpp qrc_resources.cpp \
 		moc_MainWindow.cpp
 OBJECTS       = GameEngineApp.o \
 		MainWindow.o \
 		Transform3D.o \
+		BaseGameLogic.o \
 		qrc_resources.o \
 		moc_MainWindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -119,9 +121,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../../Source/GameEngine/GameEngine.pro ../../Source/GameEngine/GameEngineApp.h \
 		../../Source/MainWindow/MainWindow.h \
 		../../Source/MainWindow/Transform3D.h \
-		../../Source/MainWindow/vertex.h ../../Source/GameEngine/GameEngineApp.cpp \
+		../../Source/MainWindow/vertex.h \
+		../../Source/GameEngine/BaseGameLogic.h \
+		../../Source/GameEngine/interfaces.h ../../Source/GameEngine/GameEngineApp.cpp \
 		../../Source/MainWindow/MainWindow.cpp \
-		../../Source/MainWindow/Transform3D.cpp
+		../../Source/MainWindow/Transform3D.cpp \
+		../../Source/GameEngine/BaseGameLogic.cpp
 QMAKE_TARGET  = GameEngine
 DESTDIR       = ../../Lib/#avoid trailing-slash linebreak
 TARGET        = libGameEngine.a
@@ -309,8 +314,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../Source/GameEngine/resources.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ../../Source/GameEngine/GameEngineApp.h ../../Source/MainWindow/MainWindow.h ../../Source/MainWindow/Transform3D.h ../../Source/MainWindow/vertex.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../Source/GameEngine/GameEngineApp.cpp ../../Source/MainWindow/MainWindow.cpp ../../Source/MainWindow/Transform3D.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../Source/GameEngine/GameEngineApp.h ../../Source/MainWindow/MainWindow.h ../../Source/MainWindow/Transform3D.h ../../Source/MainWindow/vertex.h ../../Source/GameEngine/BaseGameLogic.h ../../Source/GameEngine/interfaces.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../Source/GameEngine/GameEngineApp.cpp ../../Source/MainWindow/MainWindow.cpp ../../Source/MainWindow/Transform3D.cpp ../../Source/GameEngine/BaseGameLogic.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -373,6 +378,10 @@ MainWindow.o: ../../Source/MainWindow/MainWindow.cpp ../../Source/MainWindow/Mai
 Transform3D.o: ../../Source/MainWindow/Transform3D.cpp ../../Source/MainWindow/Transform3D.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Transform3D.o ../../Source/MainWindow/Transform3D.cpp
 
+BaseGameLogic.o: ../../Source/GameEngine/BaseGameLogic.cpp ../../Source/GameEngine/BaseGameLogic.h \
+		../../Source/GameEngine/interfaces.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BaseGameLogic.o ../../Source/GameEngine/BaseGameLogic.cpp
+
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
 
@@ -381,18 +390,9 @@ moc_MainWindow.o: moc_MainWindow.cpp
 
 ####### Install
 
-install_target: first FORCE
-	@test -d $(INSTALL_ROOT)/usr/lib || mkdir -p $(INSTALL_ROOT)/usr/lib
-	-$(INSTALL_FILE) ../../Lib/$(TARGET) $(INSTALL_ROOT)/usr/lib/$(TARGET)
+install:  FORCE
 
-uninstall_target: FORCE
-	-$(DEL_FILE) $(INSTALL_ROOT)/usr/lib/$(TARGET)
-	-$(DEL_DIR) $(INSTALL_ROOT)/usr/lib/ 
-
-
-install: install_target  FORCE
-
-uninstall: uninstall_target  FORCE
+uninstall:  FORCE
 
 FORCE:
 
