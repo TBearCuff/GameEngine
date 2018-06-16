@@ -27,13 +27,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         GameEngineApp.cpp \
     ../MainWindow/MainWindow.cpp \
-    ../MainWindow/Transform3D.cpp
+    ../MainWindow/Transform3D.cpp \
+    BaseGameLogic.cpp
 
 HEADERS += \
         GameEngineApp.h \
     ../MainWindow/MainWindow.h \
     ../MainWindow/Transform3D.h \
-    ../MainWindow/vertex.h
+    ../MainWindow/vertex.h \
+    BaseGameLogic.h \
+    interfaces.h
 
 RESOURCES += \
     resources.qrc
