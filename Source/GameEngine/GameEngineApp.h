@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include "../MainWindow/MainWindow.h"
+#include "BaseGameLogic.h"
 
 class GameEngineApp : public QApplication
 {
@@ -13,8 +14,12 @@ public:
 
     virtual bool InitInstance(int argc, char *argv[]);
 //    virtual bool VLoadGame(void);
+    BaseGameLogic *m_pGame;
+//    virtual BaseGameLogic *VCreateGameAndView()=0;
+    BaseGameLogic* GetGameLogic(void) const { return m_pGame; }
 
 protected:
+    QMap<QString,QString> m_textResource;
     virtual void VRegisterGameEvents(void) {}
 
 private:
