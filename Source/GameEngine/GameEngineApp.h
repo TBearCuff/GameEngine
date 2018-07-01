@@ -18,6 +18,13 @@ public:
 //    virtual BaseGameLogic *VCreateGameAndView()=0;
     BaseGameLogic* GetGameLogic(void) const { return m_pGame; }
 
+    // File and Resource System
+    class ResCache *m_ResCache;
+
+    // Event manager
+//	EventManager *m_pEventManager;
+
+
 protected:
     QMap<QString,QString> m_textResource;
     virtual void VRegisterGameEvents(void) {}
