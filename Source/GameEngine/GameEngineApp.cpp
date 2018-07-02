@@ -1,4 +1,5 @@
 #include "GameEngineApp.h"
+#include <QStorageInfo>
 
 
 GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv)
@@ -30,12 +31,28 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     //We don't need the mouse cursor by default; let the game turn it on
     //Set or unset cursor()
     //checkout qt for embedded linux to research mouse cursor functionality
-#if 0
+
     //Check for adequate machine resources
     bool resourceCheck = false;
 
     while(!resourceCheck)
     {
+        //check secondary storage
+        QStorageInfo storage = QStorageInfo::root();
+
+        qDebug() << storage.rootPath();
+        if(storage.isReadOnly())
+            qDebug() << "isReadOnly:" << storage.isReadOnly();
+
+        qDebug() << "name: " << storage.name();
+        qDebug() << "fileSystemType: " << storage.fileSystemType();
+        qDebug() << "size: " << storage.bytesTotal()/1000/1000 << "MB";
+        qDebug() << "availableSize" << storage.bytesAvailable()/1000/1000 << "MB";
+
+        //how much RAM (is it enough?)
+        //what is the processor speed (is it fast enough)
+
+#if 0
 //        const DWORDLONG physicalRAM = 512 * MEGAunsigned char;
 //        const DWORDLONG vitualRAM = 1024 * MEGAunsigned char;
         const DWORDLONG diskSpace = 10 * MEGABYTE;
@@ -44,10 +61,10 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
             return false;
 
 //        const DWORD minCPUSpeed = 1300;         //1.3 GHz
+#endif
 
         resourceCheck = true;
     }
-#endif
     //register all events
     RegisterEngineEvents();
     VRegisterGameEvents();
@@ -70,6 +87,7 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
     m_ResCache->RegisterLoader(CreateXmlResourceLoader());
 
+    //Load strings that will be presented to the player (localization)
     if(!LoadStrings("English"))
     {
         GCC_ERROR("Failed to load strings");
@@ -103,6 +121,8 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
         return false;
     }
 #endif
+
+    //Initialize the applications window
     QSurfaceFormat format;
     format.setRenderableType(QSurfaceFormat::OpenGLES);
     format.setProfile(QSurfaceFormat::CoreProfile);
@@ -116,6 +136,14 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     window->show();
 //    window->showFullScreen();
 #if 0
+
+    //create game logic and views
+    VCreateGameAndViews();
+
+    //Set the directory for save games and other temporary files
+
+    //Preload selected resources
+
 
     m_gameTimer.start();
     m_bIsRunning = true;
