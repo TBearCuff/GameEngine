@@ -1,0 +1,13 @@
+
+# ignore objects and archives, anywhere in the tree
+*.[oa]
+
+moc_*.cpp
+
+*.pro.user
+*.pro.user.*
+qrc_*.cpp
+
+Temp/
+
+
