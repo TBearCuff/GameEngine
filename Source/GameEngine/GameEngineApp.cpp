@@ -135,7 +135,7 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 //    window->setIcon(VGetIcon());
     window->setFormat(format);
     window->resize(QSize(800, 600));
-    window->show();
+//    window->show();
 //    window->showFullScreen();
 #if 0
 
@@ -185,27 +185,42 @@ bool GameEngineApp::LoadStrings(QString language)
 
         QString pKey = e.attribute("id");
         QString pText = e.attribute("value");
-        QString pHotkey = e.attribute("hotkey");
+        const char* pHotkey = e.attribute("hotkey").toLatin1().data();
 
         qDebug() << pKey << " " << pText << " " << pHotkey;
-#if 0
-        if(pKey && pText)
+        if(pKey != QString("") && pText != QString(""))
         {
+#if 0
             wchar_t wideKey[64];
             wchar_t wideText[1024];
             AnsiToWideCch(wideKey, pKey, 64);
             AnsiToWideCch(wideText, pText, 1024);
-            m_textResource[std::wstring(wideKey)] = std::wstring(wideText);
-
-            if(pHotkey)
-            {
-                m_hotkeys[std::wstring(wideKey)] = MapCharToKeycode(*pHotkey);
-            }
-        }
 #endif
+            m_textResource[pKey] = pText;
+#if 1
+            if(pHotkey != QString(""))
+            {
+                m_hotkeys[pKey] = MapCharToKeycode(*pHotkey);
+            }
+#endif
+        }
     }
     return true;
 }
+
+unsigned int GameEngineApp::MapCharToKeycode(const char pHotkey)
+{
+    if(pHotkey >= '0' && pHotkey <= '9')
+        return 0x30 + pHotkey - '0';
+
+    if(pHotkey >= 'A' && pHotkey <= 'Z')
+        return 0x41 + pHotkey - 'A';
+
+    Q_ASSERT(0 && "Platform specific hotkey is not defined!");
+    return 0;
+}
+
+
 
 void GameEngineApp::RegisterEngineEvents()
 {
