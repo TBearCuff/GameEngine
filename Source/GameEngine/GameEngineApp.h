@@ -28,11 +28,13 @@ public:
     bool LoadStrings(QString language);
 protected:
     QMap<QString,QString> m_textResource;
+    QMap<QString,unsigned int> m_hotkeys;
     virtual void VRegisterGameEvents(void) {}
 
 private:
     void RegisterEngineEvents(void);
 
+    unsigned int MapCharToKeycode(const char);
 };
 
 #endif // GAMEENGINEAPP_H
