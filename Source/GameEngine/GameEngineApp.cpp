@@ -185,24 +185,21 @@ bool GameEngineApp::LoadStrings(QString language)
 
         QString pKey = e.attribute("id");
         QString pText = e.attribute("value");
-        const char* pHotkey = e.attribute("hotkey").toLatin1().data();
+        QString pHotkey = e.attribute("hotkey");
 
         qDebug() << pKey << " " << pText << " " << pHotkey;
+
+        //key and text are not empy strings, add to map
         if(pKey != QString("") && pText != QString(""))
         {
-#if 0
-            wchar_t wideKey[64];
-            wchar_t wideText[1024];
-            AnsiToWideCch(wideKey, pKey, 64);
-            AnsiToWideCch(wideText, pText, 1024);
-#endif
             m_textResource[pKey] = pText;
-#if 1
+
+            //add hotkey if exists
             if(pHotkey != QString(""))
             {
-                m_hotkeys[pKey] = MapCharToKeycode(*pHotkey);
+                QByteArray ba = pHotkey.toLocal8Bit();
+                m_hotkeys[pKey] = MapCharToKeycode(ba.at(0));
             }
-#endif
         }
     }
     return true;
