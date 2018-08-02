@@ -185,7 +185,8 @@ bool GameEngineApp::LoadStrings(QString language)
 
         QString pKey = e.attribute("id");
         QString pText = e.attribute("value");
-        const char* pHotkey = e.attribute("hotkey").toLatin1().data();
+//        const char* pHotkey = e.attribute("hotkey").toLocal8Bit().data();
+        QString pHotkey = e.attribute("hotkey");
 
         qDebug() << pKey << " " << pText << " " << pHotkey;
         if(pKey != QString("") && pText != QString(""))
@@ -200,7 +201,8 @@ bool GameEngineApp::LoadStrings(QString language)
 #if 1
             if(pHotkey != QString(""))
             {
-                m_hotkeys[pKey] = MapCharToKeycode(*pHotkey);
+                QByteArray ba = pHotkey.toLocal8Bit();
+                m_hotkeys[pKey] = MapCharToKeycode(ba.at(0));
             }
 #endif
         }
