@@ -202,6 +202,7 @@ bool GameEngineApp::LoadStrings(QString language)
             }
         }
     }
+    file.close();
     return true;
 }
 
