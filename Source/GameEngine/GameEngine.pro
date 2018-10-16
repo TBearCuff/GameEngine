@@ -28,7 +28,8 @@ SOURCES += \
         GameEngineApp.cpp \
     ../MainWindow/MainWindow.cpp \
     ../MainWindow/Transform3D.cpp \
-    BaseGameLogic.cpp
+    BaseGameLogic.cpp \
+    ../MainLoop/Initialization.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -36,7 +37,8 @@ HEADERS += \
     ../MainWindow/Transform3D.h \
     ../MainWindow/vertex.h \
     BaseGameLogic.h \
-    interfaces.h
+    interfaces.h \
+    ../MainLoop/Initialization.h
 
 RESOURCES += \
     resources.qrc
