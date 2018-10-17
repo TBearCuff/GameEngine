@@ -1,4 +1,5 @@
 #include "GameEngineApp.h"
+#include "../MainLoop/Initialization.h"
 #include <QStorageInfo>
 
 #include <QDomDocument>
@@ -39,25 +40,11 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
     while(!resourceCheck)
     {
-        //check secondary storage
-        QStorageInfo storage = QStorageInfo::root();
-
-        qDebug() << storage.rootPath();
-        if(storage.isReadOnly())
-            qDebug() << "isReadOnly:" << storage.isReadOnly();
-
-        qDebug() << "name: " << storage.name();
-        qDebug() << "fileSystemType: " << storage.fileSystemType();
-        qDebug() << "size: " << storage.bytesTotal()/1000/1000 << "MB";
-        qDebug() << "availableSize" << storage.bytesAvailable()/1000/1000 << "MB";
-
         //how much RAM (is it enough?)
         //what is the processor speed (is it fast enough)
 
-#if 0
-//        const DWORDLONG physicalRAM = 512 * MEGAunsigned char;
-//        const DWORDLONG vitualRAM = 1024 * MEGAunsigned char;
-        const DWORDLONG diskSpace = 10 * MEGABYTE;
+#if 1
+        const qint64 diskSpace = 10 * 1024*1024;
 
         if(!CheckStorage(diskSpace))
             return false;
