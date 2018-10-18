@@ -205,6 +205,23 @@ unsigned int GameEngineApp::MapCharToKeycode(const char pHotkey)
     return 0;
 }
 
+//GameEngineApp::GetString
+//
+//creates a string from a string resource ID in the string table
+//stored in a special DLL, LANG.DLL, so game text string can be
+//language independent
+//
+QString GameEngineApp::GetString(QString sID)
+{
+    auto localizedString = m_textResource.find(sID);
+    if(localizedString == m_textResource.end())
+    {
+//        GCC_ASSERT(0 && "String not found!");
+        return QString("");
+    }
+    return localizedString.value();
+}
+
 
 
 void GameEngineApp::RegisterEngineEvents()
