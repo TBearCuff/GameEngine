@@ -26,6 +26,7 @@ public:
 
 
     bool LoadStrings(QString language);
+    QString GetString(QString sID);
 protected:
     QMap<QString,QString> m_textResource;
     QMap<QString,unsigned int> m_hotkeys;
