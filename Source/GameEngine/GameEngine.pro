@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += widgets xml
+QT       += widgets xml core gui
 
 TARGET = GameEngine
 TEMPLATE = lib

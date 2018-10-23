@@ -68,7 +68,7 @@ void MainWindow::initializeGL()
 {
     //Initializa OpenGL Backend
     initializeOpenGLFunctions();
-    connect(this, SIGNAL(frameSwapped()), this, SLOT(update()));
+//    connect(this, SIGNAL(frameSwapped()), this, SLOT(update()));
     printContextInformation();
 
     //Set Global information

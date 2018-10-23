@@ -123,7 +123,7 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 //    window->setIcon(VGetIcon());
     window->setFormat(format);
     window->resize(QSize(800, 600));
-//    window->show();
+    window->show();
 //    window->showFullScreen();
 #if 0
 
