@@ -3,6 +3,7 @@
 #include <QStorageInfo>
 
 #include <QDomDocument>
+#include <QTimer>
 
 
 GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv)
@@ -133,10 +134,15 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
     //Preload selected resources
 
-
-    m_gameTimer.start();
-    m_bIsRunning = true;
 #endif
+
+    m_AppElapsedTimer.start();
+
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &GameEngineApp::onGameUpdate);
+    timer->start(500);
+
+//    m_bIsRunning = true;
     return true;
 }
 
@@ -203,6 +209,25 @@ unsigned int GameEngineApp::MapCharToKeycode(const char pHotkey)
 
     Q_ASSERT(0 && "Platform specific hotkey is not defined!");
     return 0;
+}
+
+void GameEngineApp::onGameUpdate()
+{
+    qint64 elapsedTime = 0;
+    if(m_AppElapsedTimer.isValid()) //should always be valid (I think) May be able to remove check
+    {
+        elapsedTime = m_AppElapsedTimer.elapsed() - m_LastTime;
+        m_LastTime += elapsedTime;
+    }
+
+//    if(m_pCamera)
+//    {
+////        IEventManager::GetGlobal()->VUpdate();
+
+////        m_pCamera->VOnUpdate(m_LastTime, elapsedTime);
+//    }
+
+
 }
 
 //GameEngineApp::GetString

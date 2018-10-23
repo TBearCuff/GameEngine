@@ -2,6 +2,8 @@
 #define GAMEENGINEAPP_H
 
 #include <QApplication>
+#include <QElapsedTimer>
+
 #include "../MainWindow/MainWindow.h"
 #include "BaseGameLogic.h"
 
@@ -36,6 +38,10 @@ private:
     void RegisterEngineEvents(void);
 
     unsigned int MapCharToKeycode(const char);
+    void onGameUpdate();
+
+    QElapsedTimer m_AppElapsedTimer;
+    qint64 m_LastTime;
 };
 
 #endif // GAMEENGINEAPP_H
