@@ -140,7 +140,7 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &GameEngineApp::onGameUpdate);
-    timer->start(500);
+    timer->start(5);
 
 //    m_bIsRunning = true;
     return true;
