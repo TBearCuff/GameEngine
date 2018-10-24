@@ -5,6 +5,7 @@
 #include <QString>
 #include <QOpenGLShaderProgram>
 #include <QResizeEvent>
+#include <QDir>
 //#include <QApplication>
 
 #include "../MainWindow/vertex.h"
@@ -79,8 +80,9 @@ void MainWindow::initializeGL()
     {
         //Create Shader (Do not release until VAO is created)
         m_program = new QOpenGLShaderProgram();
-        m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/simple.vert");
-        m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/simple.frag");
+        qDebug() << QDir::currentPath();
+        m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/simple.vert");
+        m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/simple.frag");
         m_program->link();
         m_program->bind();
 
