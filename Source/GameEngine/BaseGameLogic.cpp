@@ -116,3 +116,8 @@ void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
     }
 #endif
 }
+
+void BaseGameLogic::VChangeState(BaseGameState newState)
+{
+    m_State = newState;
+}
