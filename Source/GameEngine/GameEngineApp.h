@@ -17,7 +17,7 @@ public:
     virtual bool InitInstance(int argc, char *argv[]);
 //    virtual bool VLoadGame(void);
     BaseGameLogic *m_pGame;
-//    virtual BaseGameLogic *VCreateGameAndView()=0;
+    virtual BaseGameLogic *VCreateGameAndView()=0;
     BaseGameLogic* GetGameLogic(void) const { return m_pGame; }
 
     // File and Resource System

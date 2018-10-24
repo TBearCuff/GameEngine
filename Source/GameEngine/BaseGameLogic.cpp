@@ -12,3 +12,24 @@
 
 
 #include "BaseGameLogic.h"
+
+//========================================================================
+//
+// BaseGameLogic implementation
+//
+//========================================================================
+
+BaseGameLogic::BaseGameLogic()
+{
+    m_State = BGS_Initializing;
+}
+
+BaseGameLogic::~BaseGameLogic()
+{
+
+}
+
+bool BaseGameLogic::Init()
+{
+
+}

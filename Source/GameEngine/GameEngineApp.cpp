@@ -125,16 +125,14 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     window->resize(QSize(800, 600));
     window->show();
 //    window->showFullScreen();
-#if 0
 
     //create game logic and views
-    VCreateGameAndViews();
+    VCreateGameAndView();
 
     //Set the directory for save games and other temporary files
 
     //Preload selected resources
 
-#endif
 
     m_AppElapsedTimer.start();
 
