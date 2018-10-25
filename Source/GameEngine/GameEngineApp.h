@@ -18,11 +18,13 @@ public:
 //    virtual bool VLoadGame(void);
     BaseGameLogic *m_pGame;
     virtual BaseGameLogic *VCreateGameAndView()=0;
+    virtual QString VGetGameAppDirectory()=0;
     BaseGameLogic* GetGameLogic(void) const { return m_pGame; }
 
     // File and Resource System
     class ResCache *m_ResCache;
 
+    QString m_saveGameDirectory;
     // Event manager
 //	EventManager *m_pEventManager;
 

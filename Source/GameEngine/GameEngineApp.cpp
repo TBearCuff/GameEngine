@@ -4,6 +4,7 @@
 
 #include <QDomDocument>
 #include <QTimer>
+#include <QStandardPaths>
 
 
 GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv)
@@ -126,10 +127,21 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     window->show();
 //    window->showFullScreen();
 
+    // initialize the directory location you can store save game files
+
     //create game logic and views
     VCreateGameAndView();
+    if(!m_pGame)
+        return false;
 
     //Set the directory for save games and other temporary files
+    m_saveGameDirectory = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
+            VGetGameAppDirectory();
+    QDir dir(m_saveGameDirectory);
+    if(!dir.exists())
+    {
+        dir.mkpath(".");
+    }
 
     //Preload selected resources
 
