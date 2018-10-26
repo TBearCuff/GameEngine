@@ -31,7 +31,7 @@ BaseGameLogic::~BaseGameLogic()
 
 bool BaseGameLogic::Init()
 {
-
+    return true;
 }
 
 void BaseGameLogic::VOnUpdate(float time, float elapsedTime)

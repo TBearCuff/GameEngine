@@ -8,10 +8,11 @@
 
 
 GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv),
-    m_bQuitting(false),
     m_bIsRunning(false),
+    m_bQuitting(false),
     m_bQuitRequested(false),
-    m_bIsEditorRunning(false)
+    m_bIsEditorRunning(false),
+    m_pGame(NULL)
 {
     //Qt doesn't need this because there is a global instance of QApplication
 //    g_pApp = this;
