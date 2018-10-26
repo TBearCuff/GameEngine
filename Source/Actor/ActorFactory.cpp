@@ -13,13 +13,13 @@ ActorFactory::ActorFactory(void)
     m_lastActorId = INVALID_ACTOR_ID;
 }
 
-StrongActorPtr ActorFactory::CreateActor(QString actorResource, /*XMLElement *overrides, const Mat4x4 *pInitialTransform,*/ const ActorId serversActorId)
+StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *overrides,/* const Mat4x4 *pInitialTransform,*/ const ActorId serversActorId)
 {
     //Grab the root XML node
-    XMLElement* pRoot = XmlResourceLoader::LoadAndReturnXmlElement(actorResource);
+    QDomElement* pRoot = XmlResourceLoader::LoadAndReturnXmlElement(actorResource);
     if(!pRoot)
     {
-        GCC_ERROR("Failed to create actor from resource: " + std::string(actorResource));
+        GCC_ERROR("Failed to create actor from resource: " + actorResource);
         return StrongActorPtr();
     }
 

@@ -44,8 +44,9 @@ typedef unsigned long long  DWORDLONG;
 typedef unsigned long       DWORD;
 typedef unsigned char       BYTE;
 
+//Qt-specific includes
 #include <QMessageBox>
-
+#include <QDomElement>
 
 
 // GameCode #includes

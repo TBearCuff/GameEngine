@@ -32,7 +32,8 @@ SOURCES += \
     BaseGameLogic.cpp \
     ../MainLoop/Initialization.cpp \
     ../Actor/ActorFactory.cpp \
-    GameEngineStd.cpp
+    GameEngineStd.cpp \
+    ../ResourceCache/XMLResourceLoader.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -43,7 +44,8 @@ HEADERS += \
     interfaces.h \
     ../MainLoop/Initialization.h \
     ../Actor/ActorFactory.h \
-    GameEngineStd.h
+    GameEngineStd.h \
+    ../ResourceCache/XMLResourceLoader.h
 
 RESOURCES += \
     resources.qrc
