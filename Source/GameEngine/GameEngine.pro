@@ -8,6 +8,7 @@ QT       += widgets xml core gui
 
 TARGET = GameEngine
 TEMPLATE = lib
+QMAKE_CXXFLAGS += -Wno-literal-suffix -Wno-ignored-qualifiers
 CONFIG += staticlib c++11
 
 DESTDIR = ../../Lib
@@ -30,7 +31,8 @@ SOURCES += \
     ../MainWindow/Transform3D.cpp \
     BaseGameLogic.cpp \
     ../MainLoop/Initialization.cpp \
-    ../Actor/ActorFactory.cpp
+    ../Actor/ActorFactory.cpp \
+    GameEngineStd.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -40,7 +42,8 @@ HEADERS += \
     BaseGameLogic.h \
     interfaces.h \
     ../MainLoop/Initialization.h \
-    ../Actor/ActorFactory.h
+    ../Actor/ActorFactory.h \
+    GameEngineStd.h
 
 RESOURCES += \
     resources.qrc

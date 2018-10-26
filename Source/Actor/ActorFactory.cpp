@@ -1,19 +1,19 @@
 
-#include "gameenginestd.h"
+//#include "gameenginestd.h"
 #include "ActorFactory.h"
-#include "../ResourceCache/xmlresourceloader.h"
-#include "ActorComponent.h"
-#include "RenderComponent.h"
-#include "Actor.h"      //until we have actual actors...
+//#include "../ResourceCache/xmlresourceloader.h"
+//#include "ActorComponent.h"
+//#include "RenderComponent.h"
+//#include "Actor.h"      //until we have actual actors...
 
-#include "../Utilities/string.h"
+//#include "../Utilities/string.h"
 
 ActorFactory::ActorFactory(void)
 {
     m_lastActorId = INVALID_ACTOR_ID;
 }
 
-StrongActorPtr ActorFactory::CreateActor(const char* actorResource, XMLElement *overrides,/* const Mat4x4 *pInitialTransform,*/ const ActorId serversActorId)
+StrongActorPtr ActorFactory::CreateActor(QString actorResource, /*XMLElement *overrides, const Mat4x4 *pInitialTransform,*/ const ActorId serversActorId)
 {
     //Grab the root XML node
     XMLElement* pRoot = XmlResourceLoader::LoadAndReturnXmlElement(actorResource);

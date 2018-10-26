@@ -3,8 +3,9 @@
 
 #include <QEvent>
 #include <QKeyEvent>
+#include <QSharedPointer>
 
-#if 0
+
 class Actor;
 class ActorComponent;
 
@@ -14,11 +15,12 @@ typedef unsigned int ComponentId;
 const ActorId INVALID_ACTOR_ID = 0;
 const ComponentId INVALID_COMPONENT_ID = 0;
 
-typedef shared_ptr<Actor> StrongActorPtr;
-typedef weak_ptr<Actor> WeakActorPtr;
-typedef shared_ptr<ActorComponent> StrongActorComponentPtr;
-typedef weak_ptr<ActorComponent> WeakActorComponentPtr;
+typedef QSharedPointer<Actor> StrongActorPtr;
+typedef QWeakPointer<Actor> WeakActorPtr;
+typedef QSharedPointer<ActorComponent> StrongActorComponentPtr;
+typedef QWeakPointer<ActorComponent> WeakActorComponentPtr;
 
+#if 0
 template<class T>
 struct SortBy_SharedPtr_Content
 {

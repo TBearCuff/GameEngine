@@ -2,6 +2,7 @@
 #define ACTORFACTORY_H
 
 //#include "gameenginestd.h"
+#include <QString>
 
 class ActorFactory
 {
@@ -13,7 +14,7 @@ protected:
 public:
     ActorFactory(void);
 
-    StrongActorPtr CreateActor(const char* actorResource, XMLElement* overrides, /*const Mat4x4* initialTransform,*/ const ActorId serversActorId );
+    StrongActorPtr CreateActor(QString actorResource, /*XMLElement* overrides, const Mat4x4* initialTransform,*/ const ActorId serversActorId );
     void ModifyActor(StrongActorPtr pActor, XMLElement* overrides);
 
 //protected:
