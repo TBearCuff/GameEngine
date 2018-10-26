@@ -8,7 +8,10 @@
 
 
 GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv),
-    m_bQuitting(false)
+    m_bQuitting(false),
+    m_bIsRunning(false),
+    m_bQuitRequested(false),
+    m_bIsEditorRunning(false)
 {
     //Qt doesn't need this because there is a global instance of QApplication
 //    g_pApp = this;
@@ -153,7 +156,7 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     connect(timer, &QTimer::timeout, this, &GameEngineApp::onGameUpdate);
     timer->start(5);
 
-    connect(this, SIGNAL(aboutToQuit()), this, SLOT(OnClose()));
+    connect(this, &QApplication::aboutToQuit, this, &GameEngineApp::OnClose);
 
     m_bIsRunning = true;
     return true;
