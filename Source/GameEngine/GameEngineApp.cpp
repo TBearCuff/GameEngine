@@ -7,7 +7,11 @@
 #include <QStandardPaths>
 
 
-GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv)
+GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv),
+    m_bQuitting(false),
+    m_bIsRunning(false),
+    m_bQuitRequested(false),
+    m_bIsEditorRunning(false)
 {
     //Qt doesn't need this because there is a global instance of QApplication
 //    g_pApp = this;
@@ -113,6 +117,14 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     }
 #endif
 
+    //Set the directory for save games and other temporary files
+    m_saveGameDirectory = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
+            VGetGameAppDirectory();
+    QDir dir(m_saveGameDirectory);
+    if(!dir.exists())
+    {
+        dir.mkpath(".");
+    }
     //Initialize the applications window
     QSurfaceFormat format;
     format.setRenderableType(QSurfaceFormat::OpenGLES);
@@ -129,19 +141,11 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
     // initialize the directory location you can store save game files
 
+
     //create game logic and views
     VCreateGameAndView();
     if(!m_pGame)
         return false;
-
-    //Set the directory for save games and other temporary files
-    m_saveGameDirectory = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
-            VGetGameAppDirectory();
-    QDir dir(m_saveGameDirectory);
-    if(!dir.exists())
-    {
-        dir.mkpath(".");
-    }
 
     //Preload selected resources
 
@@ -152,8 +156,22 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     connect(timer, &QTimer::timeout, this, &GameEngineApp::onGameUpdate);
     timer->start(5);
 
-//    m_bIsRunning = true;
+    connect(this, &QApplication::aboutToQuit, this, &GameEngineApp::OnClose);
+
+    m_bIsRunning = true;
     return true;
+}
+
+void GameEngineApp::OnClose()
+{
+    if(m_pGame != NULL)
+        delete m_pGame;
+
+//    if(m_pEventManager != NULL)
+//        delete m_pEventManager;
+
+    qDebug() << "I cleaned up my mess; exiting application";
+    exit(0);
 }
 
 bool GameEngineApp::LoadStrings(QString language)
@@ -228,6 +246,11 @@ void GameEngineApp::onGameUpdate()
     {
         elapsedTime = m_AppElapsedTimer.elapsed() - m_LastTime;
         m_LastTime += elapsedTime;
+    }
+
+    if(m_bQuitting)
+    {
+        OnClose();
     }
 
 //    if(m_pCamera)

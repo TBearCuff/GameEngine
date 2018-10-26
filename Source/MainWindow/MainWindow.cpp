@@ -80,7 +80,6 @@ void MainWindow::initializeGL()
     {
         //Create Shader (Do not release until VAO is created)
         m_program = new QOpenGLShaderProgram();
-        qDebug() << QDir::currentPath();
         m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, "shaders/simple.vert");
         m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, "shaders/simple.frag");
         m_program->link();

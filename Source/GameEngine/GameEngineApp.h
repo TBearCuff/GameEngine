@@ -10,6 +10,14 @@
 class GameEngineApp : public QApplication
 {
     MainWindow* window;
+protected:
+//    bool m_bWindowedMode;					// true if the app is windowed, false if fullscreen
+    bool m_bIsRunning;						// true if everything is initialized and the game is in the main loop
+    bool m_bQuitRequested;					// true if the app should run the exit sequence
+    bool m_bQuitting;						// true if the app is running the exit sequence
+
+    bool m_bIsEditorRunning;				// true if the game editor is running
+
 
 public:
     GameEngineApp(int argc, char *argv[]);
@@ -19,6 +27,13 @@ public:
     BaseGameLogic *m_pGame;
     virtual BaseGameLogic *VCreateGameAndView()=0;
     virtual QString VGetGameAppDirectory()=0;
+
+    // Main loop processing
+    void AbortGame() { m_bQuitting = true; }
+//	int GetExitCode() { return DXUTGetExitCode(); }
+    bool IsRunning() { return m_bIsRunning; }
+    void SetQuitting(bool quitting) { m_bQuitting = quitting; }
+
     BaseGameLogic* GetGameLogic(void) const { return m_pGame; }
 
     // File and Resource System
@@ -44,6 +59,9 @@ private:
 
     QElapsedTimer m_AppElapsedTimer;
     qint64 m_LastTime;
+
+private slots:
+    void OnClose();
 };
 
 #endif // GAMEENGINEAPP_H
