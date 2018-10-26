@@ -145,7 +145,7 @@ class IGamepadHandler
     virtual bool VOnDirectionalPad(const std::string &direction)=0;
     virtual bool VOnThumbstick(const std::string &stickName, float const x, float const y)=0;
 };
-
+#endif
 
 
 
@@ -187,7 +187,7 @@ public:
     virtual bool VIsUsingDevelopmentDirectories(void) const = 0;
 };
 
-
+#if 0
 /////////////////////////////////////////////////////////////////////////////
 // enum RenderPass							- Chapter 16, page 529
 //

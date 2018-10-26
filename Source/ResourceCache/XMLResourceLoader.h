@@ -2,7 +2,7 @@
 #define XMLRESOURCELOADER_H
 
 #include "GameEngineStd.h"
-//#include "ResCache.h"
+#include "ResCache.h"
 //#include <tinyxml2.h>
 //using namespace tinyxml2;
 
