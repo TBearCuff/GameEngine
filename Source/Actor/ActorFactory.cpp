@@ -40,7 +40,7 @@ StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *ove
 //    bool initialTransformSet = false;
 
     //Loop through each child element and load the component
-    for(XMLElement* pNode = pRoot->FirstChildElement(); pNode; pNode->NextSiblingElement())
+    for(QDomElement pNode = pRoot.firstChildElement(); !pNode.isNull(); pNode.nextSiblingElement())
     {
         StrongActorComponentPtr pComponent(VCreateComponent(pNode));
         if(pComponent)
@@ -59,7 +59,7 @@ StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *ove
 
     if(overrides)
     {
-        ModifyActor(pActor, overrides);
+//        ModifyActor(pActor, overrides);
     }
 //[TC] Until we actually have the TransformComponent
 #if 0
@@ -77,9 +77,9 @@ StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *ove
     return pActor;
 }
 
-StrongActorComponentPtr ActorFactory::VCreateComponent(XMLElement *pData)
+StrongActorComponentPtr ActorFactory::VCreateComponent(QDomElement pData)
 {
-    const char* name = pData->Value();
+    const QString name = pData.nodeName();
     StrongActorComponentPtr pComponent(m_componentFactory.Create(ActorComponent::GetIdFromName(name)));
 
     //initialize component if we found one
@@ -87,13 +87,13 @@ StrongActorComponentPtr ActorFactory::VCreateComponent(XMLElement *pData)
     {
         if(!pComponent->VInit(pData))
         {
-            GCC_ERROR("Component failed to initialize: " + std::string(name));
+//            GCC_ERROR("Component failed to initialize: " + std::string(name));
             return StrongActorComponentPtr();
         }
     }
     else
     {
-        GCC_ERROR("Couldn't find ActorComponent named " + std::string(name));
+//        GCC_ERROR("Couldn't find ActorComponent named " + std::string(name));
         return StrongActorComponentPtr();
     }
 
@@ -101,7 +101,7 @@ StrongActorComponentPtr ActorFactory::VCreateComponent(XMLElement *pData)
     // custom CreateComponent() function in a sub class.
     return pComponent;
 }
-
+#if 0
 void ActorFactory::ModifyActor(StrongActorPtr pActor, XMLElement *overrides)
 {
     //loop through each child element and load the component
@@ -130,3 +130,4 @@ void ActorFactory::ModifyActor(StrongActorPtr pActor, XMLElement *overrides)
         }
     }
 }
+#endif

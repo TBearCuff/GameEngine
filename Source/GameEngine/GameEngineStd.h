@@ -47,6 +47,10 @@ typedef unsigned char       BYTE;
 //Qt-specific includes
 #include <QMessageBox>
 #include <QDomElement>
+#include <QSharedPointer>
+#include <QWeakPointer>
+#include <QMap>
+#include <QList>
 
 
 // GameCode #includes

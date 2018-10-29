@@ -51,7 +51,8 @@ HEADERS += \
     ../ResourceCache/XMLResourceLoader.h \
     ../ResourceCache/ResCache.h \
     ../ResourceCache/ZipFile.h \
-    ../Actor/Actor.h
+    ../Actor/Actor.h \
+    ../Actor/ActorComponent.h
 
 RESOURCES += \
     resources.qrc

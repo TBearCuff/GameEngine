@@ -33,7 +33,7 @@ void Actor::PostInit(void)
 {
     for(ActorComponents::iterator it = m_components.begin(); it != m_components.end(); ++it)
     {
-        it->second->VPostInit();
+        it->data()->VPostInit();
     }
 }
 
@@ -46,10 +46,10 @@ void Actor::Update(int deltaMs)
 {
     for(ActorComponents::iterator it = m_components.begin(); it != m_components.end(); ++it)
     {
-        it->second->VUpdate(deltaMs);
+        it->data()->VUpdate(deltaMs);
     }
 }
-
+#if 0
 std::string Actor::ToXML()
 {
     XMLDocument outDoc;
@@ -72,9 +72,9 @@ std::string Actor::ToXML()
 
     return printer.CStr();
 }
-
+#endif
 void Actor::AddComponent(StrongActorComponentPtr pComponent)
 {
-    std::pair<ActorComponents::iterator, bool> success = m_components.insert(std::make_pair(pComponent->VGetId(), pComponent));
+    m_components[pComponent->VGetId()] = pComponent;
 //    GCC_ASSERT(success.second);
 }

@@ -1,7 +1,7 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 //#include "../GameEngineMain/interfaces.h"
-//#include "ActorComponent.h"
+#include "ActorComponent.h" //Add this base clase temporarily to access object
 
 //using namespace tinyxml2;
 
@@ -14,7 +14,7 @@ class Actor
     friend class ActorComponent;
 
 public:
-    typedef std::map<ComponentId, StrongActorComponentPtr> ActorComponents;
+    typedef QMap<ComponentId, StrongActorComponentPtr> ActorComponents;
 
 private:
     ActorId m_id; //uniques id for the actor
@@ -35,7 +35,7 @@ public:
 
     //editor functions
 
-    std::string ToXML();
+//    std::string ToXML();
 
     //accessors
     ActorId GetId(void) const { return m_id; }
@@ -43,14 +43,14 @@ public:
 
     //templace function for retrieving component
     template <class ComponentType>
-    weak_ptr<ComponentType> GetComponent(ComponentId id)
+    QWeakPointer<ComponentType> GetComponent(ComponentId id)
     {
         ActorComponents::iterator findIt = m_components.find(id);
         if(findIt != m_components.end())
         {
-            StrongActorComponentPtr pBase(findIt->second);
-            shared_ptr<ComponentType> pSub(static_pointer_cast<ComponentType>(pBase));  // cast to subclass version of the pointer
-            weak_ptr<ComponentType> pWeakSub(pSub);  // convert strong pointer to weak pointer
+            StrongActorComponentPtr pBase(findIt->value());
+            QSharedPointer<ComponentType> pSub(static_pointer_cast<ComponentType>(pBase));  // cast to subclass version of the pointer
+            QWeakPointer<ComponentType> pWeakSub(pSub);  // convert strong pointer to weak pointer
             return pWeakSub;  //return the weak pointer
         }
         else
@@ -66,7 +66,7 @@ public:
         ActorComponents::iterator findIt = m_components.find(id);
         if(findIt != m_components.end())
         {
-            StrongActorComponentPtr pBase(findIt->second);
+            StrongActorComponentPtr pBase(findIt->value());
             shared_ptr<ComponentType> pSub(static_pointer_cast<ComponentType>(pBase));  //cast to subclass version of the pointer
             weak_ptr<ComponentType> pWeakSub(pSub);  //convert strong pointer to weak pointer
             return pWeakSub;
