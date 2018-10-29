@@ -25,7 +25,7 @@ enum BaseGameState
     BGS_Running
 };
 
-//typedef std::map<ActorId, StrongActorPtr> ActorMap;
+typedef QMap<ActorId, StrongActorPtr> ActorMap;
 typedef QString Level;
 
 class LevelManager
@@ -48,7 +48,7 @@ protected:
 //    float m_Lifetime;   //indicates how long this game has been in session
 //    ProcessManager* m_pProcessManager;  //a game logic entity
 //    GCCRandom m_random;     //our RNG
-//    ActorMap m_actors;
+    ActorMap m_actors;
 //    ActorId m_LastActorId;
     BaseGameState m_State;  //game state: loading, running etc
 //    int m_ExpectedPlayers;  //how many local human players
