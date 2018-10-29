@@ -56,7 +56,7 @@ class IGamePhysics;
 class IGameLogic
 {
 public:
-//    virtual WeakActorPtr VGetActor(const ActorId id)=0;
+    virtual WeakActorPtr VGetActor(const ActorId id)=0;
 //    virtual StrongActorPtr VCreateActor(const std::string &actorResource, XMLElement *overrides, const Mat4x4 *initialTransform=NULL, const ActorId serversActorId=INVALID_ACTOR_ID)=0;
 //    virtual void VDestroyActor(const ActorId actorId)=0;
     virtual bool VLoadGame(const char* levelResource)=0;

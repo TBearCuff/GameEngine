@@ -34,6 +34,14 @@ bool BaseGameLogic::Init()
     return true;
 }
 
+WeakActorPtr BaseGameLogic::VGetActor(const ActorId actorId)
+{
+    ActorMap::iterator findIt = m_actors.find(actorId);
+    if (findIt != m_actors.end())
+        return findIt.value();
+    return WeakActorPtr();
+}
+
 void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
 {
 

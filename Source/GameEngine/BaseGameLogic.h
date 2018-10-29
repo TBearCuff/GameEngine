@@ -97,7 +97,7 @@ public:
 
 //    virtual StrongActorPtr VCreateActor(const std::string &actorResource, XMLElement *overrides, const Mat4x4* initialTransform=NULL, const ActorId serverActorId=INVALID_ACTOR_ID);  //don't store this strong pointer outside of this class
 //    virtual void VDestroyActor(const ActorId actorId);
-//    virtual WeakActorPtr VGetActor(const ActorId id);
+    virtual WeakActorPtr VGetActor(const ActorId id);
 //    virtual void VModifyActor(const ActorId actorId, XMLElement *overrides);
 
 //    virtual void VMoveActor(const ActorId id, Mat4x4 const &mat) {}
