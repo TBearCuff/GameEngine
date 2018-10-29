@@ -9,7 +9,7 @@
 class ResHandle;
 class ResCache;
 
-//#include "ZipFile.h"        //Needed for ZipContentsMap
+#include "ZipFile.h"        //Needed for ZipContentsMap
 
 //
 // class IResourceExtraData		- Chapter 8, page 224 (see notes below)
@@ -21,7 +21,7 @@ class ResCache;
 class IResourceExtraData
 {
 public:
-    virtual std::string VToString()=0;
+    virtual QString VToString()=0;
 };
 
 //
@@ -30,8 +30,8 @@ public:
 class Resource
 {
 public:
-    std::string m_name;
-    Resource(const std::string &name);
+    QString m_name;
+    Resource(const QString &name);
 };
 
 //
@@ -41,17 +41,17 @@ public:
 class ResourceZipFile : public IResourceFile
 {
     ZipFile *m_pZipFile;
-    std::string m_resFileName;
+    QString m_resFileName;
 
 public:
-    ResourceZipFile(const std::string resFileName ) {m_pZipFile = NULL; m_resFileName=resFileName; }
+    ResourceZipFile(const QString resFileName ) {m_pZipFile = NULL; m_resFileName=resFileName; }
     virtual ~ResourceZipFile();
 
     virtual bool VOpen();
     virtual int VGetRawResourceSize(const Resource &r);
     virtual int VGetRawResource(const Resource &r, char *buffer);
     virtual int VGetNumResources() const;
-    virtual std::string VGetResourceName(int num) const;
+    virtual QString VGetResourceName(int num) const;
     virtual bool VIsUsingDevelopmentDirectories(void) const { return false; }
 };
 
@@ -70,23 +70,23 @@ public:
     };
 
     Mode m_mode;
-    std::wstring m_AssetsDir;
+    QString m_AssetsDir;
     std::vector<QFileInfo> m_AssetFileInfo;
     ZipContentsMap m_DirectoryContentsMap;
 
-    DevelopmentResourceZipFile(const std::string resFileName, const Mode mode);
+    DevelopmentResourceZipFile(const QString resFileName, const Mode mode);
 
     virtual bool VOpen();
     virtual int VGetRawResourceSize(const Resource &r);
     virtual int VGetRawResource(const Resource &r, char *buffer);
     virtual int VGetNumResources() const;
-    virtual std::string VGetResourceName(int num) const;
+    virtual QString VGetResourceName(int num) const;
     virtual bool VIsUsingDevelopmentDirectories(void) const { return true; }
 
-    int Find(const std::string &name);
+    int Find(const QString &name);
 
 protected:
-    void ReadAssetsDirectory(std::wstring fileSpec);
+    void ReadAssetsDirectory(QString fileSpec);
 
 };
 
@@ -101,20 +101,20 @@ protected:
     Resource m_resource;
     char *m_buffer;
     unsigned int m_size;
-    shared_ptr<IResourceExtraData> m_extra;
+    QSharedPointer<IResourceExtraData> m_extra;
     ResCache *m_pResCache;
 
 public:
     ResHandle(Resource & resource, char *buffer, unsigned int size, ResCache *pResCache);
     virtual ~ResHandle();
 
-    const std::string GetName() { return m_resource.m_name; }
+    const QString GetName() { return m_resource.m_name; }
     unsigned int Size() const { return m_size; }
     char *Buffer() const { return m_buffer; }
     char *WritableBuffer() { return m_buffer; }
 
-    shared_ptr<IResourceExtraData> GetExtra() { return m_extra; }
-    void SetExtra(shared_ptr<IResourceExtraData> extra) { m_extra = extra; }
+    QSharedPointer<IResourceExtraData> GetExtra() { return m_extra; }
+    void SetExtra(QSharedPointer<IResourceExtraData> extra) { m_extra = extra; }
 };
 
 //
@@ -126,14 +126,14 @@ public:
     virtual bool VUseRawFile() { return true; }
     virtual bool VDiscardRawBufferAfterLoad() { return true; }
     virtual unsigned int VGetLoadedResourceSize(char *rawBuffer, unsigned int rawSize) { return rawSize; }
-    virtual bool VLoadResource(char *rawBuffer, unsigned int rawSize, shared_ptr<ResHandle> handle) { return true; }
-    virtual std::string VGetPattern() { return "*"; }
+    virtual bool VLoadResource(char *rawBuffer, unsigned int rawSize, QSharedPointer<ResHandle> handle) { return true; }
+    virtual QString VGetPattern() { return "*"; }
 
 };
 
-typedef std::list< shared_ptr <ResHandle> > ResHandleList;
-typedef std::map<std::string, shared_ptr < ResHandle > > ResHandleMap;  //maps identifiers to resource data
-typedef std::list< shared_ptr < IResourceLoader > > ResourceLoaders;
+typedef QList< QSharedPointer <ResHandle> > ResHandleList;
+typedef QMap<QString, QSharedPointer < ResHandle > > ResHandleMap;  //maps identifiers to resource data
+typedef QList< QSharedPointer < IResourceLoader > > ResourceLoaders;
 
 
 class ResCache
@@ -153,11 +153,11 @@ protected:
 
     bool MakeRoom(unsigned int size);
     char *Allocate(unsigned int size);
-    void Free(shared_ptr<ResHandle> gonner);
+    void Free(QSharedPointer<ResHandle> gonner);
 
-    shared_ptr<ResHandle> Load(Resource *r);
-    shared_ptr<ResHandle> Find(Resource *r);
-    void Update(shared_ptr<ResHandle> handle);
+    QSharedPointer<ResHandle> Load(Resource *r);
+    QSharedPointer<ResHandle> Find(Resource *r);
+    void Update(QSharedPointer<ResHandle> handle);
 
     void FreeOneResource();
     void MemoryHasBeenFreed(unsigned int size);
@@ -168,9 +168,9 @@ public:
 
     bool Init();
 
-    void RegisterLoader( shared_ptr<IResourceLoader> loader);
+    void RegisterLoader(QSharedPointer<IResourceLoader> loader);
 
-    shared_ptr<ResHandle> GetHandle(Resource *r);
+    QSharedPointer<ResHandle> GetHandle(Resource *r);
 
     int Preload(const std::string pattern, void (*progressCallback)(int, bool&));
 
@@ -178,7 +178,7 @@ public:
 
     void Flush(void);
 
-    bool IsUsingDevelopmentDirectories(void) const { GCC_ASSERT(m_file); return m_file->VIsUsingDevelopmentDirectories(); }
+    bool IsUsingDevelopmentDirectories(void) const { Q_ASSERT(m_file); return m_file->VIsUsingDevelopmentDirectories(); }
 };
 
 #endif // RESCACHE_H

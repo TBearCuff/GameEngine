@@ -1,7 +1,7 @@
-//#include "gameenginestd.h"
+#include "GameEngineStd.h"
 #include "XMLResourceLoader.h"
 
-void XmlResourceExtraData::ParseXml(QString pRawBuffer)
+void XmlResourceExtraData::ParseXml(char* pRawBuffer)
 {
 //    m_xmlDocument.Parse(pRawBuffer);
 }
@@ -12,22 +12,22 @@ bool XmlResourceLoader::VLoadResource(char* rawBuffer, unsigned int rawSize, QSh
     {
         return false;
     }
-    shared_ptr<XmlResourceExtraData> pExtraData = shared_ptr<XmlResourceExtraData> (GCC_NEW XmlResourceExtraData());
+    QSharedPointer<XmlResourceExtraData> pExtraData = QSharedPointer<XmlResourceExtraData> (GCC_NEW XmlResourceExtraData());
     pExtraData->ParseXml(rawBuffer);
-    handle->SetExtra(shared_ptr<XmlResourceExtraData>(pExtraData));
+    handle->SetExtra(QSharedPointer<XmlResourceExtraData>(pExtraData));
 
     return true;
 }
 
-shared_ptr<IResourceLoader> CreateXmlResourceLoader()
+QSharedPointer<IResourceLoader> CreateXmlResourceLoader()
 {
-    return shared_ptr<IResourceLoader>(GCC_NEW XmlResourceLoader());
+    return QSharedPointer<IResourceLoader>(GCC_NEW XmlResourceLoader());
 }
 
 QDomElement XmlResourceLoader::LoadAndReturnXmlElement(QString resourceString)
 {
     Resource resource(resourceString);
-    shared_ptr<ResHandle> pResourceHandle = g_pApp->m_ResCache->GetHandle(&resource); //this actually loads the XML file from the zip file
-    shared_ptr<XmlResourceExtraData> pExtraData = static_pointer_cast<XmlResourceExtraData>(pResourceHandle->GetExtra());
+    QSharedPointer<ResHandle> pResourceHandle = g_pApp->m_ResCache->GetHandle(&resource); //this actually loads the XML file from the zip file
+    QSharedPointer<XmlResourceExtraData> pExtraData = qSharedPointerCast<XmlResourceExtraData>(pResourceHandle->GetExtra());
     return pExtraData->GetRoot();
 }

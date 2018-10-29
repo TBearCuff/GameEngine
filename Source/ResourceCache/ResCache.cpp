@@ -1,16 +1,16 @@
-#include "gameenginestd.h"
+#include "GameEngineStd.h"
 #include <list>
 #include <map>
 #include <cctype>
 
 #include "ResCache.h"
 
-#include "../Utilities/string.h"
+//#include "../Utilities/string.h"
 
 //
 //  Resource::Resource
 //
-Resource::Resource(const std::string &name)
+Resource::Resource(const QString &name)
 {
     m_name=name;
 //    std::transform(m_name.begin(), m_name.end(), m_name.begin(), (int(*)(int)) std::tolower);
@@ -31,14 +31,14 @@ bool ResourceZipFile::VOpen()
     m_pZipFile = GCC_NEW ZipFile;
     if(m_pZipFile)
     {
-        return m_pZipFile->Init(m_resFileName.c_str());
+        return m_pZipFile->Init(m_resFileName);
     }
     return false;
 }
 
 int ResourceZipFile::VGetRawResourceSize(const Resource &r)
 {
-    int resourceNum = m_pZipFile->Find(r.m_name.c_str());
+    int resourceNum = m_pZipFile->Find(r.m_name);
     if (resourceNum == -1)
         return -1;
 
@@ -48,7 +48,7 @@ int ResourceZipFile::VGetRawResourceSize(const Resource &r)
 int ResourceZipFile::VGetRawResource(const Resource &r, char *buffer)
 {
     int size = 0;
-    optional<int> resourceNum = m_pZipFile->Find(r.m_name.c_str());
+    optional<int> resourceNum = m_pZipFile->Find(r.m_name);
     if(resourceNum.valid())
     {
         size = m_pZipFile->GetFileLen(*resourceNum);
@@ -62,9 +62,9 @@ int ResourceZipFile::VGetNumResources() const
     return (m_pZipFile == NULL) ? 0 : m_pZipFile->GetNumFiles();
 }
 
-std::string ResourceZipFile::VGetResourceName(int num) const
+QString ResourceZipFile::VGetResourceName(int num) const
 {
-    std::string resName = "";
+    QString resName = "";
     if(m_pZipFile != NULL && num < m_pZipFile->GetNumFiles())
     {
         resName = m_pZipFile->GetFilename(num);
@@ -79,7 +79,7 @@ std::string ResourceZipFile::VGetResourceName(int num) const
 //    editor.
 //
 
-DevelopmentResourceZipFile::DevelopmentResourceZipFile(const std::string resFileName, const Mode mode)
+DevelopmentResourceZipFile::DevelopmentResourceZipFile(const QString resFileName, const Mode mode)
     : ResourceZipFile(resFileName)
 {
     m_mode=mode;
@@ -92,18 +92,18 @@ DevelopmentResourceZipFile::DevelopmentResourceZipFile(const std::string resFile
 //    dir.chop(1);//chop off the last character (is it a slash(/))?
     dir.append("/Assets/");
 
-    m_AssetsDir = dir.toStdWString();
+    m_AssetsDir = dir;
 }
 
-int DevelopmentResourceZipFile::Find(const std::string &name)
+int DevelopmentResourceZipFile::Find(const QString &name)
 {
-    std::string lowerCase = name;
+    QString lowerCase = name;
 //    std::transform(lowerCase.begin(), lowerCase.end(), lowerCase.begin(), (int(*)(int)) std::tolower);
-    ZipContentsMap::const_iterator i = m_DirectoryContentsMap.find(lowerCase);
+    ZipContentsMap::const_iterator i = m_DirectoryContentsMap.find(name.toLower());
     if(i == m_DirectoryContentsMap.end())
         return -1;
 
-    return i->second;
+    return i.value();
 }
 
 bool DevelopmentResourceZipFile::VOpen()
@@ -116,14 +116,14 @@ bool DevelopmentResourceZipFile::VOpen()
     // open the asset directory and read in the non-hidden contents
     if (m_mode == Editor)
     {
-        ReadAssetsDirectory(L"/");
+        ReadAssetsDirectory("/");
     }
     else
     {
         // FUTURE WORK - iterate through the ZipFile contents and go grab WIN32_FIND_DATA
         //   elements for each one. Then it would be possible to compare the dates/times of the
         //   asset in the Zip file with the source asset.
-        GCC_ASSERT(0 && "Not implemented yet");
+//        GCC_ASSERT(0 && "Not implemented yet");
     }
 
     return true;
@@ -133,7 +133,7 @@ int DevelopmentResourceZipFile::VGetRawResourceSize(const Resource &r)
 {
     if(m_mode == Editor)
     {
-        int num = Find(r.m_name.c_str());
+        int num = Find(r.m_name);
         if(num == -1)
             return -1;
 
@@ -147,12 +147,12 @@ int DevelopmentResourceZipFile::VGetRawResource(const Resource &r, char *buffer)
 {
     if(m_mode == Editor)
     {
-        int num = Find(r.m_name.c_str());
+        int num = Find(r.m_name);
         if(num == -1)
             return -1;
 
-        std::string fullFileSpec = ws2s(m_AssetsDir) + r.m_name.c_str();
-        QFile fileHandle(fullFileSpec.c_str());
+        QString fullFileSpec = m_AssetsDir + r.m_name;
+        QFile fileHandle(fullFileSpec);
         fileHandle.open(QIODevice::ReadOnly);
         size_t bytes = QDataStream(&fileHandle).readRawData(buffer, m_AssetFileInfo[num].size());
 
@@ -168,23 +168,22 @@ int DevelopmentResourceZipFile::VGetNumResources() const
     return (m_mode == Editor) ? m_AssetFileInfo.size() : ResourceZipFile::VGetNumResources();
 }
 
-std::string DevelopmentResourceZipFile::VGetResourceName(int num) const
+QString DevelopmentResourceZipFile::VGetResourceName(int num) const
 {
     if(m_mode == Editor)
     {
-        std::wstring wideName = m_AssetFileInfo[num].fileName().toStdWString();
-        return ws2s(wideName);
+        return m_AssetFileInfo[num].fileName();
     }
 
     return ResourceZipFile::VGetResourceName(num);
 }
 
-void DevelopmentResourceZipFile::ReadAssetsDirectory(std::wstring fileSpec)
+void DevelopmentResourceZipFile::ReadAssetsDirectory(QString fileSpec)
 {
 //    QFileInfo findData;
 
     //get first file
-    QDir dir(QString::fromStdWString(m_AssetsDir).append(QString::fromStdWString(fileSpec)));
+    QDir dir(m_AssetsDir.append(fileSpec));
 
     QFileInfoList fileInfoList = dir.entryInfoList();
 
@@ -194,10 +193,10 @@ void DevelopmentResourceZipFile::ReadAssetsDirectory(std::wstring fileSpec)
         {
             if(fi.isHidden())
                 continue;
-            std::wstring fileName = fi.fileName().toStdWString();
+            QString fileName = fi.fileName();
             if(fi.isDir())
             {
-                fileName.append(L"/");
+                fileName.append("/");
                 ReadAssetsDirectory(fileName);
             }
             else
@@ -208,7 +207,7 @@ void DevelopmentResourceZipFile::ReadAssetsDirectory(std::wstring fileSpec)
                 std::wstring lower = fileName;
                 std::transform(lower.begin(), lower.end(), lower.begin(), (int(*)(int)) std::tolower);
 #endif
-                m_DirectoryContentsMap[ws2s(fileName)] = m_AssetFileInfo.size();
+                m_DirectoryContentsMap[fileName] = m_AssetFileInfo.size();
                 m_AssetFileInfo.push_back(fi);
             }
         }
@@ -224,7 +223,7 @@ ResHandle::ResHandle(Resource &resource, char *buffer, unsigned int size, ResCac
 {
     m_buffer = buffer;
     m_size = size;
-    m_extra = NULL;
+//    m_extra = NULL;//shared pointer default constructor initializes to null
     m_pResCache = pResCache;
 }
 
@@ -264,25 +263,25 @@ bool ResCache::Init()
     bool retValue = false;
     if(m_file->VOpen())
     {
-        RegisterLoader(shared_ptr<IResourceLoader>(GCC_NEW DefaultResourceLoader()));
+        RegisterLoader(QSharedPointer<IResourceLoader>(GCC_NEW DefaultResourceLoader()));
         retValue = true;
     }
 
     return retValue;
 }
 
-void ResCache::RegisterLoader( shared_ptr<IResourceLoader> loader )
+void ResCache::RegisterLoader( QSharedPointer<IResourceLoader> loader )
 {
     m_resourceLoaders.push_front(loader);
 }
 
-shared_ptr<ResHandle> ResCache::GetHandle(Resource *r)
+QSharedPointer<ResHandle> ResCache::GetHandle(Resource *r)
 {
-    shared_ptr<ResHandle> handle(Find(r));
+    QSharedPointer<ResHandle> handle(Find(r));
     if(handle == NULL)
     {
         handle = Load(r);
-        GCC_ASSERT(handle);
+//        GCC_ASSERT(handle);
     }
     else
     {
@@ -291,17 +290,19 @@ shared_ptr<ResHandle> ResCache::GetHandle(Resource *r)
     return handle;
 }
 
-shared_ptr<ResHandle> ResCache::Load(Resource *r)
+QSharedPointer<ResHandle> ResCache::Load(Resource *r)
 {
     //Create a new resource and add it to the LRU list and map
-    shared_ptr<IResourceLoader> loader;
-    shared_ptr<ResHandle> handle;
+    QSharedPointer<IResourceLoader> loader;
+    QSharedPointer<ResHandle> handle;
 
     for(ResourceLoaders::iterator it = m_resourceLoaders.begin(); it != m_resourceLoaders.end(); ++it)
     {
-        shared_ptr<IResourceLoader> testLoader = *it;
+        QSharedPointer<IResourceLoader> testLoader = *it;
+        QRegExp rx(testLoader->VGetPattern());
+        rx.setPatternSyntax(QRegExp::Wildcard);
 
-        if(WildcardMatch(testLoader->VGetPattern().c_str(), r->m_name.c_str()))
+        if(rx.exactMatch(r->m_name))
         {
             loader = testLoader;
             break;
@@ -309,14 +310,14 @@ shared_ptr<ResHandle> ResCache::Load(Resource *r)
     }
     if(!loader)
     {
-        GCC_ASSERT(loader && "Default resource loader not found!");
+//        GCC_ASSERT(loader && "Default resource loader not found!");
         return handle;      //Resource not loaded
     }
     int rawSize = m_file->VGetRawResourceSize(*r);
     if(rawSize < 0)
     {
-        GCC_ASSERT(rawSize > 0 && "Resource size returned -a - Resource noot found");
-        return shared_ptr<ResHandle>();
+//        GCC_ASSERT(rawSize > 0 && "Resource size returned -a - Resource noot found");
+        return QSharedPointer<ResHandle>();
     }
 
     int allocSize = rawSize + ((loader->VAddNullZero()) ? (1) : (0));
@@ -326,7 +327,7 @@ shared_ptr<ResHandle> ResCache::Load(Resource *r)
     if(rawBuffer == NULL || m_file->VGetRawResource(*r, rawBuffer) == 0)
     {
         //resource cache out of memory
-        return shared_ptr<ResHandle>();
+        return QSharedPointer<ResHandle>();
     }
 
     char *buffer = NULL;
@@ -335,7 +336,7 @@ shared_ptr<ResHandle> ResCache::Load(Resource *r)
     if(loader->VUseRawFile())
     {
         buffer = rawBuffer;
-        handle = shared_ptr<ResHandle>(GCC_NEW ResHandle(*r, buffer, rawSize, this));
+        handle = QSharedPointer<ResHandle>(GCC_NEW ResHandle(*r, buffer, rawSize, this));
     }
     else
     {
@@ -344,9 +345,9 @@ shared_ptr<ResHandle> ResCache::Load(Resource *r)
         if(rawBuffer == NULL || buffer == NULL)
         {
             //resource cache out of memory
-            return shared_ptr<ResHandle>();
+            return QSharedPointer<ResHandle>();
         }
-        handle = shared_ptr<ResHandle>(GCC_NEW ResHandle(*r, buffer, size, this));
+        handle = QSharedPointer<ResHandle>(GCC_NEW ResHandle(*r, buffer, size, this));
         bool success = loader->VLoadResource(rawBuffer, rawSize, handle);
 
         if(loader->VDiscardRawBufferAfterLoad())
@@ -357,7 +358,7 @@ shared_ptr<ResHandle> ResCache::Load(Resource *r)
         if(!success)
         {
             //resource cache out of memory
-            return shared_ptr<ResHandle>();
+            return QSharedPointer<ResHandle>();
         }
     }
     if(handle)
@@ -366,26 +367,26 @@ shared_ptr<ResHandle> ResCache::Load(Resource *r)
         m_resources[r->m_name] = handle;
     }
 
-    GCC_ASSERT(loader && "Default resource loader not found!");
+//    GCC_ASSERT(loader && "Default resource loader not found!");
     return handle;
 }
 
 // ResCache::Find									- Chapter 8, page 228
 //
-shared_ptr<ResHandle> ResCache::Find(Resource *r)
+QSharedPointer<ResHandle> ResCache::Find(Resource *r)
 {
     ResHandleMap::iterator i = m_resources.find(r->m_name);
     if(i == m_resources.end())
-        return shared_ptr<ResHandle>();
+        return QSharedPointer<ResHandle>();
 
-    return i->second;
+    return i.value();
 }
 
 // ResCache::Update									- Chapter 8, page 228
 //
-void ResCache::Update(shared_ptr<ResHandle> handle)
+void ResCache::Update(QSharedPointer<ResHandle> handle)
 {
-    m_lru.remove(handle);
+    m_lru.removeOne(handle);
     m_lru.push_front(handle);
 }
 
@@ -412,9 +413,9 @@ void ResCache::FreeOneResource()
     ResHandleList::iterator gonner = m_lru.end();
     gonner--;
 
-    shared_ptr<ResHandle> handle = *gonner;
+    QSharedPointer<ResHandle> handle = *gonner;
     m_lru.pop_back();
-    m_resources.erase(handle->m_resource.m_name);
+    m_resources.remove(handle->m_resource.m_name);
     // Note - you can't change the resource cache size yet - the resource bits could still actually be
     // used by some sybsystem holding onto the ResHandle. Only when it goes out of scope can the memory
     // be actually free again.
@@ -431,7 +432,7 @@ void ResCache::Flush()
 {
     while (!m_lru.empty())
     {
-        shared_ptr<ResHandle> handle = *(m_lru.begin());
+        QSharedPointer<ResHandle> handle = *(m_lru.begin());
         Free(handle);
         m_lru.pop_front();
     }
@@ -462,10 +463,10 @@ bool ResCache::MakeRoom(unsigned int size)
 //
 //	ResCache::Free									- Chapter 8, page 228
 //
-void ResCache::Free(shared_ptr<ResHandle> gonner)
+void ResCache::Free(QSharedPointer<ResHandle> gonner)
 {
-    m_lru.remove(gonner);
-    m_resources.erase(gonner->m_resource.m_name);
+    m_lru.removeOne(gonner);
+    m_resources.remove(gonner->m_resource.m_name);
     // Note - the resource might still be in use by something,
     // so the cache can't actually count the memory freed until the
     // ResHandle pointing to it is destroyed.

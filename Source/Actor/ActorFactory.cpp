@@ -1,7 +1,7 @@
 
 //#include "gameenginestd.h"
 #include "ActorFactory.h"
-//#include "../ResourceCache/xmlresourceloader.h"
+#include "../ResourceCache/XMLResourceLoader.h"
 //#include "ActorComponent.h"
 //#include "RenderComponent.h"
 //#include "Actor.h"      //until we have actual actors...

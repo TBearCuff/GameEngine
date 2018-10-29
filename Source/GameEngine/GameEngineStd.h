@@ -52,7 +52,7 @@ typedef unsigned char       BYTE;
 // GameCode #includes
 //#include "../Debugging/logger.h"  // this should be the first of the gcc includes since it defines GCC_ASSERT()
 //#include "../Utilities/types.h"
-//#include "../Utilities/templates.h"
+#include "../Utilities/templates.h"
 //#include "../Graphics3D/geometry.h"
 
 typedef QVector4D Color;
@@ -117,6 +117,6 @@ extern const int SCREEN_HEIGHT;
 #define __STR1__(x) __STR2__(x)
 #define __LOC__ __FILE__ "("__STR1__(__LINE__)") : Warning Msg: "
 
-//#include "../GameEngineMain/gameengineapp.h"
+#include "GameEngineApp.h"
 
 //extern int GameEngine(int argc, char *argv[]);

@@ -6,17 +6,17 @@
 //#include <tinyxml2.h>
 //using namespace tinyxml2;
 
-class XmlResourceExtraData/* : public IResourceExtraData*/
+class XmlResourceExtraData : public IResourceExtraData
 {
     QDomDocument m_xmlDocument;
 
 public:
     virtual QString VToString() { return "XmlResourceExtraData"; }
-    void ParseXml(QString pRawBuffer);
+    void ParseXml(char *pRawBuffer);
     QDomElement GetRoot(void) { return m_xmlDocument.documentElement(); }
 };
 
-class XmlResourceLoader/* : public IResourceLoader*/
+class XmlResourceLoader : public IResourceLoader
 {
 public:
     virtual bool VUseRawFile() {return false; }
