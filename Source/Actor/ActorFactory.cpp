@@ -16,10 +16,10 @@ ActorFactory::ActorFactory(void)
 StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *overrides,/* const Mat4x4 *pInitialTransform,*/ const ActorId serversActorId)
 {
     //Grab the root XML node
-    QDomElement* pRoot = XmlResourceLoader::LoadAndReturnXmlElement(actorResource);
-    if(!pRoot)
+    QDomElement pRoot = XmlResourceLoader::LoadAndReturnXmlElement(actorResource);
+    if(pRoot.isNull())
     {
-        GCC_ERROR("Failed to create actor from resource: " + actorResource);
+//        GCC_ERROR("Failed to create actor from resource: " + actorResource);
         return StrongActorPtr();
     }
 
@@ -32,7 +32,7 @@ StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *ove
     StrongActorPtr pActor(GCC_NEW Actor(nextActorId));
     if(!pActor->Init(pRoot))
     {
-        GCC_ERROR("Failed to initialize actor: " + std::string(actorResource));
+//        GCC_ERROR("Failed to initialize actor: " + std::string(actorResource));
         return StrongActorPtr();
     }
 
