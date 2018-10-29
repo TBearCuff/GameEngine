@@ -64,4 +64,6 @@ private slots:
     void OnClose();
 };
 
+extern GameEngineApp *g_pApp;
+
 #endif // GAMEENGINEAPP_H
