@@ -4,7 +4,7 @@
 #include "../ResourceCache/XMLResourceLoader.h"
 //#include "ActorComponent.h"
 //#include "RenderComponent.h"
-//#include "Actor.h"      //until we have actual actors...
+#include "Actor.h"      //until we have actual actors...
 
 //#include "../Utilities/string.h"
 

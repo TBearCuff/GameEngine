@@ -1,9 +1,9 @@
 
-#include "gameenginestd.h"
+#include "GameEngineStd.h"
 
 #include "Actor.h"
-#include "ActorComponent.h"
-#include "../Utilities/string.h"
+//#include "ActorComponent.h"
+//#include "../Utilities/string.h"
 
 Actor::Actor(ActorId id)
 {
@@ -16,16 +16,16 @@ Actor::Actor(ActorId id)
 
 Actor::~Actor()
 {
-    GCC_LOG("Actor", std::string("Destroying Actor ") + std::to_string(m_id));
-    GCC_ASSERT(m_components.empty()); //if this assert fires, the actor was destroyed without calling Actor::Destroy()
+//    GCC_LOG("Actor", std::string("Destroying Actor ") + std::to_string(m_id));
+//    GCC_ASSERT(m_components.empty()); //if this assert fires, the actor was destroyed without calling Actor::Destroy()
 }
 
-bool Actor::Init(XMLElement* pData)
+bool Actor::Init(QDomElement pData)
 {
-    GCC_LOG("Actor", std::string("Initializing Actor ") + std::to_string(m_id));
-
-    m_type = pData->Attribute("type");
-    m_resource = pData->Attribute("resource");
+//    GCC_LOG("Actor", std::string("Initializing Actor ") + std::to_string(m_id));
+    qDebug() << QString("Actor: Initializing Actor %1").arg(m_id);
+    m_type = pData.attribute("type");
+    m_resource = pData.attribute("resource");
     return true;
 }
 
@@ -76,5 +76,5 @@ std::string Actor::ToXML()
 void Actor::AddComponent(StrongActorComponentPtr pComponent)
 {
     std::pair<ActorComponents::iterator, bool> success = m_components.insert(std::make_pair(pComponent->VGetId(), pComponent));
-    GCC_ASSERT(success.second);
+//    GCC_ASSERT(success.second);
 }

@@ -1,12 +1,12 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 //#include "../GameEngineMain/interfaces.h"
-#include "ActorComponent.h"
+//#include "ActorComponent.h"
 
-using namespace tinyxml2;
+//using namespace tinyxml2;
 
 //class XMLElement;
-typedef std::string ActorType;
+typedef QString ActorType;
 
 class Actor
 {
@@ -22,13 +22,13 @@ private:
     ActorType m_type;
 
     //these were added post press as editor helpers, but will also be great for save game files if we ever make them
-    std::string m_resource;   //the XML  file from which this actor was initialized (considered the "Archetype" file)
+    QString m_resource;   //the XML  file from which this actor was initialized (considered the "Archetype" file)
 
 public:
     explicit Actor(ActorId id);
     ~Actor(void);
 
-    bool Init(XMLElement* pData);
+    bool Init(QDomElement pData);
     void PostInit(void);
     void Destroy(void);
     void Update(int deltaMs);
