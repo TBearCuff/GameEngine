@@ -3,9 +3,7 @@
 //#include "../GameEngineMain/interfaces.h"
 #include "ActorComponent.h" //Add this base clase temporarily to access object
 
-//using namespace tinyxml2;
 
-//class XMLElement;
 typedef QString ActorType;
 
 class Actor
@@ -60,20 +58,20 @@ public:
     }
 
     template <class ComponentType>
-    weak_ptr<ComponentType> GetComponent(const char *name)
+    QWeakPointer<ComponentType> GetComponent(const char *name)
     {
         ComponentId id = ActorComponent::GetIdFromName(name);
         ActorComponents::iterator findIt = m_components.find(id);
         if(findIt != m_components.end())
         {
-            StrongActorComponentPtr pBase(findIt->value());
-            shared_ptr<ComponentType> pSub(static_pointer_cast<ComponentType>(pBase));  //cast to subclass version of the pointer
-            weak_ptr<ComponentType> pWeakSub(pSub);  //convert strong pointer to weak pointer
+            StrongActorComponentPtr pBase(findIt->data());
+            QSharedPointer<ComponentType> pSub(qSharedPointerCast<ComponentType>(pBase));  //cast to subclass version of the pointer
+            QWeakPointer<ComponentType> pWeakSub(pSub);  //convert strong pointer to weak pointer
             return pWeakSub;
         }
         else
         {
-            return weak_ptr<ComponentType>();
+            return QWeakPointer<ComponentType>();
         }
     }
 

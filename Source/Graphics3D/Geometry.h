@@ -208,30 +208,33 @@ inline Vec3 Mat4x4::GetRight() const
     Vec3 right = justRot.Xform(g_Right);
     return right;
 }
-#if 0
 inline Vec3 Mat4x4::GetYawPitchRoll() const
 {
    float yaw, pitch, roll;
+   float (*matrix)[4] = (float(*)[4])this->data();
 
-   pitch = asin(-_32);
+//   pitch = asin(-_32);
+   pitch = asin(-matrix[3][2]);
 
    double threshold = 0.001; // Hardcoded constant - burn him, he's a witch
    double test = cos(pitch);
 
    if(test > threshold)
    {
-      roll = atan2(_12, _22);
-      yaw = atan2(_31, _33);
+//      roll = atan2(_12, _22);
+//      yaw = atan2(_31, _33);
+      roll = atan2(matrix[1][2], matrix[2][2]);
+      yaw = atan2(matrix[3][1], matrix[3][3]);
    }
    else
    {
-      roll = atan2(-_21, _11);
+//      roll = atan2(-_21, _11);
+      roll = atan2(-matrix[2][1], matrix[1][1]);
       yaw = 0.0;
    }
 
     return (Vec3(yaw, pitch, roll));
 }
-#endif
 
 inline Vec3 Mat4x4::GetScale() const
 {
