@@ -1,12 +1,12 @@
 #include "GameEngineStd.h"
 
 #include "TransformComponent.h"
-//#include "../Utilities/Math.h"
+#include "../Utilities/Math.h"
 //#include "../Utilities/string.h"
 
 const char* TransformComponent::g_Name = "TransformComponent";
 
-bool TransformComponent::VInit(QDomElement *pData)
+bool TransformComponent::VInit(QDomElement pData)
 {
 //    GCC_ASSERT(pData);
 
@@ -19,26 +19,21 @@ bool TransformComponent::VInit(QDomElement *pData)
 
     Vec3 position = m_transform.GetPosition();
 
-    XMLElement *pPositionElement = pData->FirstChildElement("Position");
-    if(pPositionElement)
+    QDomElement pPositionElement = pData.firstChildElement("Position");
+    if(!pPositionElement.isNull())
     {
-        double x = 0;
-        double y = 0;
-        double z = 0;
-        pPositionElement->DoubleAttribute("x", x);
-        pPositionElement->DoubleAttribute("y", y);
-        pPositionElement->DoubleAttribute("z", z);
+        double x = pPositionElement.attribute("x").toDouble();
+        double y = pPositionElement.attribute("y").toDouble();
+        double z = pPositionElement.attribute("z").toDouble();
         position = Vec3(x, y, z);
     }
 
-    XMLElement* pOrientationElement = pData->FirstChildElement("YawPitchRoll");
+    QDomElement pOrientationElement = pData.firstChildElement("YawPitchRoll");
+    if(!pOrientationElement.isNull())
     {
-        double yaw = 0;
-        double pitch = 0;
-        double roll = 0;
-        pOrientationElement->DoubleAttribute("x", yaw);
-        pOrientationElement->DoubleAttribute("y", pitch);
-        pOrientationElement->DoubleAttribute("z", roll);
+        double yaw = pPositionElement.attribute("x").toDouble();
+        double pitch = pPositionElement.attribute("y").toDouble();
+        double roll = pPositionElement.attribute("z").toDouble();
         yawPitchRoll = Vec3(yaw, pitch, roll);
     }
     Mat4x4 translation;
@@ -82,7 +77,7 @@ bool TransformComponent::VInit(QDomElement *pData)
     return true;
 
 }
-
+#if 0
 XMLElement* TransformComponent::VGenerateXml(XMLDocument &outDoc)
 {
     XMLElement* pBaseElement = outDoc.NewElement(VGetName());
@@ -119,3 +114,4 @@ XMLElement* TransformComponent::VGenerateXml(XMLDocument &outDoc)
 
     return pBaseElement;
 }
+#endif

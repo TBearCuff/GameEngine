@@ -17,7 +17,7 @@ public:
     virtual const char* VGetName() const { return g_Name; }
 
     TransformComponent();
-    virtual bool VInit(QDomElement *pData) override;
+    virtual bool VInit(QDomElement pData) override;
 //    virtual XMLElement* VGenerateXml(XMLDocument &outDoc) override;
 
     //transform functions
