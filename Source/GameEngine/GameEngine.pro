@@ -58,7 +58,8 @@ HEADERS += \
     ../Actor/ActorComponent.h \
     ../Graphics3D/Geometry.h \
     ../Actor/TransformComponent.h \
-    ../Utilities/Math.h
+    ../Utilities/Math.h \
+    ../Utilities/templates.h
 
 RESOURCES += \
     resources.qrc
