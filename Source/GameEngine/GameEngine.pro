@@ -38,7 +38,8 @@ SOURCES += \
     ../ResourceCache/ZipFile.cpp \
     ../Actor/Actor.cpp \
     ../Graphics3D/Geometry.cpp \
-    ../Actor/TransformComponent.cpp
+    ../Actor/TransformComponent.cpp \
+    ../Utilities/Math.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -56,7 +57,8 @@ HEADERS += \
     ../Actor/Actor.h \
     ../Actor/ActorComponent.h \
     ../Graphics3D/Geometry.h \
-    ../Actor/TransformComponent.h
+    ../Actor/TransformComponent.h \
+    ../Utilities/Math.h
 
 RESOURCES += \
     resources.qrc
