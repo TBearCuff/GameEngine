@@ -57,7 +57,7 @@ typedef unsigned char       BYTE;
 //#include "../Debugging/logger.h"  // this should be the first of the gcc includes since it defines GCC_ASSERT()
 //#include "../Utilities/types.h"
 #include "../Utilities/templates.h"
-//#include "../Graphics3D/geometry.h"
+#include "../Graphics3D/Geometry.h"
 
 typedef QVector4D Color;
 
