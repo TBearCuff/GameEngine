@@ -36,7 +36,8 @@ SOURCES += \
     ../ResourceCache/XMLResourceLoader.cpp \
     ../ResourceCache/ResCache.cpp \
     ../ResourceCache/ZipFile.cpp \
-    ../Actor/Actor.cpp
+    ../Actor/Actor.cpp \
+    ../Graphics3D/Geometry.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -52,7 +53,8 @@ HEADERS += \
     ../ResourceCache/ResCache.h \
     ../ResourceCache/ZipFile.h \
     ../Actor/Actor.h \
-    ../Actor/ActorComponent.h
+    ../Actor/ActorComponent.h \
+    ../Graphics3D/Geometry.h
 
 RESOURCES += \
     resources.qrc
