@@ -2,6 +2,7 @@
 #define TRANSFORMCOMPONENT_H
 
 #include "ActorComponent.h"
+#include "../Graphics3D/Geometry.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 // This component implementation is a very simple representation of the physical aspect of an actor.  It just defines
@@ -16,7 +17,7 @@ public:
     static const char* g_Name;
     virtual const char* VGetName() const { return g_Name; }
 
-    TransformComponent();
+    TransformComponent();//original code set m_transform to identity matrix; this is default Mat4x4 construction
     virtual bool VInit(QDomElement pData) override;
 //    virtual XMLElement* VGenerateXml(XMLDocument &outDoc) override;
 

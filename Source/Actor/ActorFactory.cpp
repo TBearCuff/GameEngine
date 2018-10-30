@@ -2,6 +2,7 @@
 //#include "gameenginestd.h"
 #include "ActorFactory.h"
 #include "../ResourceCache/XMLResourceLoader.h"
+#include "TransformComponent.h"
 //#include "ActorComponent.h"
 //#include "RenderComponent.h"
 #include "Actor.h"      //until we have actual actors...
@@ -11,9 +12,12 @@
 ActorFactory::ActorFactory(void)
 {
     m_lastActorId = INVALID_ACTOR_ID;
+
+
+    m_componentFactory.Register<TransformComponent>(ActorComponent::GetIdFromName(TransformComponent::g_Name));
 }
 
-StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *overrides,/* const Mat4x4 *pInitialTransform,*/ const ActorId serversActorId)
+StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *overrides, const Mat4x4 *pInitialTransform, const ActorId serversActorId)
 {
     //Grab the root XML node
     QDomElement pRoot = XmlResourceLoader::LoadAndReturnXmlElement(actorResource);
@@ -62,10 +66,10 @@ StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *ove
 //        ModifyActor(pActor, overrides);
     }
 //[TC] Until we actually have the TransformComponent
-#if 0
+#if 1
     // This is a bit of a hack to get the initial transform of the transform component set before the
     // other components (like PhysicsComponent) read it.
-    shared_ptr<TransformComponent> pTransformComponent = MakeStrongPtr(pActor->GetComponent<TransformComponent>(TransformComponent::g_Name));
+    QSharedPointer<TransformComponent> pTransformComponent = (pActor->GetComponent<TransformComponent>(TransformComponent::g_Name).toStrongRef());
     if(pInitialTransform && pTransformComponent)
     {
         pTransformComponent->SetPosition(pInitialTransform->GetPosition());

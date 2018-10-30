@@ -2,11 +2,7 @@
 #define ACTORCOMPONENT_H
 
 #include "interfaces.h"
-//#include "../Utilities/string.h"
-//#include <cstdint>
-//using namespace tinyxml2;
 
-//class XMLElement;
 
 class ActorComponent
 {
@@ -21,7 +17,7 @@ public:
     //These functions are meant to be overridden by the implementation classes of the components.
     virtual bool VInit(QDomElement pData) = 0;
     virtual void VPostInit(void) { }
-    virtual void VUpdate(int deltaMs) { }
+    virtual void VUpdate(int ) { }
     virtual void VOnChanged(void) { }    // -added post press?
 
     //for the editor
