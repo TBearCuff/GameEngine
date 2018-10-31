@@ -39,7 +39,9 @@ SOURCES += \
     ../Actor/Actor.cpp \
     ../Graphics3D/Geometry.cpp \
     ../Actor/TransformComponent.cpp \
-    ../Utilities/Math.cpp
+    ../Utilities/Math.cpp \
+    ../MainLoop/Process.cpp \
+    ../MainLoop/ProcessManager.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -59,7 +61,9 @@ HEADERS += \
     ../Graphics3D/Geometry.h \
     ../Actor/TransformComponent.h \
     ../Utilities/Math.h \
-    ../Utilities/templates.h
+    ../Utilities/templates.h \
+    ../MainLoop/Process.h \
+    ../MainLoop/ProcessManager.h
 
 RESOURCES += \
     resources.qrc
