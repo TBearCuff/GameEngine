@@ -1,4 +1,4 @@
-//#include "gameenginestd.h"
+#include "GameEngineStd.h"
 
 
 //#include "../Mainloop/initialization.h" // only for game options
@@ -7,7 +7,7 @@
 //#include "../ResourceCache/xmlresourceloader.h"
 
 //#include "../Actors/Actor.h"
-//#include "../Actors/ActorFactory.h"
+#include "../Actor/ActorFactory.h"
 //#include "../Utilities/string.h"
 
 
@@ -22,16 +22,66 @@
 BaseGameLogic::BaseGameLogic()
 {
     m_State = BGS_Initializing;
+    m_bProxy = false;
+    m_pActorFactory = NULL;
 }
 
 BaseGameLogic::~BaseGameLogic()
 {
 
+    SAFE_DELETE(m_pActorFactory);
+
+    // destroy all actors
+    for (auto it = m_actors.begin(); it != m_actors.end(); ++it)
+        it->data()->Destroy();
+    m_actors.clear();
 }
 
 bool BaseGameLogic::Init()
 {
     return true;
+}
+
+StrongActorPtr BaseGameLogic::VCreateActor(const QString &actorResource, QDomElement *overrides, const Mat4x4 *initialTransform, const ActorId serversActorId)
+{
+//    GCC_ASSERT(m_pActorFactory);
+    if (!m_bProxy && serversActorId != INVALID_ACTOR_ID)
+        return StrongActorPtr();
+
+    if (m_bProxy && serversActorId == INVALID_ACTOR_ID)
+        return StrongActorPtr();
+
+    StrongActorPtr pActor = m_pActorFactory->CreateActor(actorResource, overrides, initialTransform, serversActorId);
+    if (pActor)
+    {
+        m_actors[pActor->GetId()] = pActor;
+        if (!m_bProxy && (m_State==BGS_SpawningPlayersActors || m_State==BGS_Running))
+        {
+ //           QSharedPointer<EvtData_Request_New_Actor> pNewActor(GCC_NEW EvtData_Request_New_Actor(actorResource, initialTransform, pActor->GetId()));
+ //           IEventManager::Get()->VTriggerEvent(pNewActor);
+        }
+        return pActor;
+    }
+    else
+    {
+        // FUTURE WORK: Log error: couldn't create actor
+        return StrongActorPtr();
+    }
+}
+
+void BaseGameLogic::VDestroyActor(const ActorId actorId)
+{
+    // We need to trigger a synchronous event to ensure that any systems responding to this event can still access a
+    // valid actor if need be.  The actor will be destroyed after this.
+//    shared_ptr<EvtData_Destroy_Actor> pEvent(GCC_NEW EvtData_Destroy_Actor(actorId));
+//    IEventManager::Get()->VTriggerEvent(pEvent);
+
+    auto findIt = m_actors.find(actorId);
+    if (findIt != m_actors.end())
+    {
+        findIt->data()->Destroy();
+        m_actors.erase(findIt);
+    }
 }
 
 WeakActorPtr BaseGameLogic::VGetActor(const ActorId actorId)
