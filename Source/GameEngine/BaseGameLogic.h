@@ -2,7 +2,7 @@
 #define BASEGAMELOGIC_H
 
 
-//#include "../Mainloop/ProcessManager.h"
+#include "../MainLoop/ProcessManager.h"
 
 //#include "../EventManager/EventManager.h"
 #include "../Actor/Actor.h"
@@ -46,7 +46,7 @@ class BaseGameLogic : public IGameLogic
 
 protected:
 //    float m_Lifetime;   //indicates how long this game has been in session
-//    ProcessManager* m_pProcessManager;  //a game logic entity
+    ProcessManager* m_pProcessManager;  //a game logic entity
 //    GCCRandom m_random;     //our RNG
     ActorMap m_actors;
     ActorId m_LastActorId;
@@ -124,7 +124,7 @@ public:
 //    virtual void VRenderDiagnostics();
 //    virtual shared_ptr<IGamePhysics> VGetGamePhysics() { return m_pPhysics; }
 
-//    void AttachProcess(StrongProcessPtr pProcess) { if(m_pProcessManager) {m_pProcessManager->AttachProcess(pProcess);} }
+    WeakProcessPtr AttachProcess(StrongProcessPtr pProcess);
 
     //event delegates
 //    void RequestDestroyActorDelegate(IEventDataPtr pEventData);
