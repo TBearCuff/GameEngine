@@ -1,7 +1,7 @@
 #ifndef ACTORCOMPONENT_H
 #define ACTORCOMPONENT_H
 
-#include "interfaces.h"
+#include "GameEngineStd.h"
 
 
 class ActorComponent

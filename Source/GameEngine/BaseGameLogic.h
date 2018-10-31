@@ -5,9 +5,9 @@
 //#include "../Mainloop/ProcessManager.h"
 
 //#include "../EventManager/EventManager.h"
-//#include "../Actors/Actor.h"
-#include <QVector>
-#include "interfaces.h"
+#include "../Actor/Actor.h"
+//#include <QVector>
+//#include "interfaces.h"
 
 class PathingGraph;
 class ActorFactory;
@@ -49,7 +49,7 @@ protected:
 //    ProcessManager* m_pProcessManager;  //a game logic entity
 //    GCCRandom m_random;     //our RNG
     ActorMap m_actors;
-//    ActorId m_LastActorId;
+    ActorId m_LastActorId;
     BaseGameState m_State;  //game state: loading, running etc
 //    int m_ExpectedPlayers;  //how many local human players
 //    int m_ExpectedRemotePlayers;    //expected remote human players
@@ -59,9 +59,9 @@ protected:
 //    int m_HumanGamesLoaded;
 //    GameViewList m_gameViews;       //views that are attached to our game
 //    shared_ptr<PathingGraph> m_pPathingGraph;   //the pathing graph
-//    ActorFactory* m_pActorFactory;
+    ActorFactory* m_pActorFactory;
 
-//    bool m_bProxy;      //set if this is a proxy game logic, not a real one
+    bool m_bProxy;      //set if this is a proxy game logic, not a real one
 //    int m_remotePlayerId;       //if we are a remote player - what is our socket number on the server
 
 //    bool m_RenderDiagnostics;       //Are we rendering diagnostics
@@ -75,19 +75,19 @@ public:
     virtual ~BaseGameLogic();
     bool Init(void);
 
-//    void SetProxy(bool isProxy)
-//    {
-//        m_bProxy = isProxy;
-//    }
-//    const bool IsProxy() const { return m_bProxy; }
+    void SetProxy(bool isProxy)
+    {
+        m_bProxy = isProxy;
+    }
+    const bool IsProxy() const { return m_bProxy; }
 
     // FUTURE WORK - Perhaps the scripts can have a marker or even a special place in the resource file for any scripts that can run on remote clients
 //    const bool CanRunLua() const { return !IsProxy() || GetState()!=BGS_Running; }
 
-//    ActorId GetNewActorId( void )
-//    {
-//        return ++m_LastActorId;
-//    }
+    ActorId GetNewActorId( void )
+    {
+        return ++m_LastActorId;
+    }
 
 //    shared_ptr<PathingGraph> GetPathingGraph(void) { return m_pPathingGraph; }
 //    GCCRandom& GetRNG(void) { return m_random; }
@@ -95,15 +95,17 @@ public:
 //    virtual void VAddView(shared_ptr<IGameView> pView, ActorId actorId = INVALID_ACTOR_ID);
 //    virtual void VRemoveView(shared_ptr<IGameView> pView);
 
-//    virtual StrongActorPtr VCreateActor(const std::string &actorResource, XMLElement *overrides, const Mat4x4* initialTransform=NULL, const ActorId serverActorId=INVALID_ACTOR_ID);  //don't store this strong pointer outside of this class
-//    virtual void VDestroyActor(const ActorId actorId);
+    virtual StrongActorPtr VCreateActor(const QString &actorResource, QDomElement *overrides, const Mat4x4* initialTransform=NULL, const ActorId serversActorId=INVALID_ACTOR_ID);  //don't store this strong pointer outside of this class
+    virtual void VDestroyActor(const ActorId actorId);
     virtual WeakActorPtr VGetActor(const ActorId id);
-//    virtual void VModifyActor(const ActorId actorId, XMLElement *overrides);
+    virtual void VMoveActor(const ActorId id, Mat4x4 const &mat) {}
 
-//    virtual void VMoveActor(const ActorId id, Mat4x4 const &mat) {}
-
+    //save VModifyActor for Game Editor
     //editor functions
 //    std::string GetActorXml(const ActorId id);
+//    virtual void VModifyActor(const ActorId actorId, XMLElement *overrides);
+
+
 
     //Level management
 //    const LevelManager* GetLevelManager() { return m_pLevelManager; }
