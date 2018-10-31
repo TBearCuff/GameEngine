@@ -2,7 +2,7 @@
 
 
 //#include "../Mainloop/initialization.h" // only for game options
-//#include "../Mainloop/Process.h"
+#include "../MainLoop/Process.h"
 
 //#include "../ResourceCache/xmlresourceloader.h"
 
@@ -178,4 +178,16 @@ void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
 void BaseGameLogic::VChangeState(BaseGameState newState)
 {
     m_State = newState;
+}
+
+WeakProcessPtr BaseGameLogic::AttachProcess(StrongProcessPtr pProcess)
+{
+    if(m_pProcessManager)
+    {
+        return m_pProcessManager->AttachProcess(pProcess);
+    }
+    else
+    {
+        return WeakProcessPtr();
+    }
 }
