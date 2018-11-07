@@ -31,14 +31,14 @@ bool ResourceZipFile::VOpen()
     m_pZipFile = GCC_NEW ZipFile;
     if(m_pZipFile)
     {
-        return m_pZipFile->Init(m_resFileName);
+        return m_pZipFile->Init(m_resFileName.toStdString());
     }
     return false;
 }
 
 int ResourceZipFile::VGetRawResourceSize(const Resource &r)
 {
-    int resourceNum = m_pZipFile->Find(r.m_name);
+    int resourceNum = m_pZipFile->Find(r.m_name.toStdString());
     if (resourceNum == -1)
         return -1;
 
@@ -48,7 +48,7 @@ int ResourceZipFile::VGetRawResourceSize(const Resource &r)
 int ResourceZipFile::VGetRawResource(const Resource &r, char *buffer)
 {
     int size = 0;
-    optional<int> resourceNum = m_pZipFile->Find(r.m_name);
+    optional<int> resourceNum = m_pZipFile->Find(r.m_name.toStdString());
     if(resourceNum.valid())
     {
         size = m_pZipFile->GetFileLen(*resourceNum);
@@ -67,7 +67,7 @@ QString ResourceZipFile::VGetResourceName(int num) const
     QString resName = "";
     if(m_pZipFile != NULL && num < m_pZipFile->GetNumFiles())
     {
-        resName = m_pZipFile->GetFilename(num);
+        resName.fromStdString(m_pZipFile->GetFilename(num));
     }
     return resName;
 }
@@ -97,13 +97,13 @@ DevelopmentResourceZipFile::DevelopmentResourceZipFile(const QString resFileName
 
 int DevelopmentResourceZipFile::Find(const QString &name)
 {
-    QString lowerCase = name;
+//    QString lowerCase = name;
 //    std::transform(lowerCase.begin(), lowerCase.end(), lowerCase.begin(), (int(*)(int)) std::tolower);
-    ZipContentsMap::const_iterator i = m_DirectoryContentsMap.find(name.toLower());
+    ZipContentsMap::const_iterator i = m_DirectoryContentsMap.find(name.toLower().toStdString());
     if(i == m_DirectoryContentsMap.end())
         return -1;
 
-    return i.value();
+    return i->second;
 }
 
 bool DevelopmentResourceZipFile::VOpen()
@@ -207,7 +207,7 @@ void DevelopmentResourceZipFile::ReadAssetsDirectory(QString fileSpec)
                 std::wstring lower = fileName;
                 std::transform(lower.begin(), lower.end(), lower.begin(), (int(*)(int)) std::tolower);
 #endif
-                m_DirectoryContentsMap[fileName] = m_AssetFileInfo.size();
+                m_DirectoryContentsMap[fileName.toStdString()] = m_AssetFileInfo.size();
                 m_AssetFileInfo.push_back(fi);
             }
         }

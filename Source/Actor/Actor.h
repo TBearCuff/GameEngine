@@ -47,13 +47,13 @@ public:
         if(findIt != m_components.end())
         {
             StrongActorComponentPtr pBase(findIt->value());
-            QSharedPointer<ComponentType> pSub(static_pointer_cast<ComponentType>(pBase));  // cast to subclass version of the pointer
+            QSharedPointer<ComponentType> pSub(qSharedPointerCast<ComponentType>(pBase));  // cast to subclass version of the pointer
             QWeakPointer<ComponentType> pWeakSub(pSub);  // convert strong pointer to weak pointer
             return pWeakSub;  //return the weak pointer
         }
         else
         {
-            return weak_ptr<ComponentType>();
+            return QWeakPointer<ComponentType>();
         }
     }
 

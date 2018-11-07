@@ -12,6 +12,21 @@ QMAKE_CXXFLAGS += -Wno-literal-suffix -Wno-ignored-qualifiers
 CONFIG += staticlib c++11
 
 DESTDIR = ../../Lib
+
+
+INCLUDEPATH = ../
+INCLUDEPATH += ../../3rdParty/zlib
+
+unix {
+CONFIG(debug) {
+#LIBS += -L$$PWD/../../Lib/LinuxDebug -ltinyxml2d
+LIBS += -L$$PWD/../../Lib/LinuxDebug -lz
+} else {
+#LIBS += -L$$PWD/../../Lib/LinuxRelease -ltinyxml2
+LIBS += -L$$PWD/../../Lib/LinuxRelease -lz
+}
+}
+
 #OBJECTS_DIR = ../../Temp
 
 # The following define makes your compiler emit warnings if you use
@@ -63,7 +78,8 @@ HEADERS += \
     ../Utilities/Math.h \
     ../Utilities/templates.h \
     ../MainLoop/Process.h \
-    ../MainLoop/ProcessManager.h
+    ../MainLoop/ProcessManager.h \
+    ../Utilities/types.h
 
 RESOURCES += \
     resources.qrc

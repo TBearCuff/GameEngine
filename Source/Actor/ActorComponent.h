@@ -1,8 +1,9 @@
 #ifndef ACTORCOMPONENT_H
 #define ACTORCOMPONENT_H
 
-#include "GameEngineStd.h"
-
+//#include "GameEngineStd.h"
+#include "../GameEngine/interfaces.h"
+#include <QDomElement>
 
 class ActorComponent
 {

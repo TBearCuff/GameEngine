@@ -7,7 +7,8 @@
 //#include "../EventManager/EventManager.h"
 #include "../Actor/Actor.h"
 //#include <QVector>
-//#include "interfaces.h"
+#include "interfaces.h"
+#include "../Graphics3D/Geometry.h"
 
 class PathingGraph;
 class ActorFactory;
@@ -98,7 +99,7 @@ public:
     virtual StrongActorPtr VCreateActor(const QString &actorResource, QDomElement *overrides, const Mat4x4* initialTransform=NULL, const ActorId serversActorId=INVALID_ACTOR_ID);  //don't store this strong pointer outside of this class
     virtual void VDestroyActor(const ActorId actorId);
     virtual WeakActorPtr VGetActor(const ActorId id);
-    virtual void VMoveActor(const ActorId id, Mat4x4 const &mat) {}
+    virtual void VMoveActor(const ActorId, Mat4x4 const &) {}
 
     //save VModifyActor for Game Editor
     //editor functions
@@ -130,7 +131,7 @@ public:
 //    void RequestDestroyActorDelegate(IEventDataPtr pEventData);
 
 protected:
-//    virtual ActorFactory* VCreateActorFactory(void);
+    virtual ActorFactory* VCreateActorFactory(void);
 
     //Override this function to do any game-specific loading.
 //    virtual bool VLoadGameDelegate(XMLElement* pLevelData) { return true; }

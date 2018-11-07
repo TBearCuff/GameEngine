@@ -1,21 +1,28 @@
+
+#include "GameEngineStd.h"
+
 #include "GameEngineApp.h"
 #include "../MainLoop/Initialization.h"
+#include "../ResourceCache/ResCache.h"
+#include "../ResourceCache/XMLResourceLoader.h"
 #include <QStorageInfo>
 
 #include <QDomDocument>
 #include <QTimer>
 #include <QStandardPaths>
 
+GameEngineApp *g_pApp = NULL;
+
 
 GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv),
     m_bIsRunning(false),
     m_bQuitting(false),
     m_bQuitRequested(false),
-    m_bIsEditorRunning(false),
+    m_bIsEditorRunning(true),//Change to false once Assets.zip is ready or ...
     m_pGame(NULL)
 {
     //Qt doesn't need this because there is a global instance of QApplication
-//    g_pApp = this;
+    g_pApp = this;
 
     //Initialize member variables here or
 
@@ -65,21 +72,21 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     RegisterEngineEvents();
     VRegisterGameEvents();
 
-#if 0
+#if 1
     //Initialize the ResCache
     IResourceFile *zipFile = (m_bIsEditorRunning) ?
-            GCC_NEW DevelopmentResourceZipFile("Assets.zip", DevelopmentResourceZipFile::Editor) :
-            GCC_NEW ResourceZipFile("Assets.zip");
+            new DevelopmentResourceZipFile("Assets.zip", DevelopmentResourceZipFile::Editor) :
+            new ResourceZipFile("Assets.zip");
 
-    m_ResCache = GCC_NEW ResCache(50, zipFile);
+    m_ResCache = new ResCache(50, zipFile);
 
     if(!m_ResCache->Init())
     {
-        GCC_ERROR("Failed to initialize resource cache! Are the paths set up correctly?");
+//        GCC_ERROR("Failed to initialize resource cache! Are the paths set up correctly?");
         return false;
     }
 
-    extern shared_ptr<IResourceLoader> CreateXmlResourceLoader();
+    extern QSharedPointer<IResourceLoader> CreateXmlResourceLoader();
 
     m_ResCache->RegisterLoader(CreateXmlResourceLoader());
 #endif

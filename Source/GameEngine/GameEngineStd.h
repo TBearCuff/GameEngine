@@ -55,7 +55,7 @@ typedef unsigned char       BYTE;
 
 // GameCode #includes
 //#include "../Debugging/logger.h"  // this should be the first of the gcc includes since it defines GCC_ASSERT()
-//#include "../Utilities/types.h"
+#include "../Utilities/types.h"
 #include "../Utilities/templates.h"
 #include "../Graphics3D/Geometry.h"
 
@@ -73,13 +73,13 @@ extern Color g_Gray25;
 extern Color g_Gray65;
 extern Color g_Transparent;
 
-//extern Vec3 g_Up;
-//extern Vec3 g_Right;
-//extern Vec3 g_Forward;
+extern Vec3 g_Up;
+extern Vec3 g_Right;
+extern Vec3 g_Forward;
 
-//extern Vec4 g_Up4;
-//extern Vec4 g_Right4;
-//extern Vec4 g_Forward4;
+extern Vec4 g_Up4;
+extern Vec4 g_Right4;
+extern Vec4 g_Forward4;
 
 #include "interfaces.h"
 
@@ -121,6 +121,6 @@ extern const int SCREEN_HEIGHT;
 #define __STR1__(x) __STR2__(x)
 #define __LOC__ __FILE__ "("__STR1__(__LINE__)") : Warning Msg: "
 
-#include "GameEngineApp.h"
+#include "../GameEngine/GameEngineApp.h"
 
 //extern int GameEngine(int argc, char *argv[]);
