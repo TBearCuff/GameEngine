@@ -29,7 +29,7 @@ BaseGameLogic::BaseGameLogic()
 BaseGameLogic::~BaseGameLogic()
 {
 
-    SAFE_DELETE(m_pActorFactory);
+//    SAFE_DELETE(m_pActorFactory);
 
     // destroy all actors
     for (auto it = m_actors.begin(); it != m_actors.end(); ++it)
@@ -39,12 +39,13 @@ BaseGameLogic::~BaseGameLogic()
 
 bool BaseGameLogic::Init()
 {
+    m_pActorFactory = VCreateActorFactory();
     return true;
 }
 
 StrongActorPtr BaseGameLogic::VCreateActor(const QString &actorResource, QDomElement *overrides, const Mat4x4 *initialTransform, const ActorId serversActorId)
 {
-//    GCC_ASSERT(m_pActorFactory);
+    Q_ASSERT(m_pActorFactory);
     if (!m_bProxy && serversActorId != INVALID_ACTOR_ID)
         return StrongActorPtr();
 
@@ -190,4 +191,10 @@ WeakProcessPtr BaseGameLogic::AttachProcess(StrongProcessPtr pProcess)
     {
         return WeakProcessPtr();
     }
+}
+
+ActorFactory *BaseGameLogic::VCreateActorFactory()
+{
+    return GCC_NEW ActorFactory;
+
 }

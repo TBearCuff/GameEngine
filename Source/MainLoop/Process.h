@@ -1,6 +1,9 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
+#include <QSharedPointer>
+#include <QWeakPointer>
+
 class Process;
 typedef QSharedPointer<Process> StrongProcessPtr;
 typedef QWeakPointer<Process> WeakProcessPtr;

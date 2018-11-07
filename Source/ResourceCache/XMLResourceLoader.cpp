@@ -21,7 +21,7 @@ bool XmlResourceLoader::VLoadResource(char* rawBuffer, unsigned int rawSize, QSh
 
 QSharedPointer<IResourceLoader> CreateXmlResourceLoader()
 {
-    return QSharedPointer<IResourceLoader>(GCC_NEW XmlResourceLoader());
+    return QSharedPointer<IResourceLoader>(new XmlResourceLoader());
 }
 
 QDomElement XmlResourceLoader::LoadAndReturnXmlElement(QString resourceString)

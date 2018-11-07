@@ -125,8 +125,8 @@ class DefaultResourceLoader : public IResourceLoader
 public:
     virtual bool VUseRawFile() { return true; }
     virtual bool VDiscardRawBufferAfterLoad() { return true; }
-    virtual unsigned int VGetLoadedResourceSize(char *rawBuffer, unsigned int rawSize) { return rawSize; }
-    virtual bool VLoadResource(char *rawBuffer, unsigned int rawSize, QSharedPointer<ResHandle> handle) { return true; }
+    virtual unsigned int VGetLoadedResourceSize(char *, unsigned int rawSize) { return rawSize; }
+    virtual bool VLoadResource(char *, unsigned int , QSharedPointer<ResHandle> ) { return true; }
     virtual QString VGetPattern() { return "*"; }
 
 };

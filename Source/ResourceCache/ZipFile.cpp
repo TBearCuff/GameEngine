@@ -101,7 +101,7 @@ struct ZipFile::TZipDirFileHeader
 // Purpose:       Initialize the object and read the zip file directory.
 // Parameters:    A stdio FILE* used for reading.
 // --------------------------------------------------------------------------
-bool ZipFile::Init(const QString &resFileName)
+bool ZipFile::Init(const std::string &resFileName)
 {
     End();
 
@@ -180,7 +180,7 @@ bool ZipFile::Init(const QString &resFileName)
     return success;
 }
 
-int ZipFile::Find(const QString &path) const
+int ZipFile::Find(const std::string &path) const
 {
     std::string lowerCase = path;
     std::transform(lowerCase.begin(), lowerCase.end(), lowerCase.begin(), (int(*)(int))std::tolower);
@@ -207,7 +207,7 @@ void ZipFile::End()
 // Purpose:       Return the name of a file
 // Parameters:    The file index and the buffer where to store the filename
 // --------------------------------------------------------------------------
-QString ZipFile::GetFilename(int i)  const
+std::string ZipFile::GetFilename(int i)  const
 {
     std::string fileName = "";
     if (i >=0 && i < m_nEntries)
@@ -377,7 +377,7 @@ bool ZipFile::ReadLargeFile(int i, void *pBuf, void progressCallback(int, bool &
             }
             else if(err != Z_OK)
             {
-                GCC_ASSERT(0 && "Something happened while zipfile inflating.");
+                Q_ASSERT(0 && "Something happened while zipfile inflating.");
                 break;
             }
 

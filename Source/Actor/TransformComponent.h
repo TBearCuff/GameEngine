@@ -17,7 +17,7 @@ public:
     static const char* g_Name;
     virtual const char* VGetName() const { return g_Name; }
 
-    TransformComponent();//original code set m_transform to identity matrix; this is default Mat4x4 construction
+    TransformComponent() : m_transform(Mat4x4::g_Identity){}//original code set m_transform to identity matrix; this is default Mat4x4 construction
     virtual bool VInit(QDomElement pData) override;
 //    virtual XMLElement* VGenerateXml(XMLDocument &outDoc) override;
 
