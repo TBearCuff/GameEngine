@@ -115,7 +115,7 @@ bool DevelopmentResourceZipFile::VOpen()
     // open the asset directory and read in the non-hidden contents
     if (m_mode == Editor)
     {
-        ReadAssetsDirectory("/");
+        ReadAssetsDirectory("");
     }
     else
     {
