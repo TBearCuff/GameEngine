@@ -12,8 +12,7 @@
 //
 Resource::Resource(const QString &name)
 {
-    m_name=name;
-//    std::transform(m_name.begin(), m_name.end(), m_name.begin(), (int(*)(int)) std::tolower);
+    m_name=name.toLower();
 }
 
 //=================================================================
@@ -116,7 +115,7 @@ bool DevelopmentResourceZipFile::VOpen()
     // open the asset directory and read in the non-hidden contents
     if (m_mode == Editor)
     {
-        ReadAssetsDirectory("/");
+        ReadAssetsDirectory("");
     }
     else
     {

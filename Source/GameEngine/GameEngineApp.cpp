@@ -57,14 +57,12 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
         //how much RAM (is it enough?)
         //what is the processor speed (is it fast enough)
 
-#if 1
         const qint64 diskSpace = 10 * 1024*1024;
 
         if(!CheckStorage(diskSpace))
             return false;
 
 //        const DWORD minCPUSpeed = 1300;         //1.3 GHz
-#endif
 
         resourceCheck = true;
     }
@@ -72,7 +70,6 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     RegisterEngineEvents();
     VRegisterGameEvents();
 
-#if 1
     //Initialize the ResCache
     IResourceFile *zipFile = (m_bIsEditorRunning) ?
             new DevelopmentResourceZipFile("Assets.zip", DevelopmentResourceZipFile::Editor) :
@@ -89,7 +86,6 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     extern QSharedPointer<IResourceLoader> CreateXmlResourceLoader();
 
     m_ResCache->RegisterLoader(CreateXmlResourceLoader());
-#endif
     //Load strings that will be presented to the player (localization)
     if(!LoadStrings("English"))
     {
