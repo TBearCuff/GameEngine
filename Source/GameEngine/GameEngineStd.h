@@ -81,6 +81,17 @@ extern Vec4 g_Up4;
 extern Vec4 g_Right4;
 extern Vec4 g_Forward4;
 
+//  AppMsg				- Chapter 9, page 248
+
+struct AppMsg
+{
+//    HWND m_hWnd;
+    unsigned int m_uMsg;
+//    WPARAM m_wParam;
+//    LPARAM m_lParam;
+};
+
+
 #include "interfaces.h"
 
 

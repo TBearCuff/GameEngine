@@ -141,6 +141,7 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     window->setFormat(format);
     window->resize(QSize(800, 600));
     window->show();
+    window->installEventFilter(this);
 //    window->showFullScreen();
 
     // initialize the directory location you can store save game files
@@ -282,6 +283,12 @@ QString GameEngineApp::GetString(QString sID)
         return QString("");
     }
     return localizedString.value();
+}
+
+bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
+{
+    qDebug() << ev->type();
+    return QApplication::eventFilter(obj,ev);
 }
 
 
