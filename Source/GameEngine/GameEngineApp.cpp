@@ -287,7 +287,22 @@ QString GameEngineApp::GetString(QString sID)
 
 bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
 {
-    qDebug() << ev->type();
+    switch (ev->type()) {
+    case QEvent::MouseMove:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+        qDebug() << ev->type();
+
+        break;
+    case QEvent::KeyPress:
+    case QEvent::KeyRelease:
+        qDebug() << ev->type();
+
+        break;
+    default:
+        break;
+    }
     return QApplication::eventFilter(obj,ev);
 }
 
