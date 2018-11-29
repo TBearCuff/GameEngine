@@ -1,6 +1,7 @@
 
 
-
+#ifndef GAMEENGINE_STD_H
+#define GAMEENGINE_STD_H
 //C Runtime Header Files
 #include <stdlib.h>
 #include <malloc.h>
@@ -135,3 +136,5 @@ extern const int SCREEN_HEIGHT;
 #include "../GameEngine/GameEngineApp.h"
 
 //extern int GameEngine(int argc, char *argv[]);
+
+#endif
