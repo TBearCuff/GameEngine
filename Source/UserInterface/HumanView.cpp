@@ -1,12 +1,12 @@
-#include "gameenginestd.h"
+#include "GameEngineStd.h"
 
 
 #include "HumanView.h"
 
-#include "../Actors/rendercomponentinterface.h"
+//#include "../Actors/rendercomponentinterface.h"
 
-#include "../Graphics3D/GLRenderer.h"
-#include "../Graphics3D/Scene.h"
+//#include "../Graphics3D/GLRenderer.h"
+//#include "../Graphics3D/Scene.h"
 
 
 
@@ -66,7 +66,7 @@ bool HumanView::LoadGame(XMLElement *pLevelData)
     return VLoadGameDelegate(pLevelData);
 }
 #endif
-
+#if 0
 void HumanView::VOnRender(double fTime, float fElapsedTime)
 {
     m_currTick = g_pApp->timeGetTime();
@@ -100,7 +100,7 @@ void HumanView::VOnRender(double fTime, float fElapsedTime)
         g_pApp->m_Renderer->VPostRender();
     }
 }
-
+#endif
 
 void HumanView::VOnRestore()
 {
@@ -127,7 +127,7 @@ void HumanView::VOnUpdate(const int deltaMilliseconds)
     }
 }
 
-bool HumanView::VOnMsgProc(QEvent *event)
+bool HumanView::VOnMsgProc(AppMsg msg)
 {
     // Iterate through the screen layers first
     // In reverse order since we'll send input messages to the
@@ -136,7 +136,7 @@ bool HumanView::VOnMsgProc(QEvent *event)
     {
         if( (*i)->VIsVisible() )
         {
-            if( (*i)->VOnMsgProc( event ) )
+            if( (*i)->VOnMsgProc( msg ) )
             {
                 return true;
             }
@@ -144,7 +144,7 @@ bool HumanView::VOnMsgProc(QEvent *event)
     }
 
     bool result = false;
-    switch(event->type())
+    switch(msg.m_uMsg)
     {
     case QEvent::KeyPress:
         if(m_Console.IsActive())
@@ -153,8 +153,8 @@ bool HumanView::VOnMsgProc(QEvent *event)
         }
         else if(m_KeyboardHandler)
         {
-            QKeyEvent *ke = static_cast<QKeyEvent *>(event);
-            result = m_KeyboardHandler->VOnKeyDown(ke->key());
+//            QKeyEvent *ke = static_cast<QKeyEvent *>(msg);
+            result = m_KeyboardHandler->VOnKeyDown(msg.m_wParam);
         }
         break;
     case QEvent::KeyRelease:
@@ -164,8 +164,8 @@ bool HumanView::VOnMsgProc(QEvent *event)
         }
         else if(m_KeyboardHandler)
         {
-            QKeyEvent *ke = static_cast<QKeyEvent *>(event);
-            result = m_KeyboardHandler->VOnKeyUp(ke->key());
+//            QKeyEvent *ke = static_cast<QKeyEvent *>(msg);
+            result = m_KeyboardHandler->VOnKeyUp(msg.m_wParam);
         }
         break;
     }

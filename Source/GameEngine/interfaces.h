@@ -27,6 +27,7 @@ struct SortBy_SharedPtr_Content
     bool operator()(const shared_ptr<T> &lhs, const shared_ptr<T> &rhs) const
         { return *lhs < *rhs; }
 };
+#endif
 
 //
 // class IScreenElement							- Chapter 10, page 285
@@ -36,7 +37,7 @@ class IScreenElement
 public:
     virtual void VOnRestore() = 0;
 //    virtual HRESULT VOnLostDevice() = 0;
-    virtual void VOnRender(double fTime, float fElapsedTime) = 0;
+//    virtual void VOnRender(double fTime, float fElapsedTime) = 0;
     virtual void VOnUpdate(int deltaMilliseconds) = 0;
 
     virtual int VGetZOrder() const = 0;
@@ -44,12 +45,11 @@ public:
     virtual bool VIsVisible() const = 0;
     virtual void VSetVisible(bool visible) = 0;
 
-    virtual bool VOnMsgProc( QEvent *event );
+    virtual bool VOnMsgProc( AppMsg msg );
 
     virtual ~IScreenElement() { }
     virtual bool const operator <(IScreenElement const &other) { return VGetZOrder() < other.VGetZOrder(); }
 };
-#endif
 
 class IGamePhysics;
 
@@ -83,20 +83,20 @@ class IGameView
 {
 public:
 //    virtual HRESULT VOnRestore()=0;
-    virtual void VOnRender(double fTime, float fElapsedTime)=0;
+//    virtual void VOnRender(double fTime, float fElapsedTime)=0;
 //    virtual HRESULT VOnLostDevice()=0;
     virtual GameViewType VGetType()=0;
     virtual GameViewId VGetId() const=0;
 //    virtual void VOnAttach(GameViewId vid, ActorId aid)=0;
 
-    virtual bool VOnMsgProc( QEvent *event );
+    virtual bool VOnMsgProc( AppMsg msg );
     virtual void VOnUpdate(unsigned long deltaMs)=0;
 
     virtual ~IGameView() { }
 };
 
 
-#if 0
+#if 1
 typedef std::list<shared_ptr<IScreenElement> > ScreenElementList;
 typedef std::list<shared_ptr<IGameView> > GameViewList;
 #endif
@@ -187,7 +187,7 @@ public:
     virtual bool VIsUsingDevelopmentDirectories(void) const = 0;
 };
 
-#if 0
+#if 1
 /////////////////////////////////////////////////////////////////////////////
 // enum RenderPass							- Chapter 16, page 529
 //
@@ -215,6 +215,7 @@ class LightNode;
 
 typedef std::list<shared_ptr<LightNode> > Lights;
 
+#endif
 
 class IRenderState
 {
@@ -244,7 +245,7 @@ public:
     virtual shared_ptr<IRenderState> VPrepareSkyBoxPass()=0;
     virtual void VDrawLine(const Vec3& from, const Vec3& to, const Color& color)=0;
 };
-
+#if 0
 /////////////////////////////////////////////////////////////////////////////
 // class ISceneNode					- Chapter 16, page 524
 //

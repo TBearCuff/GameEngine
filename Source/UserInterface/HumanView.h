@@ -20,8 +20,8 @@ protected:
 
     virtual void VRenderText() { }
 
-public:
-    bool LoadGame(XMLElement* pLevelData);
+//public:
+//    bool LoadGame(XMLElement* pLevelData);
 protected:
 //    virtual bool VLoadGameDelegate(XMLElement* pLevelData) { VPushElement(m_pScene); return true; }
 
@@ -29,7 +29,7 @@ public:
     // Implement the IGameView interface, except for the VOnRender() method, which is renderer specific
     virtual void VOnRestore();
 //    virtual void VOnLostDevice();
-    virtual void VOnRender(double fTime, float fElapsedTime);
+//    virtual void VOnRender(double fTime, float fElapsedTime);
     virtual GameViewType VGetType() { return GameView_Human; }
     virtual GameViewId VGetId() const { return m_ViewId; }
 
@@ -38,7 +38,7 @@ public:
         m_ViewId = vid;
         m_ActorId = aid;
     }
-    virtual bool VOnMsgProc( QEvent *event );
+    virtual bool VOnMsgProc( AppMsg msg );
     virtual void VOnUpdate(const int deltaMilliseconds);
 
     //Virtual methods to control the layering of interface elements
