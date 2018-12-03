@@ -170,6 +170,7 @@ bool HumanView::VOnMsgProc(AppMsg msg)
         break;
     }
 
+    return result;
 }
 
 
