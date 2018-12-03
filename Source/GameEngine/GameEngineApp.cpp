@@ -298,8 +298,7 @@ bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
     case QEvent::MouseButtonDblClick:
     {
         QMouseEvent *me = static_cast<QMouseEvent*>( ev );
-        me->accept();
-        qDebug() << ev->type();
+        qDebug() << ev->type() << me->x() << ", " << me->y();
 
         break;
     }
@@ -307,7 +306,10 @@ bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
     case QEvent::KeyRelease:
     {
         QKeyEvent *ke = static_cast<QKeyEvent*>(ev);
-        qDebug() << ev->type();
+        AppMsg msg;
+        msg.m_uMsg = ev->type();
+        msg.m_wParam = ke->key();
+        qDebug() << ev->type() << " " << QString("%1").arg(ke->key(),0,16);
 
         break;
     }

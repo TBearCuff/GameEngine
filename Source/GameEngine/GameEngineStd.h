@@ -87,8 +87,8 @@ extern Vec4 g_Forward4;
 struct AppMsg
 {
 //    HWND m_hWnd;
-    unsigned int m_uMsg;
-//    WPARAM m_wParam;
+    quint32 m_uMsg;
+    quint32 m_wParam;
 //    LPARAM m_lParam;
 };
 
