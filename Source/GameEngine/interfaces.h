@@ -92,13 +92,14 @@ public:
     virtual bool VOnMsgProc( QEvent *event );
     virtual void VOnUpdate(unsigned long deltaMs)=0;
 
-    virtual ~IGameView() { };
+    virtual ~IGameView() { }
 };
 
 
 #if 0
 typedef std::list<shared_ptr<IScreenElement> > ScreenElementList;
 typedef std::list<shared_ptr<IGameView> > GameViewList;
+#endif
 
 
 ////////////////////////////////////////////////////
@@ -145,7 +146,6 @@ class IGamepadHandler
     virtual bool VOnDirectionalPad(const std::string &direction)=0;
     virtual bool VOnThumbstick(const std::string &stickName, float const x, float const y)=0;
 };
-#endif
 
 
 

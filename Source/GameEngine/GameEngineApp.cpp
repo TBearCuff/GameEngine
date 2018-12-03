@@ -10,6 +10,9 @@
 #include <QDomDocument>
 #include <QTimer>
 #include <QStandardPaths>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QTouchEvent>
 
 GameEngineApp *g_pApp = NULL;
 
@@ -141,6 +144,7 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     window->setFormat(format);
     window->resize(QSize(800, 600));
     window->show();
+    window->installEventFilter(this);
 //    window->showFullScreen();
 
     // initialize the directory location you can store save game files
@@ -282,6 +286,46 @@ QString GameEngineApp::GetString(QString sID)
         return QString("");
     }
     return localizedString.value();
+}
+
+bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
+{
+    switch (ev->type())
+    {
+    case QEvent::MouseMove:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+    {
+        QMouseEvent *me = static_cast<QMouseEvent*>( ev );
+        me->accept();
+        qDebug() << ev->type();
+
+        break;
+    }
+    case QEvent::KeyPress:
+    case QEvent::KeyRelease:
+    {
+        QKeyEvent *ke = static_cast<QKeyEvent*>(ev);
+        qDebug() << ev->type();
+
+        break;
+    }
+    case QEvent::TouchBegin:
+    case QEvent::TouchEnd:
+    case QEvent::TouchUpdate:
+    case QEvent::TouchCancel:
+    {
+        QTouchEvent *te = static_cast<QTouchEvent*>(ev);
+        te->accept();
+        qDebug() << ev->type();
+
+        break;
+    }
+    default:
+        break;
+    }
+    return QApplication::eventFilter(obj,ev);
 }
 
 

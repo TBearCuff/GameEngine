@@ -1,6 +1,7 @@
 
 
-
+#ifndef GAMEENGINE_STD_H
+#define GAMEENGINE_STD_H
 //C Runtime Header Files
 #include <stdlib.h>
 #include <malloc.h>
@@ -81,6 +82,17 @@ extern Vec4 g_Up4;
 extern Vec4 g_Right4;
 extern Vec4 g_Forward4;
 
+//  AppMsg				- Chapter 9, page 248
+
+struct AppMsg
+{
+//    HWND m_hWnd;
+    unsigned int m_uMsg;
+//    WPARAM m_wParam;
+//    LPARAM m_lParam;
+};
+
+
 #include "interfaces.h"
 
 
@@ -124,3 +136,5 @@ extern const int SCREEN_HEIGHT;
 #include "../GameEngine/GameEngineApp.h"
 
 //extern int GameEngine(int argc, char *argv[]);
+
+#endif

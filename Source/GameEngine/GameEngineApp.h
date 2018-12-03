@@ -50,6 +50,7 @@ protected:
     QMap<QString,QString> m_textResource;
     QMap<QString,unsigned int> m_hotkeys;
     virtual void VRegisterGameEvents(void) {}
+    bool eventFilter(QObject *obj, QEvent *ev) override;
 
 private:
     void RegisterEngineEvents(void);
