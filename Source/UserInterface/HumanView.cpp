@@ -16,7 +16,7 @@ const GameViewId gc_InvalidGameViewId = 0xffffffff;
 //
 // HumanView::HumanView - Chapter 10, page 272
 //
-HumanView::HumanView(shared_ptr<IRenderer> renderer)
+HumanView::HumanView(QSharedPointer<IRenderer> renderer)
 {
     InitAudio();
 

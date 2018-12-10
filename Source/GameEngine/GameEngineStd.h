@@ -52,6 +52,7 @@ typedef unsigned char       BYTE;
 #include <QWeakPointer>
 #include <QMap>
 #include <QList>
+#include <QQueue>
 
 
 // GameCode #includes

@@ -48,14 +48,14 @@ public:
     void TogglePause(bool active);
 
     virtual ~HumanView();
-    HumanView(shared_ptr<IRenderer> renderer);
+    HumanView(QSharedPointer<IRenderer> renderer);
 
     ScreenElementList m_ScreenElements;     //a game screen entity
 
     //Interface sensitive objects
-    shared_ptr<IPointerHandler> m_PointerHandler;
+    QSharedPointer<IPointerHandler> m_PointerHandler;
     int m_PointerRadius;
-    shared_ptr<IKeyboardHandler> m_KeyboardHandler;
+    QSharedPointer<IKeyboardHandler> m_KeyboardHandler;
 
     //Audio
     bool InitAudio();
@@ -65,8 +65,8 @@ public:
 //    virtual void VSetCameraOffset(const Vec4 &camOffset );
 
     //Added post press
-//    shared_ptr<ScreenElementScene> m_pScene;
-//    shared_ptr<CameraNode> m_pCamera;
+//    QSharedPointer<ScreenElementScene> m_pScene;
+//    QSharedPointer<CameraNode> m_pCamera;
 
 //    void HandleGameState(BaseGameState newState);
 
@@ -109,7 +109,7 @@ public:
     private:
         bool m_bActive;
 
-        std::queue<std::string> m_DisplayStrings;
+        QQueue<QString> m_DisplayStrings;
 
         Rect m_ConsoleOutputRect;	//Where results get shown
         Rect m_ConsoleInputRect;	//Where input is entered
@@ -117,8 +117,8 @@ public:
         Color m_InputColor;
         Color m_OutputColor;
 
-        std::string m_CurrentOutputString;	//What's the current output string?
-        std::string m_CurrentInputString;	//What's the current input string?
+        QString m_CurrentOutputString;	//What's the current output string?
+        QString m_CurrentInputString;	//What's the current input string?
 
         int m_ConsoleInputSize;	//Height of the input console window
 
