@@ -58,7 +58,7 @@ protected:
 //    int m_HumanPlayersAttached;
 //    int m_AIPlayersAttached;
 //    int m_HumanGamesLoaded;
-//    GameViewList m_gameViews;       //views that are attached to our game
+    GameViewList m_gameViews;       //views that are attached to our game
 //    shared_ptr<PathingGraph> m_pPathingGraph;   //the pathing graph
     ActorFactory* m_pActorFactory;
 

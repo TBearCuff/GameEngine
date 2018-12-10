@@ -290,6 +290,9 @@ QString GameEngineApp::GetString(QString sID)
 
 bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
 {
+    AppMsg msg;
+    bool processInput = false;
+
     switch (ev->type())
     {
     case QEvent::MouseMove:
@@ -300,15 +303,16 @@ bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
         QMouseEvent *me = static_cast<QMouseEvent*>( ev );
         qDebug() << ev->type() << me->x() << ", " << me->y();
 
+
         break;
     }
     case QEvent::KeyPress:
     case QEvent::KeyRelease:
     {
         QKeyEvent *ke = static_cast<QKeyEvent*>(ev);
-        AppMsg msg;
         msg.m_uMsg = ev->type();
         msg.m_wParam = ke->key();
+        processInput = true;
         qDebug() << ev->type() << " " << QString("%1").arg(ke->key(),0,16);
 
         break;
@@ -326,6 +330,35 @@ bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
     }
     default:
         break;
+    }
+
+    if(processInput)
+    {
+        //
+        // See Chapter 10, page 278 for more explanation of this code.
+        //
+        if (g_pApp->m_pGame)
+        {
+            bool result = false;
+            BaseGameLogic *pGame = g_pApp->m_pGame;
+            // Note the reverse order! User input is grabbed first from the view that is on top,
+            // which is the last one in the list.
+//            AppMsg msg;
+//            msg.m_hWnd = hWnd;
+//            msg.m_uMsg = uMsg;
+//            msg.m_wParam = wParam;
+//            msg.m_lParam = lParam;
+            for(GameViewList::reverse_iterator i=pGame->m_gameViews.rbegin(); i!=pGame->m_gameViews.rend(); ++i)
+            {
+                if ( (*i)->VOnMsgProc( msg ) )
+                {
+                    result = true;
+                    break;				// WARNING! This breaks out of the for loop.
+                }
+            }
+            return result;
+        }
+
     }
     return QApplication::eventFilter(obj,ev);
 }

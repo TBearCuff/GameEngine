@@ -56,7 +56,8 @@ SOURCES += \
     ../Actor/TransformComponent.cpp \
     ../Utilities/Math.cpp \
     ../MainLoop/Process.cpp \
-    ../MainLoop/ProcessManager.cpp
+    ../MainLoop/ProcessManager.cpp \
+    ../UserInterface/HumanView.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -79,7 +80,8 @@ HEADERS += \
     ../Utilities/templates.h \
     ../MainLoop/Process.h \
     ../MainLoop/ProcessManager.h \
-    ../Utilities/types.h
+    ../Utilities/types.h \
+    ../UserInterface/HumanView.h
 
 RESOURCES += \
     resources.qrc
