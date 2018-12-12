@@ -57,14 +57,14 @@ class IGameLogic
 {
 public:
     virtual WeakActorPtr VGetActor(const ActorId id)=0;
-//    virtual StrongActorPtr VCreateActor(const std::string &actorResource, XMLElement *overrides, const Mat4x4 *initialTransform=NULL, const ActorId serversActorId=INVALID_ACTOR_ID)=0;
+//    virtual StrongActorPtr VCreateActor(const QString &actorResource, XMLElement *overrides, const Mat4x4 *initialTransform=NULL, const ActorId serversActorId=INVALID_ACTOR_ID)=0;
 //    virtual void VDestroyActor(const ActorId actorId)=0;
     virtual bool VLoadGame(const char* levelResource)=0;
     virtual void VSetProxy()=0;
     virtual void VOnUpdate(float time, float elapsedTime)=0;
 //    virtual void VChangeState(enum BaseGameState newState)=0;
 //    virtual void VMoveActor(const ActorId id, Mat4x4 const &mat)=0;
-//    virtual shared_ptr<IGamePhysics> VGetGamePhysics(void) = 0;
+//    virtual QSharedPointer<IGamePhysics> VGetGamePhysics(void) = 0;
 };
 
 enum GameViewType
@@ -94,12 +94,10 @@ public:
 
     virtual ~IGameView() { }
 };
+#include <QLinkedList>
 
-
-#if 1
-typedef std::list<shared_ptr<IScreenElement> > ScreenElementList;
-typedef std::list<shared_ptr<IGameView> > GameViewList;
-#endif
+typedef QList<QSharedPointer<IScreenElement>>ScreenElementList;
+typedef QList<QSharedPointer<IGameView>> GameViewList;
 
 
 ////////////////////////////////////////////////////
@@ -127,24 +125,24 @@ public:
 class IPointerHandler
 {
     virtual bool VOnPointerMove(const Point &pos, const int radius) = 0;
-    virtual bool VOnPointerButtonDown(const Point &pos, const int radius, const std::string &buttonName) = 0;
-    virtual bool VOnPointerButtonUp(const Point &pos, const int radius, const std::string &buttonName) = 0;
+    virtual bool VOnPointerButtonDown(const Point &pos, const int radius, const QString &buttonName) = 0;
+    virtual bool VOnPointerButtonUp(const Point &pos, const int radius, const QString &buttonName) = 0;
 };
 
 class IJoystickHandler
 {
-    virtual bool VOnButtonDown(const std::string &buttonName, int const pressure)=0;
-    virtual bool VOnButtonUp(const std::string &buttonName)=0;
+    virtual bool VOnButtonDown(const QString &buttonName, int const pressure)=0;
+    virtual bool VOnButtonUp(const QString &buttonName)=0;
     virtual bool VOnJoystick(float const x, float const y)=0;
 };
 
 class IGamepadHandler
 {
-    virtual bool VOnTrigger(const std::string &triggerName, float const pressure)=0;
-    virtual bool VOnButtonDown(const std::string &buttonName, int const pressure)=0;
-    virtual bool VOnButtonUp(const std::string &buttonName)=0;
-    virtual bool VOnDirectionalPad(const std::string &direction)=0;
-    virtual bool VOnThumbstick(const std::string &stickName, float const x, float const y)=0;
+    virtual bool VOnTrigger(const QString &triggerName, float const pressure)=0;
+    virtual bool VOnButtonDown(const QString &buttonName, int const pressure)=0;
+    virtual bool VOnButtonUp(const QString &buttonName)=0;
+    virtual bool VOnDirectionalPad(const QString &direction)=0;
+    virtual bool VOnThumbstick(const QString &stickName, float const x, float const y)=0;
 };
 
 
@@ -220,7 +218,7 @@ typedef std::list<shared_ptr<LightNode> > Lights;
 class IRenderState
 {
 public:
-    virtual std::string VToString()=0;
+    virtual QString VToString()=0;
 };
 
 //
@@ -241,8 +239,8 @@ public:
     virtual void VSetWorldTransform(const Mat4x4 *m)=0;
     virtual void VSetViewTransform(const Mat4x4 *m)=0;
     virtual void VSetProjectionTransform(const Mat4x4 *m)=0;
-    virtual shared_ptr<IRenderState> VPrepareAlphaPass()=0;
-    virtual shared_ptr<IRenderState> VPrepareSkyBoxPass()=0;
+    virtual QSharedPointer<IRenderState> VPrepareAlphaPass()=0;
+    virtual QSharedPointer<IRenderState> VPrepareSkyBoxPass()=0;
     virtual void VDrawLine(const Vec3& from, const Vec3& to, const Color& color)=0;
 };
 #if 0
@@ -273,7 +271,7 @@ public:
     virtual void VPostRender(Scene *pScene)=0;
     //    virtual HRESULT VPostRender(Scene *pScene)=0;
 
-    virtual bool VAddChild(shared_ptr<ISceneNode> kid)=0;
+    virtual bool VAddChild(QSharedPointer<ISceneNode> kid)=0;
     virtual bool VRemoveChild(ActorId id)=0;
     virtual void VOnLostDevice(Scene *pScene)=0;
     //    virtual HRESULT VOnLostDevice(Scene *pScene)=0;

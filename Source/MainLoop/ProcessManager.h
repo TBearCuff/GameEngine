@@ -5,7 +5,7 @@
 
 class ProcessManager
 {
-    typedef QList<StrongProcessPtr> ProcessList;
+    typedef QLinkedList<StrongProcessPtr> ProcessList;
 
     ProcessList m_processList;
 

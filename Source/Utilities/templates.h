@@ -167,7 +167,7 @@ public:
     }
 
 	//Copy constructor
-    optional(optional const & other)
+    optional(optional const & other) : optional_base<sizeof(T)>(other)
     {
 		if (other.m_bValid)
 		{
