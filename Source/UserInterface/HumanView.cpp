@@ -132,7 +132,7 @@ bool HumanView::VOnMsgProc(AppMsg msg)
     // Iterate through the screen layers first
     // In reverse order since we'll send input messages to the
     // screen on top
-    for(ScreenElementList::reverse_iterator i=m_ScreenElements.rbegin(); i!=m_ScreenElements.rend(); ++i)
+    for(ScreenElementList::iterator i=m_ScreenElements.end(); i!=m_ScreenElements.begin(); --i)
     {
         if( (*i)->VIsVisible() )
         {

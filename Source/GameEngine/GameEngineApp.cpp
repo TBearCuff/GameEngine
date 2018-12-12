@@ -348,7 +348,7 @@ bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
 //            msg.m_uMsg = uMsg;
 //            msg.m_wParam = wParam;
 //            msg.m_lParam = lParam;
-            for(GameViewList::reverse_iterator i=pGame->m_gameViews.rbegin(); i!=pGame->m_gameViews.rend(); ++i)
+            for(GameViewList::iterator i=pGame->m_gameViews.end(); i!=pGame->m_gameViews.begin(); --i)
             {
                 if ( (*i)->VOnMsgProc( msg ) )
                 {
