@@ -53,6 +53,7 @@ typedef unsigned char       BYTE;
 #include <QMap>
 #include <QList>
 #include <QQueue>
+#include <QLinkedList>
 
 
 // GameCode #includes
