@@ -1,6 +1,7 @@
 #ifndef HUMANVIEW_H
 #define HUMANVIEW_H
 
+//#include "GameEngine/interfaces.h"
 
 class HumanView : public IGameView
 {
@@ -27,7 +28,7 @@ protected:
 
 public:
     // Implement the IGameView interface, except for the VOnRender() method, which is renderer specific
-    virtual void VOnRestore();
+//    virtual void VOnRestore();
 //    virtual void VOnLostDevice();
 //    virtual void VOnRender(double fTime, float fElapsedTime);
     virtual GameViewType VGetType() { return GameView_Human; }
@@ -39,11 +40,11 @@ public:
         m_ActorId = aid;
     }
     virtual bool VOnMsgProc( AppMsg msg );
-    virtual void VOnUpdate(const int deltaMilliseconds);
+    virtual void VOnUpdate(unsigned long deltaMilliseconds);
 
     //Virtual methods to control the layering of interface elements
-    virtual void VPushElement(shared_ptr<IScreenElement> pElement);
-    virtual void VRemoveElement(shared_ptr<IScreenElement> pElement);
+//    virtual void VPushElement(shared_ptr<IScreenElement> pElement);
+//    virtual void VRemoveElement(shared_ptr<IScreenElement> pElement);
 
     void TogglePause(bool active);
 
@@ -80,7 +81,7 @@ public:
 private:
     void RegisterAllDelegates(void);
     void RemoveAllDelegates(void);
-
+#if 0
 public:
     // Class Console						- not described in the book
     //
@@ -141,6 +142,7 @@ public:
 
 protected:
     Console m_Console;
+#endif
 };
 
 #endif // HUMANVIEW_H
