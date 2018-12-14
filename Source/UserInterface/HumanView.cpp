@@ -18,7 +18,7 @@ const GameViewId gc_InvalidGameViewId = 0xffffffff;
 //
 HumanView::HumanView(QSharedPointer<IRenderer> renderer)
 {
-    InitAudio();
+//    InitAudio();
 
     m_pProcessManager = GCC_NEW ProcessManager;
 
@@ -26,7 +26,7 @@ HumanView::HumanView(QSharedPointer<IRenderer> renderer)
     m_ViewId = gc_InvalidGameViewId;
 
     //Added post press for move, new and destroy actor events and others
-    RegisterAllDelegates();
+//    RegisterAllDelegates();
     m_BaseGameState = BGS_Initializing;     //what is the curren game state
 
     if(renderer)
@@ -47,7 +47,7 @@ HumanView::HumanView(QSharedPointer<IRenderer> renderer)
 HumanView::~HumanView()
 {
     //RemoveAllDelegates was added post press to handle move, new, and destroy actor events
-    RemoveAllDelegates();
+//    RemoveAllDelegates();
 
     while(!m_ScreenElements.empty())
     {
@@ -100,7 +100,6 @@ void HumanView::VOnRender(double fTime, float fElapsedTime)
         g_pApp->m_Renderer->VPostRender();
     }
 }
-#endif
 
 void HumanView::VOnRestore()
 {
@@ -111,12 +110,13 @@ void HumanView::VOnRestore()
 
     return;
 }
+#endif
 
-void HumanView::VOnUpdate(const int deltaMilliseconds)
+void HumanView::VOnUpdate(unsigned long deltaMilliseconds)
 {
     m_pProcessManager->UpdateProcesses(deltaMilliseconds);
 
-    m_Console.Update(deltaMilliseconds);
+//    m_Console.Update(deltaMilliseconds);
 
     // This section of code was added post-press. It runs through the screenlist
     // and calls VOnUpdate. Some screen elements need to update every frame, one
@@ -147,22 +147,22 @@ bool HumanView::VOnMsgProc(AppMsg msg)
     switch(msg.m_uMsg)
     {
     case QEvent::KeyPress:
-        if(m_Console.IsActive())
+/*        if(m_Console.IsActive())
         {
             //Let the console eat this
         }
-        else if(m_KeyboardHandler)
+        else */if(m_KeyboardHandler)
         {
 //            QKeyEvent *ke = static_cast<QKeyEvent *>(msg);
             result = m_KeyboardHandler->VOnKeyDown(msg.m_wParam);
         }
         break;
     case QEvent::KeyRelease:
-        if(m_Console.IsActive())
+/*        if(m_Console.IsActive())
         {
             //Let the console eat this
         }
-        else if(m_KeyboardHandler)
+        else*/ if(m_KeyboardHandler)
         {
 //            QKeyEvent *ke = static_cast<QKeyEvent *>(msg);
             result = m_KeyboardHandler->VOnKeyUp(msg.m_wParam);

@@ -89,7 +89,7 @@ public:
     virtual GameViewId VGetId() const=0;
 //    virtual void VOnAttach(GameViewId vid, ActorId aid)=0;
 
-    virtual bool VOnMsgProc( AppMsg msg );
+    virtual bool VOnMsgProc( AppMsg msg ) = 0;
     virtual void VOnUpdate(unsigned long deltaMs)=0;
 
     virtual ~IGameView() { }
