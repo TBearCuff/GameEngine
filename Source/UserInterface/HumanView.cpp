@@ -66,16 +66,16 @@ bool HumanView::LoadGame(XMLElement *pLevelData)
     return VLoadGameDelegate(pLevelData);
 }
 #endif
-#if 0
-void HumanView::VOnRender(double fTime, float fElapsedTime)
+void HumanView::VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)
 {
-    m_currTick = g_pApp->timeGetTime();
-    if(m_currTick == m_lastDraw)
+//    m_currTick = g_pApp->timeGetTime();
+    if(uiTime == m_lastDraw)
         return;
 
     //It is time to draw?
-    if( m_runFullSpeed || ( (m_currTick - m_lastDraw) > SCREEN_REFRESH_RATE) )
+    if( m_runFullSpeed || ( (uiTime - m_lastDraw) > SCREEN_REFRESH_RATE) )
     {
+#if 0
         if(g_pApp->m_Renderer->VPreRender())
         {
             m_ScreenElements.sort(SortBy_SharedPtr_Content<IScreenElement>());
@@ -98,8 +98,10 @@ void HumanView::VOnRender(double fTime, float fElapsedTime)
         }
 
         g_pApp->m_Renderer->VPostRender();
+#endif
     }
 }
+#if 0
 
 void HumanView::VOnRestore()
 {

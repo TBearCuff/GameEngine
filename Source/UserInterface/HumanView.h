@@ -30,7 +30,7 @@ public:
     // Implement the IGameView interface, except for the VOnRender() method, which is renderer specific
 //    virtual void VOnRestore();
 //    virtual void VOnLostDevice();
-//    virtual void VOnRender(double fTime, float fElapsedTime);
+    virtual void VOnRender(unsigned int uiTime, unsigned int uiElapsedTime);
     virtual GameViewType VGetType() { return GameView_Human; }
     virtual GameViewId VGetId() const { return m_ViewId; }
 

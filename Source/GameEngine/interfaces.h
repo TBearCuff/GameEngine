@@ -83,7 +83,7 @@ class IGameView
 {
 public:
 //    virtual HRESULT VOnRestore()=0;
-//    virtual void VOnRender(double fTime, float fElapsedTime)=0;
+    virtual void VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)=0;
 //    virtual HRESULT VOnLostDevice()=0;
     virtual GameViewType VGetType()=0;
     virtual GameViewId VGetId() const=0;
