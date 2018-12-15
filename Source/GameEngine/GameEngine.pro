@@ -57,7 +57,8 @@ SOURCES += \
     ../Utilities/Math.cpp \
     ../MainLoop/Process.cpp \
     ../MainLoop/ProcessManager.cpp \
-    ../UserInterface/HumanView.cpp
+    ../UserInterface/HumanView.cpp \
+    ../Graphics3D/GLRenderer.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -81,7 +82,8 @@ HEADERS += \
     ../MainLoop/Process.h \
     ../MainLoop/ProcessManager.h \
     ../Utilities/types.h \
-    ../UserInterface/HumanView.h
+    ../UserInterface/HumanView.h \
+    ../Graphics3D/GLRenderer.h
 
 RESOURCES += \
     resources.qrc
