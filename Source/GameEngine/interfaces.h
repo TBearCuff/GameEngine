@@ -232,15 +232,15 @@ class IRenderer
 public:
     virtual void VSetBackgroundColor(unsigned char bgA, unsigned char bgR, unsigned char bgG, unsigned char bgB)=0;
     virtual void VOnRestore()=0;
-    virtual void VShutdown()=0;
+//    virtual void VShutdown()=0;
     virtual bool VPreRender()=0;
     virtual bool VPostRender()=0;
     virtual void VCalcLighting(Lights *lights, int maximumLights)=0;
     virtual void VSetWorldTransform(const Mat4x4 *m)=0;
     virtual void VSetViewTransform(const Mat4x4 *m)=0;
     virtual void VSetProjectionTransform(const Mat4x4 *m)=0;
-    virtual QSharedPointer<IRenderState> VPrepareAlphaPass()=0;
-    virtual QSharedPointer<IRenderState> VPrepareSkyBoxPass()=0;
+//    virtual QSharedPointer<IRenderState> VPrepareAlphaPass()=0;
+//    virtual QSharedPointer<IRenderState> VPrepareSkyBoxPass()=0;
     virtual void VDrawLine(const Vec3& from, const Vec3& to, const Color& color)=0;
 };
 #if 0

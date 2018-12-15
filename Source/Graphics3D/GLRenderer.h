@@ -89,8 +89,8 @@ public:
 
     virtual void VDrawLine(const Vec3& from, const Vec3& to, const Color& color);
 
-    virtual shared_ptr<IRenderState> VPrepareAlphaPass();
-    virtual shared_ptr<IRenderState> VPrepareSkyBoxPass();
+//    virtual shared_ptr<IRenderState> VPrepareAlphaPass();
+//    virtual shared_ptr<IRenderState> VPrepareSkyBoxPass();
 
     bool CompileShader(const char *source, QOpenGLShader *shader);
     bool CompileShaderFromFile( std::wstring szFileName, QOpenGLShader *shader );

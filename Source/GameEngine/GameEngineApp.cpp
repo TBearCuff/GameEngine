@@ -4,6 +4,7 @@
 #include "GameEngineApp.h"
 #include "../MainLoop/Initialization.h"
 #include "../ResourceCache/ResCache.h"
+#include "../Graphics3D/GLRenderer.h"
 #include "../ResourceCache/XMLResourceLoader.h"
 #include <QStorageInfo>
 
@@ -150,6 +151,7 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     // initialize the directory location you can store save game files
 
 
+    m_Renderer = QSharedPointer<IRenderer>(GCC_NEW GLRenderer());
     //create game logic and views
     VCreateGameAndView();
     if(!m_pGame)

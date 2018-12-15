@@ -1,7 +1,7 @@
-#include "gameenginestd.h"
+#include "GameEngineStd.h"
 
 #include "GLRenderer.h"
-#include "Lights.h"
+//#include "Lights.h"
 #include "../UserInterface/HumanView.h"
 
 
@@ -21,7 +21,7 @@ protected:
 public:
     GLRendererAlphaPass();
     ~GLRendererAlphaPass();
-    std::string VToString() { return "GLRendererAlphaPass"; }
+    QString VToString() { return "GLRendererAlphaPass"; }
 };
 
 //
@@ -52,7 +52,7 @@ protected:
 public:
     GLRendererSkyBoxPass();
     ~GLRendererSkyBoxPass();
-    std::string VToString() { return "GLRendererSkyBoxPass"; }
+    QString VToString() { return "GLRendererSkyBoxPass"; }
 };
 
 //
@@ -153,7 +153,7 @@ bool GLRenderer::CompileShader(const char *source, QOpenGLShader *shader)
     //A little debuggery; might need improvement
     if(!result)
     {
-        GCC_WARNING(shader->log().toStdString());
+        qWarning() << shader->log();
     }
     return result;
 }
@@ -166,7 +166,7 @@ bool GLRenderer::CompileShaderFromFile(std::wstring szFileName, QOpenGLShader *s
     //A little debuggery; might need improvement
     if(!result)
     {
-        GCC_WARNING(shader->log().toStdString());
+        qWarning() << shader->log();
     }
     return result;
 }
@@ -180,13 +180,14 @@ void GLRenderer::VDrawLine(const Vec3 &from, const Vec3 &to, const Color &color)
     }
     m_pLineDrawer->DrawLine(from, to, color);
 }
-
-shared_ptr<IRenderState> GLRenderer::VPrepareAlphaPass()
+#if 0
+QSharedPointer<IRenderState> GLRenderer::VPrepareAlphaPass()
 {
-    return shared_ptr<IRenderState>(GCC_NEW GLRendererAlphaPass());
+    return QSharedPointer<IRenderState>(GCC_NEW GLRendererAlphaPass());
 }
 
-shared_ptr<IRenderState> GLRenderer::VPrepareSkyBoxPass()
+QSharedPointer<IRenderState> GLRenderer::VPrepareSkyBoxPass()
 {
-    return shared_ptr<IRenderState>(GCC_NEW GLRendererSkyBoxPass());
+    return QSharedPointer<IRenderState>(GCC_NEW GLRendererSkyBoxPass());
 }
+#endif
