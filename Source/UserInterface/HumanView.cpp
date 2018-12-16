@@ -99,18 +99,26 @@ void HumanView::VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)
         g_pApp->m_Renderer->VPostRender();
     }
 }
-#if 0
 
-void HumanView::VOnRestore()
+bool HumanView::VOnRestore()
 {
     for(ScreenElementList::iterator i = m_ScreenElements.begin(); i!=m_ScreenElements.end(); ++i)
     {
-        ( (*i)->VOnRestore() );
+        if( !(*i)->VOnRestore() ) return false;
     }
 
-    return;
+    return true;
 }
-#endif
+
+bool HumanView::VOnLostDevice()
+{
+    for(ScreenElementList::iterator i = m_ScreenElements.begin(); i!=m_ScreenElements.end(); ++i)
+    {
+        if( !(*i)->VOnLostDevice() ) return false;
+    }
+
+    return true;
+}
 
 void HumanView::VOnUpdate(unsigned long deltaMilliseconds)
 {

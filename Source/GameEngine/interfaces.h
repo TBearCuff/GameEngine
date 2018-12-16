@@ -35,8 +35,8 @@ struct SortBy_SharedPtr_Content
 class IScreenElement
 {
 public:
-    virtual void VOnRestore() = 0;
-//    virtual HRESULT VOnLostDevice() = 0;
+    virtual bool VOnRestore() = 0;
+    virtual bool VOnLostDevice() = 0;
 //    virtual void VOnRender(double fTime, float fElapsedTime) = 0;
     virtual void VOnUpdate(int deltaMilliseconds) = 0;
 
@@ -82,9 +82,9 @@ extern const GameViewId gc_InvalidGameViewId;
 class IGameView
 {
 public:
-//    virtual HRESULT VOnRestore()=0;
+    virtual bool VOnRestore()=0;
     virtual void VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)=0;
-//    virtual HRESULT VOnLostDevice()=0;
+    virtual bool VOnLostDevice()=0;
     virtual GameViewType VGetType()=0;
     virtual GameViewId VGetId() const=0;
 //    virtual void VOnAttach(GameViewId vid, ActorId aid)=0;
