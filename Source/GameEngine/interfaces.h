@@ -20,11 +20,11 @@ typedef QWeakPointer<Actor> WeakActorPtr;
 typedef QSharedPointer<ActorComponent> StrongActorComponentPtr;
 typedef QWeakPointer<ActorComponent> WeakActorComponentPtr;
 
-#if 0
+#if 1
 template<class T>
 struct SortBy_SharedPtr_Content
 {
-    bool operator()(const shared_ptr<T> &lhs, const shared_ptr<T> &rhs) const
+    bool operator()(const QSharedPointer<T> &lhs, const QSharedPointer<T> &rhs) const
         { return *lhs < *rhs; }
 };
 #endif
@@ -83,7 +83,7 @@ class IGameView
 {
 public:
 //    virtual HRESULT VOnRestore()=0;
-//    virtual void VOnRender(double fTime, float fElapsedTime)=0;
+    virtual void VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)=0;
 //    virtual HRESULT VOnLostDevice()=0;
     virtual GameViewType VGetType()=0;
     virtual GameViewId VGetId() const=0;
@@ -96,7 +96,7 @@ public:
 };
 #include <QLinkedList>
 
-typedef QList<QSharedPointer<IScreenElement>>ScreenElementList;
+typedef std::list<QSharedPointer<IScreenElement>> ScreenElementList;
 typedef QList<QSharedPointer<IGameView>> GameViewList;
 
 
@@ -232,15 +232,15 @@ class IRenderer
 public:
     virtual void VSetBackgroundColor(unsigned char bgA, unsigned char bgR, unsigned char bgG, unsigned char bgB)=0;
     virtual void VOnRestore()=0;
-    virtual void VShutdown()=0;
+//    virtual void VShutdown()=0;
     virtual bool VPreRender()=0;
     virtual bool VPostRender()=0;
     virtual void VCalcLighting(Lights *lights, int maximumLights)=0;
     virtual void VSetWorldTransform(const Mat4x4 *m)=0;
     virtual void VSetViewTransform(const Mat4x4 *m)=0;
     virtual void VSetProjectionTransform(const Mat4x4 *m)=0;
-    virtual QSharedPointer<IRenderState> VPrepareAlphaPass()=0;
-    virtual QSharedPointer<IRenderState> VPrepareSkyBoxPass()=0;
+//    virtual QSharedPointer<IRenderState> VPrepareAlphaPass()=0;
+//    virtual QSharedPointer<IRenderState> VPrepareSkyBoxPass()=0;
     virtual void VDrawLine(const Vec3& from, const Vec3& to, const Color& color)=0;
 };
 #if 0

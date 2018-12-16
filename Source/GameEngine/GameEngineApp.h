@@ -36,6 +36,8 @@ public:
 
     BaseGameLogic* GetGameLogic(void) const { return m_pGame; }
 
+    QSharedPointer<IRenderer> m_Renderer;
+
     // File and Resource System
     class ResCache *m_ResCache;
 
