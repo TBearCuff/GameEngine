@@ -75,30 +75,28 @@ void HumanView::VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)
     //It is time to draw?
     if( m_runFullSpeed || ( (uiTime - m_lastDraw) > SCREEN_REFRESH_RATE) )
     {
-#if 0
         if(g_pApp->m_Renderer->VPreRender())
         {
-            m_ScreenElements.sort(SortBy_SharedPtr_Content<IScreenElement>());
+//            m_ScreenElements.sort(SortBy_SharedPtr_Content<IScreenElement>());
 
             for(ScreenElementList::iterator i = m_ScreenElements.begin(); i!=m_ScreenElements.end(); ++i)
             {
                 if((*i)->VIsVisible() )
                 {
-                    (*i)->VOnRender(fTime, fElapsedTime);
+//                    (*i)->VOnRender(fTime, fElapsedTime);
                 }
             }
 
             VRenderText();
 
             //Let the console render
-            m_Console.Render();
+//            m_Console.Render();
 
             // record the last successful paint
             m_lastDraw = m_currTick;
         }
 
         g_pApp->m_Renderer->VPostRender();
-#endif
     }
 }
 #if 0

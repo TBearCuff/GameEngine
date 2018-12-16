@@ -20,11 +20,11 @@ typedef QWeakPointer<Actor> WeakActorPtr;
 typedef QSharedPointer<ActorComponent> StrongActorComponentPtr;
 typedef QWeakPointer<ActorComponent> WeakActorComponentPtr;
 
-#if 0
+#if 1
 template<class T>
 struct SortBy_SharedPtr_Content
 {
-    bool operator()(const shared_ptr<T> &lhs, const shared_ptr<T> &rhs) const
+    bool operator()(const QSharedPointer<T> &lhs, const QSharedPointer<T> &rhs) const
         { return *lhs < *rhs; }
 };
 #endif
@@ -96,7 +96,7 @@ public:
 };
 #include <QLinkedList>
 
-typedef QList<QSharedPointer<IScreenElement>>ScreenElementList;
+typedef std::list<QSharedPointer<IScreenElement>> ScreenElementList;
 typedef QList<QSharedPointer<IGameView>> GameViewList;
 
 

@@ -105,6 +105,11 @@ void GLLineDrawer::DrawLine(const Vec3& from,const Vec3& to,const Color& color)
 #endif
 }
 
+void GLLineDrawer::OnRestore()
+{
+
+}
+
 ////////////////////////////////////////////////////
 // D3DRenderer11 Implementation
 //
