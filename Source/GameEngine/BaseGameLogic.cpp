@@ -43,6 +43,14 @@ bool BaseGameLogic::Init()
     return true;
 }
 
+void BaseGameLogic::VAddView(QSharedPointer<IGameView> pView, ActorId actorId)
+{
+    int viewId = static_cast<int>(m_gameViews.size());
+    m_gameViews.push_back(pView);
+//    pView->VOnAttach(viewId, actorId);
+//    pView->VOnRestore();
+}
+
 StrongActorPtr BaseGameLogic::VCreateActor(const QString &actorResource, QDomElement *overrides, const Mat4x4 *initialTransform, const ActorId serversActorId)
 {
     Q_ASSERT(m_pActorFactory);

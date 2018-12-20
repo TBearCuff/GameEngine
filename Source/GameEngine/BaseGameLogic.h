@@ -93,8 +93,8 @@ public:
 //    shared_ptr<PathingGraph> GetPathingGraph(void) { return m_pPathingGraph; }
 //    GCCRandom& GetRNG(void) { return m_random; }
 
-//    virtual void VAddView(shared_ptr<IGameView> pView, ActorId actorId = INVALID_ACTOR_ID);
-//    virtual void VRemoveView(shared_ptr<IGameView> pView);
+    virtual void VAddView(QSharedPointer<IGameView> pView, ActorId actorId = INVALID_ACTOR_ID);
+    virtual void VRemoveView(shared_ptr<IGameView> pView);
 
     virtual StrongActorPtr VCreateActor(const QString &actorResource, QDomElement *overrides, const Mat4x4* initialTransform=NULL, const ActorId serversActorId=INVALID_ACTOR_ID);  //don't store this strong pointer outside of this class
     virtual void VDestroyActor(const ActorId actorId);

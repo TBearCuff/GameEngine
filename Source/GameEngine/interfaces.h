@@ -87,7 +87,7 @@ public:
     virtual bool VOnLostDevice()=0;
     virtual GameViewType VGetType()=0;
     virtual GameViewId VGetId() const=0;
-//    virtual void VOnAttach(GameViewId vid, ActorId aid)=0;
+    virtual void VOnAttach(GameViewId vid, ActorId aid)=0;
 
     virtual bool VOnMsgProc( AppMsg msg ) = 0;
     virtual void VOnUpdate(unsigned long deltaMs)=0;
@@ -234,7 +234,7 @@ class IRenderer
 {
 public:
     virtual void VSetBackgroundColor(unsigned char bgA, unsigned char bgR, unsigned char bgG, unsigned char bgB)=0;
-    virtual void VOnRestore()=0;
+    virtual bool VOnRestore()=0;
 //    virtual void VShutdown()=0;
     virtual bool VPreRender()=0;
     virtual bool VPostRender()=0;
