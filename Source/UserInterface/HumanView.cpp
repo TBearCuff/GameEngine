@@ -162,7 +162,7 @@ bool HumanView::VOnMsgProc(AppMsg msg)
         else */if(m_KeyboardHandler)
         {
 //            QKeyEvent *ke = static_cast<QKeyEvent *>(msg);
-            result = m_KeyboardHandler->VOnKeyDown(msg.m_wParam);
+            result = m_KeyboardHandler->VOnKeyDown(msg.m_param[0]);
         }
         break;
     case QEvent::KeyRelease:
@@ -173,7 +173,45 @@ bool HumanView::VOnMsgProc(AppMsg msg)
         else*/ if(m_KeyboardHandler)
         {
 //            QKeyEvent *ke = static_cast<QKeyEvent *>(msg);
-            result = m_KeyboardHandler->VOnKeyUp(msg.m_wParam);
+            result = m_KeyboardHandler->VOnKeyUp(msg.m_param[0]);
+        }
+        break;
+    case QEvent::MouseMove:
+        if(m_PointerHandler)
+            result = m_PointerHandler->VOnPointerMove(Point(msg.m_param[0],msg.m_param[1]), 1);
+        break;
+    case QEvent::MouseButtonPress:
+        if(m_PointerHandler)
+        {
+            if(msg.m_param[2] == Qt::LeftButton)
+            {
+                result = m_PointerHandler->VOnPointerButtonDown(Point(msg.m_param[0],msg.m_param[1]), 1, "PointerLeft");
+            }
+            else if(msg.m_param[2] == Qt::RightButton)
+            {
+                result = m_PointerHandler->VOnPointerButtonDown(Point(msg.m_param[0],msg.m_param[1]), 1, "PointerRight");
+            }
+            else if(msg.m_param[2] == Qt::MidButton)
+            {
+                result = m_PointerHandler->VOnPointerButtonDown(Point(msg.m_param[0],msg.m_param[1]), 1, "PointerMiddle");
+            }
+        }
+        break;
+    case QEvent::MouseButtonRelease:
+        if(m_PointerHandler)
+        {
+            if(msg.m_param[2] == Qt::LeftButton)
+            {
+                result = m_PointerHandler->VOnPointerButtonUp(Point(msg.m_param[0],msg.m_param[1]), 1, "PointerLeft");
+            }
+            else if(msg.m_param[2] == Qt::RightButton)
+            {
+                result = m_PointerHandler->VOnPointerButtonUp(Point(msg.m_param[0],msg.m_param[1]), 1, "PointerRight");
+            }
+            else if(msg.m_param[2] == Qt::MidButton)
+            {
+                result = m_PointerHandler->VOnPointerButtonUp(Point(msg.m_param[0],msg.m_param[1]), 1, "PointerMiddle");
+            }
         }
         break;
     }

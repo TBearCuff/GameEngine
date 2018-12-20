@@ -124,6 +124,7 @@ public:
 
 class IPointerHandler
 {
+public:
     virtual bool VOnPointerMove(const Point &pos, const int radius) = 0;
     virtual bool VOnPointerButtonDown(const Point &pos, const int radius, const QString &buttonName) = 0;
     virtual bool VOnPointerButtonUp(const Point &pos, const int radius, const QString &buttonName) = 0;
@@ -131,6 +132,7 @@ class IPointerHandler
 
 class IJoystickHandler
 {
+public:
     virtual bool VOnButtonDown(const QString &buttonName, int const pressure)=0;
     virtual bool VOnButtonUp(const QString &buttonName)=0;
     virtual bool VOnJoystick(float const x, float const y)=0;
@@ -138,6 +140,7 @@ class IJoystickHandler
 
 class IGamepadHandler
 {
+public:
     virtual bool VOnTrigger(const QString &triggerName, float const pressure)=0;
     virtual bool VOnButtonDown(const QString &buttonName, int const pressure)=0;
     virtual bool VOnButtonUp(const QString &buttonName)=0;
