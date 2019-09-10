@@ -1,7 +1,7 @@
 #ifndef HUMANVIEW_H
 #define HUMANVIEW_H
 
-//#include "GameEngine/interfaces.h"
+#include "../GameEngine/interfaces.h"
 
 class HumanView : public IGameView
 {
