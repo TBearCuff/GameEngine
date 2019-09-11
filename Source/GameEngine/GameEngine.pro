@@ -83,7 +83,8 @@ HEADERS += \
     ../MainLoop/ProcessManager.h \
     ../Utilities/types.h \
     ../UserInterface/HumanView.h \
-    ../Graphics3D/GLRenderer.h
+    ../Graphics3D/GLRenderer.h \
+    ../UserInterface/UserInterface.h
 
 RESOURCES += \
     resources.qrc

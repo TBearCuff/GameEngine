@@ -6,6 +6,7 @@
 #include "../ResourceCache/ResCache.h"
 #include "../Graphics3D/GLRenderer.h"
 #include "../ResourceCache/XMLResourceLoader.h"
+#include "../UserInterface/UserInterface.h"
 #include <QStorageInfo>
 
 #include <QDomDocument>
@@ -263,12 +264,12 @@ void GameEngineApp::onGameUpdate()
         OnClose();
     }
 
-//    if(m_pCamera)
-//    {
-////        IEventManager::GetGlobal()->VUpdate();
+    if(m_pGame)
+    {
+//        IEventManager::GetGlobal()->VUpdate();
 
-////        m_pCamera->VOnUpdate(m_LastTime, elapsedTime);
-//    }
+        m_pGame->VOnUpdate(m_LastTime, elapsedTime);
+    }
 
 
 }
@@ -308,7 +309,7 @@ bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
         msg.m_param[1] = me->y();
         msg.m_param[2] = me->button();
         processInput = true;
-        qDebug() << ev->type() << me->x() << ", " << me->y();
+//        qDebug() << ev->type() << me->x() << ", " << me->y();
 
 
         break;

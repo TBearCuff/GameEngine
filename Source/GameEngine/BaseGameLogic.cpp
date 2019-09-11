@@ -108,7 +108,8 @@ WeakActorPtr BaseGameLogic::VGetActor(const ActorId actorId)
 
 void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
 {
-
+    int deltaMilliseconds = int(elapsedTime);
+    m_Lifetime += elapsedTime;
 
     switch(m_State)
     {
@@ -174,13 +175,13 @@ void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
 //            GCC_ERROR("Unrecognized state.");
         break;
     }
-#if 0
     // update all game views
     for (GameViewList::iterator it = m_gameViews.begin(); it != m_gameViews.end(); ++it)
     {
         (*it)->VOnUpdate(deltaMilliseconds);
     }
 
+#if 0
     // update game actors
     for (ActorMap::const_iterator it = m_actors.begin(); it != m_actors.end(); ++it)
     {

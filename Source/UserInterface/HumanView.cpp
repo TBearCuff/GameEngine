@@ -83,7 +83,7 @@ void HumanView::VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)
             {
                 if((*i)->VIsVisible() )
                 {
-//                    (*i)->VOnRender(fTime, fElapsedTime);
+                    (*i)->VOnRender(uiTime, uiElapsedTime);
                 }
             }
 
@@ -131,8 +131,13 @@ void HumanView::VOnUpdate(unsigned long deltaMilliseconds)
     // example of this is a 3D scene attached to the human view.
     for(ScreenElementList::iterator i=m_ScreenElements.begin(); i!=m_ScreenElements.end(); ++i)
     {
-        (*i)->VOnUpdate(deltaMilliseconds);
+//        (*i)->VOnUpdate(deltaMilliseconds);
     }
+}
+
+void HumanView::VPushElement(QSharedPointer<IScreenElement> pElement)
+{
+    m_ScreenElements.push_front(pElement);
 }
 
 bool HumanView::VOnMsgProc(AppMsg msg)

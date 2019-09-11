@@ -7,6 +7,8 @@
 #include "../MainWindow/MainWindow.h"
 #include "BaseGameLogic.h"
 
+#include "../UserInterface/UserInterface.h"
+
 class GameEngineApp : public QApplication
 {
     MainWindow* window;

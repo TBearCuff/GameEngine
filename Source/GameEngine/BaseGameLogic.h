@@ -46,7 +46,7 @@ class BaseGameLogic : public IGameLogic
     friend class GameEngineApp;       //This is only to gain access to view list
 
 protected:
-//    float m_Lifetime;   //indicates how long this game has been in session
+    float m_Lifetime;   //indicates how long this game has been in session
     ProcessManager* m_pProcessManager;  //a game logic entity
 //    GCCRandom m_random;     //our RNG
     ActorMap m_actors;

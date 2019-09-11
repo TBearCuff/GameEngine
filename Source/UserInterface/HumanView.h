@@ -1,7 +1,7 @@
 #ifndef HUMANVIEW_H
 #define HUMANVIEW_H
 
-#include "../GameEngine/interfaces.h"
+//#include "../GameEngine/interfaces.h"
 
 class HumanView : public IGameView
 {
@@ -43,7 +43,7 @@ public:
     virtual void VOnUpdate(unsigned long deltaMilliseconds);
 
     //Virtual methods to control the layering of interface elements
-//    virtual void VPushElement(shared_ptr<IScreenElement> pElement);
+    virtual void VPushElement(QSharedPointer<IScreenElement> pElement);
 //    virtual void VRemoveElement(shared_ptr<IScreenElement> pElement);
 
     void TogglePause(bool active);
