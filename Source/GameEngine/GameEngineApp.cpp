@@ -153,6 +153,12 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
 
     m_Renderer = QSharedPointer<IRenderer>(GCC_NEW GLRenderer());
+    m_Renderer->VSetBackgroundColor(255,0,0,255);
+    m_Renderer->VOnRestore();
+
+    connect(window, &QOpenGLWindow::frameSwapped, this, &GameEngineApp::onFrameRender);
+    m_lastRender = 0;
+
     //create game logic and views
     VCreateGameAndView();
     if(!m_pGame)
@@ -166,6 +172,8 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &GameEngineApp::onGameUpdate);
     timer->start(5);
+
+    m_LastTime = 0;
 
     connect(this, &QApplication::aboutToQuit, this, &GameEngineApp::OnClose);
 
@@ -272,6 +280,28 @@ void GameEngineApp::onGameUpdate()
     }
 
 
+}
+
+void GameEngineApp::onFrameRender()
+{
+    qint64 elapsedTime = 0;
+    if(m_AppElapsedTimer.isValid()) //should always be valid (I think) May be able to remove check
+    {
+        elapsedTime = m_AppElapsedTimer.elapsed() - m_lastRender;
+        m_lastRender += elapsedTime;
+    }
+
+    qDebug() << "Rendering frame at: " << m_lastRender;
+
+    BaseGameLogic *pGame = g_pApp->m_pGame;
+
+    for(GameViewList::iterator i=pGame->m_gameViews.begin(),
+        end=pGame->m_gameViews.end(); i!=end; ++i)
+    {
+        (*i)->VOnRender(m_lastRender, elapsedTime);
+    }
+
+//    g_pApp->m_pGame->VRenderDiagnostics();
 }
 
 //GameEngineApp::GetString

@@ -131,7 +131,7 @@ void HumanView::VOnUpdate(unsigned long deltaMilliseconds)
     // example of this is a 3D scene attached to the human view.
     for(ScreenElementList::iterator i=m_ScreenElements.begin(); i!=m_ScreenElements.end(); ++i)
     {
-//        (*i)->VOnUpdate(deltaMilliseconds);
+        (*i)->VOnUpdate(deltaMilliseconds);
     }
 }
 

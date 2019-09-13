@@ -60,13 +60,15 @@ private:
     void RegisterEngineEvents(void);
 
     unsigned int MapCharToKeycode(const char);
-    void onGameUpdate();
 
     QElapsedTimer m_AppElapsedTimer;
     qint64 m_LastTime;
+    qint64 m_lastRender;
 
 private slots:
     void OnClose();
+    void onGameUpdate();
+    void onFrameRender();
 };
 
 extern GameEngineApp *g_pApp;
