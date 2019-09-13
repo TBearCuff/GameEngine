@@ -43,6 +43,19 @@ bool BaseGameLogic::Init()
     return true;
 }
 
+void BaseGameLogic::VAddView(QSharedPointer<IGameView> pView, ActorId actorId)
+{
+    int viewId = static_cast<int>(m_gameViews.size());
+    m_gameViews.push_back(pView);
+    pView->VOnAttach(viewId, actorId);
+    pView->VOnRestore();
+}
+
+void BaseGameLogic::VRemoveView(QSharedPointer<IGameView> pView)
+{
+    m_gameViews.removeOne(pView);
+}
+
 StrongActorPtr BaseGameLogic::VCreateActor(const QString &actorResource, QDomElement *overrides, const Mat4x4 *initialTransform, const ActorId serversActorId)
 {
     Q_ASSERT(m_pActorFactory);
@@ -95,7 +108,8 @@ WeakActorPtr BaseGameLogic::VGetActor(const ActorId actorId)
 
 void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
 {
-
+    int deltaMilliseconds = int(elapsedTime);
+    m_Lifetime += elapsedTime;
 
     switch(m_State)
     {
@@ -161,13 +175,13 @@ void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
 //            GCC_ERROR("Unrecognized state.");
         break;
     }
-#if 0
     // update all game views
     for (GameViewList::iterator it = m_gameViews.begin(); it != m_gameViews.end(); ++it)
     {
         (*it)->VOnUpdate(deltaMilliseconds);
     }
 
+#if 0
     // update game actors
     for (ActorMap::const_iterator it = m_actors.begin(); it != m_actors.end(); ++it)
     {

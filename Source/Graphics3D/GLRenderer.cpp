@@ -129,8 +129,6 @@ void GLRenderer::VOnRestore()
 
 bool GLRenderer::VPreRender()
 {
-//    if (DXUTGetD3D11DeviceContext() && DXUTGetD3D11RenderTargetView())
-    {
         glClearColor(m_backgroundColor[1], m_backgroundColor[2], m_backgroundColor[3], m_backgroundColor[0]);
 //        glClearDepth(1);//initial value is 1
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -140,7 +138,6 @@ bool GLRenderer::VPreRender()
         // Clear the depth buffer to 1.0 (max depth)
         //
 //        DXUTGetD3D11DeviceContext()->ClearDepthStencilView( DXUTGetD3D11DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0 );
-    }
     return true;
 }
 

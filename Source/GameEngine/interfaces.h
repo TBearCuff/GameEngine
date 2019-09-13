@@ -5,7 +5,6 @@
 #include <QKeyEvent>
 #include <QSharedPointer>
 
-
 class Actor;
 class ActorComponent;
 
@@ -37,7 +36,7 @@ class IScreenElement
 public:
     virtual bool VOnRestore() = 0;
     virtual bool VOnLostDevice() = 0;
-//    virtual void VOnRender(double fTime, float fElapsedTime) = 0;
+    virtual void VOnRender(double fTime, float fElapsedTime) = 0;
     virtual void VOnUpdate(int deltaMilliseconds) = 0;
 
     virtual int VGetZOrder() const = 0;
@@ -45,7 +44,7 @@ public:
     virtual bool VIsVisible() const = 0;
     virtual void VSetVisible(bool visible) = 0;
 
-    virtual bool VOnMsgProc( AppMsg msg );
+    virtual bool VOnMsgProc( AppMsg msg ) = 0;
 
     virtual ~IScreenElement() { }
     virtual bool const operator <(IScreenElement const &other) { return VGetZOrder() < other.VGetZOrder(); }
@@ -87,7 +86,7 @@ public:
     virtual bool VOnLostDevice()=0;
     virtual GameViewType VGetType()=0;
     virtual GameViewId VGetId() const=0;
-//    virtual void VOnAttach(GameViewId vid, ActorId aid)=0;
+    virtual void VOnAttach(GameViewId vid, ActorId aid)=0;
 
     virtual bool VOnMsgProc( AppMsg msg ) = 0;
     virtual void VOnUpdate(unsigned long deltaMs)=0;
@@ -234,7 +233,7 @@ class IRenderer
 {
 public:
     virtual void VSetBackgroundColor(unsigned char bgA, unsigned char bgR, unsigned char bgG, unsigned char bgB)=0;
-    virtual void VOnRestore()=0;
+    virtual bool VOnRestore()=0;
 //    virtual void VShutdown()=0;
     virtual bool VPreRender()=0;
     virtual bool VPostRender()=0;

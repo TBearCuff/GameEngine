@@ -83,7 +83,7 @@ void HumanView::VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)
             {
                 if((*i)->VIsVisible() )
                 {
-//                    (*i)->VOnRender(fTime, fElapsedTime);
+                    (*i)->VOnRender(uiTime, uiElapsedTime);
                 }
             }
 
@@ -133,6 +133,11 @@ void HumanView::VOnUpdate(unsigned long deltaMilliseconds)
     {
         (*i)->VOnUpdate(deltaMilliseconds);
     }
+}
+
+void HumanView::VPushElement(QSharedPointer<IScreenElement> pElement)
+{
+    m_ScreenElements.push_front(pElement);
 }
 
 bool HumanView::VOnMsgProc(AppMsg msg)

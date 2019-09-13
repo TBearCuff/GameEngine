@@ -79,7 +79,7 @@ public:
 
     virtual bool VPreRender();
     virtual bool VPostRender();
-    virtual void VOnRestore() { }
+    virtual bool VOnRestore() { return true;}
     virtual void VCalcLighting(Lights *lights, int maximumLights) { }
 
     // These three functions are done for each shader, not as a part of beginning the render - so they do nothing in D3D11.
