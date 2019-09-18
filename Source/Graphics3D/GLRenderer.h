@@ -1,9 +1,10 @@
 #ifndef GLRENDERER_H
 #define GLRENDERER_H
 
+#include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
-
+#include <QOpenGLVertexArrayObject>
 //
 // struct ConstantBuffer_Matrices
 //
@@ -62,10 +63,10 @@ protected:
 //   and CDXUTTextHelper for user interface tasks whether D3D9 or D3D11 is being used.
 //
 
-class GLRenderer : public IRenderer
+class GLRenderer : public IRenderer, protected QOpenGLFunctions
 {
 public:
-    GLRenderer() { m_pLineDrawer = NULL; }
+    GLRenderer() { m_pLineDrawer = NULL; m_program = NULL; }
 
 //    virtual void VShutdown() { /*SAFE_DELETE(g_pTextHelper);*/ SAFE_DELETE(m_pLineDrawer); }
 
@@ -77,9 +78,17 @@ public:
         m_backgroundColor[3] = float(bgB) / 255.0f;
     }
 
+//    virtual void VSetBackgroundColor(float fgA, float fgR, float fgG, float fgB)
+//    {
+//        m_backgroundColor[0] = fgA;
+//        m_backgroundColor[1] = fgR;
+//        m_backgroundColor[2] = fgG;
+//        m_backgroundColor[3] = fgB;
+//    }
+
     virtual bool VPreRender();
     virtual bool VPostRender();
-    virtual bool VOnRestore() { return true;}
+    virtual bool VOnRestore();
     virtual void VCalcLighting(Lights *lights, int maximumLights) { }
 
     // These three functions are done for each shader, not as a part of beginning the render - so they do nothing in D3D11.
@@ -100,6 +109,8 @@ public:
 //	static CDXUTTextHelper* g_pTextHelper;
 protected:
     float m_backgroundColor[4];
+    QOpenGLShaderProgram *m_program;
+    QOpenGLVertexArrayObject m_object;
 
     GLLineDrawer *m_pLineDrawer;
 };

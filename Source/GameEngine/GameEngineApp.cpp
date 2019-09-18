@@ -4,7 +4,7 @@
 #include "GameEngineApp.h"
 #include "../MainLoop/Initialization.h"
 #include "../ResourceCache/ResCache.h"
-#include "../Graphics3D/GLRenderer.h"
+#include "../MainWindow/OpenGLRenderWindow.h"
 #include "../ResourceCache/XMLResourceLoader.h"
 #include "../UserInterface/UserInterface.h"
 #include <QStorageInfo>
@@ -140,24 +140,25 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     format.setProfile(QSurfaceFormat::CoreProfile);
     format.setVersion(3,0);
 
-    window = new MainWindow();
+    m_Renderer = QSharedPointer<OpenGLRenderWindow>( new OpenGLRenderWindow());
 //    window->setTitle(VGetGameTitle());
 //    window->setIcon(VGetIcon());
-    window->setFormat(format);
-    window->resize(QSize(800, 600));
-    window->show();
-    window->installEventFilter(this);
+    m_Renderer->setFormat(format);
+    m_Renderer->resize(QSize(800, 600));
+    m_Renderer->show();
+    m_Renderer->installEventFilter(this);
 //    window->showFullScreen();
 
     // initialize the directory location you can store save game files
 
 
-    m_Renderer = QSharedPointer<IRenderer>(GCC_NEW GLRenderer());
-    m_Renderer->VSetBackgroundColor(255,0,0,255);
+    connect(m_Renderer.data(), &OpenGLRenderWindow::updateFrame, this, &GameEngineApp::onFrameRender);
+    m_lastRender = 0;
+
+//    m_Renderer = QSharedPointer<IRenderer>(GCC_NEW GLRenderer());
+    m_Renderer->VSetBackgroundColor(0.2f,0.3f,0.3f,1.0f);
     m_Renderer->VOnRestore();
 
-    connect(window, &QOpenGLWindow::frameSwapped, this, &GameEngineApp::onFrameRender);
-    m_lastRender = 0;
 
     //create game logic and views
     VCreateGameAndView();
@@ -290,8 +291,6 @@ void GameEngineApp::onFrameRender()
         elapsedTime = m_AppElapsedTimer.elapsed() - m_lastRender;
         m_lastRender += elapsedTime;
     }
-
-    qDebug() << "Rendering frame at: " << m_lastRender;
 
     BaseGameLogic *pGame = g_pApp->m_pGame;
 

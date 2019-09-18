@@ -4,14 +4,15 @@
 #include <QApplication>
 #include <QElapsedTimer>
 
-#include "../MainWindow/MainWindow.h"
+#include "../MainWindow/OpenGLRenderWindow.h"
 #include "BaseGameLogic.h"
+#include <QOpenGLContext>
 
 #include "../UserInterface/UserInterface.h"
 
 class GameEngineApp : public QApplication
 {
-    MainWindow* window;
+//    MainWindow* window;
 protected:
 //    bool m_bWindowedMode;					// true if the app is windowed, false if fullscreen
     bool m_bIsRunning;						// true if everything is initialized and the game is in the main loop
@@ -38,7 +39,7 @@ public:
 
     BaseGameLogic* GetGameLogic(void) const { return m_pGame; }
 
-    QSharedPointer<IRenderer> m_Renderer;
+    QSharedPointer<OpenGLRenderWindow> m_Renderer;
 
     // File and Resource System
     class ResCache *m_ResCache;

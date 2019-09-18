@@ -5,7 +5,7 @@
 
 //#include "../Actors/rendercomponentinterface.h"
 
-//#include "../Graphics3D/GLRenderer.h"
+//#include "../MainWindow/OpenGLRenderWindow.h"
 //#include "../Graphics3D/Scene.h"
 
 
@@ -16,7 +16,7 @@ const GameViewId gc_InvalidGameViewId = 0xffffffff;
 //
 // HumanView::HumanView - Chapter 10, page 272
 //
-HumanView::HumanView(QSharedPointer<IRenderer> renderer)
+HumanView::HumanView(QSharedPointer<OpenGLRenderWindow> renderer)
 {
 //    InitAudio();
 
@@ -102,10 +102,12 @@ void HumanView::VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)
 
 bool HumanView::VOnRestore()
 {
+    g_pApp->m_Renderer->PreRestore();
     for(ScreenElementList::iterator i = m_ScreenElements.begin(); i!=m_ScreenElements.end(); ++i)
     {
         if( !(*i)->VOnRestore() ) return false;
     }
+    g_pApp->m_Renderer->PostRestore();
 
     return true;
 }
