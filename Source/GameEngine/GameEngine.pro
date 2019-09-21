@@ -58,10 +58,10 @@ SOURCES += \
     ../MainLoop/Process.cpp \
     ../MainLoop/ProcessManager.cpp \
     ../UserInterface/HumanView.cpp \
-    ../Graphics3D/GLRenderer.cpp \
     ../Graphics2D/Sprite.cpp \
     ../Graphics3D/Shaders.cpp \
-    ../MainWindow/OpenGLRenderWindow.cpp
+    ../MainWindow/OpenGLRenderWindow.cpp \
+    ../Graphics3D/Material.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -86,11 +86,11 @@ HEADERS += \
     ../MainLoop/ProcessManager.h \
     ../Utilities/types.h \
     ../UserInterface/HumanView.h \
-    ../Graphics3D/GLRenderer.h \
     ../UserInterface/UserInterface.h \
     ../Graphics2D/Sprite.h \
     ../Graphics3D/Shaders.h \
-    ../MainWindow/OpenGLRenderWindow.h
+    ../MainWindow/OpenGLRenderWindow.h \
+    ../Graphics3D/Material.h
 
 RESOURCES += \
     resources.qrc

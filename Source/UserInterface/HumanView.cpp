@@ -102,12 +102,12 @@ void HumanView::VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)
 
 bool HumanView::VOnRestore()
 {
-    g_pApp->m_Renderer->PreRestore();
+    g_pApp->m_Renderer->VPreRestore();
     for(ScreenElementList::iterator i = m_ScreenElements.begin(); i!=m_ScreenElements.end(); ++i)
     {
         if( !(*i)->VOnRestore() ) return false;
     }
-    g_pApp->m_Renderer->PostRestore();
+    g_pApp->m_Renderer->VPostRestore();
 
     return true;
 }

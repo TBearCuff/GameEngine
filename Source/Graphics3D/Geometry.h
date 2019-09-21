@@ -5,6 +5,7 @@
 #include <QVector3D>
 #include <QVector4D>
 #include <QMatrix4x4>
+#include "math.h"
 
 const float  GCC_PI = 3.14159265358979f;
 const float  GCC_2PI = 2.0f * GCC_PI;
