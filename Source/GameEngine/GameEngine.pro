@@ -61,7 +61,8 @@ SOURCES += \
     ../Graphics2D/Sprite.cpp \
     ../Graphics3D/Shaders.cpp \
     ../MainWindow/OpenGLRenderWindow.cpp \
-    ../Graphics3D/Material.cpp
+    ../Graphics3D/Material.cpp \
+    ../Graphics3D/Scene.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -90,7 +91,8 @@ HEADERS += \
     ../Graphics2D/Sprite.h \
     ../Graphics3D/Shaders.h \
     ../MainWindow/OpenGLRenderWindow.h \
-    ../Graphics3D/Material.h
+    ../Graphics3D/Material.h \
+    ../Graphics3D/Scene.h
 
 RESOURCES += \
     resources.qrc

@@ -245,7 +245,6 @@ public:
 //    virtual QSharedPointer<IRenderState> VPrepareSkyBoxPass()=0;
     virtual void VDrawLine(const Vec3& from, const Vec3& to, const Color& color)=0;
 };
-#if 0
 /////////////////////////////////////////////////////////////////////////////
 // class ISceneNode					- Chapter 16, page 524
 //
@@ -283,6 +282,7 @@ public:
     virtual ~ISceneNode() { }
 };
 
+#if 0
 
 
 /////////////////////////////////////////////////////////////////////////////
