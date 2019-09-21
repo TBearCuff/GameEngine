@@ -110,23 +110,6 @@ void GLLineDrawer::OnRestore()
 
 }
 
-////////////////////////////////////////////////////
-// D3DRenderer11 Implementation
-//
-//    Not described in the book - but it abstracts
-//    some of the calls to get the game engine to run
-//    under DX11.
-////////////////////////////////////////////////////
-#if 0
-void GLRenderer::VOnRestore()
-{
-    SAFE_DELETE(D3DRenderer::g_pTextHelper);
-    D3DRenderer::g_pTextHelper = GCC_NEW CDXUTTextHelper( DXUTGetD3D11Device(), DXUTGetD3D11DeviceContext(), &g_DialogResourceManager, 15 );
-
-    return;
-}
-#endif
-
 bool GLRenderer::VPreRender()
 {
         glClearColor(m_backgroundColor[1], m_backgroundColor[2], m_backgroundColor[3], m_backgroundColor[0]);
@@ -138,11 +121,62 @@ bool GLRenderer::VPreRender()
         // Clear the depth buffer to 1.0 (max depth)
         //
 //        DXUTGetD3D11DeviceContext()->ClearDepthStencilView( DXUTGetD3D11DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0 );
+        m_program->bind();
+        m_object.bind();
     return true;
 }
 
 bool GLRenderer::VPostRender(void)
 {
+    m_object.release();
+//    m_program->release();
+    return true;
+}
+
+bool GLRenderer::VOnRestore()
+{
+    bool ret;
+    delete m_program;
+
+    m_program = new QOpenGLShaderProgram();
+    m_program->create();
+    ret = m_program->addShaderFromSourceCode(QOpenGLShader::Vertex,
+                                       "#version 100\n"
+                                       "attribute vec3 position; \n"
+                                       "void main() \n"
+                                       "{ \n"
+                                       " gl_Position = vec4(position.x, position.y, position.z, 1.0); \n"
+                                       "} \n");
+    if(!ret)
+    {
+        QString error = m_program->log();
+        qDebug() << error;
+        return false;
+    }
+
+    ret = m_program->addShaderFromSourceCode(QOpenGLShader::Fragment,
+                                       "#version 100\n"
+                                       "precision mediump float; \n"
+                                       "void main() \n"
+                                       "{ \n"
+                                       " gl_FragColor = vec4(1.0, 0.5, 0.2, 1.0); \n"
+                                       "} \n");
+
+    if(!ret)
+    {
+        return false;
+    }
+
+    m_program->link();
+    m_program->bind();
+    m_object.create();
+    m_object.bind();
+    int vertexLocation = m_program->attributeLocation("position");
+    m_program->enableAttributeArray(vertexLocation);
+    m_program->setAttributeBuffer(vertexLocation, GL_FLOAT, 0, 3, 12);
+    m_object.release();
+//    m_program->release();
+
     return true;
 }
 

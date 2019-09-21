@@ -49,7 +49,7 @@ public:
     void TogglePause(bool active);
 
     virtual ~HumanView();
-    HumanView(QSharedPointer<IRenderer> renderer);
+    HumanView(QSharedPointer<OpenGLRenderWindow> renderer);
 
     ScreenElementList m_ScreenElements;     //a game screen entity
 

@@ -1,10 +1,15 @@
-#ifndef GLRENDERER_H
-#define GLRENDERER_H
+#ifndef OPENGLRENDERWINDOW_H
+#define OPENGLRENDERWINDOW_H
 
+#include <QWindow>
 #include <QOpenGLFunctions>
-#include <QOpenGLBuffer>
+#include <QResizeEvent>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
+#include <QOpenGLBuffer>
+#include "../Graphics3D/Geometry.h"
+typedef QVector4D Color;
+
 //
 // struct ConstantBuffer_Matrices
 //
@@ -43,10 +48,16 @@ class GLLineDrawer
 {
 public:
     GLLineDrawer() { m_pVertexBuffer = NULL; }
-    ~GLLineDrawer() { SAFE_RELEASE(m_pVertexBuffer); }
+    ~GLLineDrawer() {
+        if(m_pVertexBuffer)
+        {
+            m_pVertexBuffer->destroy();
+            delete m_pVertexBuffer;
+        };
+    }
 
     void DrawLine(const Vec3& from, const Vec3& to, const Color& color);
-    void OnRestore();
+    bool OnRestore();
 
 protected:
     Vec3            m_Verts[2];
@@ -54,49 +65,34 @@ protected:
     QOpenGLBuffer* m_pVertexBuffer;
 };
 
-//
-// class D3DRenderer11								- Chapter 10, page 270
-//
-//   The D3DRenderer and D3DRenderer9 classes are not discussed in the book. The D3DRenderer class is designed to
-//   implement the IRenderer interface, which abstracts the implentation of the renderer technology, which for this
-//   engine can be either D3D9 or D3D11. It also encapsulates the usefulness of CDXUTDialogResourceManager
-//   and CDXUTTextHelper for user interface tasks whether D3D9 or D3D11 is being used.
-//
-
-class GLRenderer : public IRenderer, protected QOpenGLFunctions
+class OpenGLRenderWindow : public QWindow, protected QOpenGLFunctions
 {
+    Q_OBJECT
 public:
-    GLRenderer() { m_pLineDrawer = NULL; m_program = NULL; }
+    explicit OpenGLRenderWindow(QWindow *parent = 0);
+//    ~OpenGLRenderWindow();
 
-//    virtual void VShutdown() { /*SAFE_DELETE(g_pTextHelper);*/ SAFE_DELETE(m_pLineDrawer); }
-
-    virtual void VSetBackgroundColor(BYTE bgA, BYTE bgR, BYTE bgG, BYTE bgB)
+    virtual void VSetBackgroundColor(float fgR, float fgG, float fgB, float fgA)
     {
-        m_backgroundColor[0] = float(bgA) / 255.0f;
-        m_backgroundColor[1] = float(bgR) / 255.0f;
-        m_backgroundColor[2] = float(bgG) / 255.0f;
-        m_backgroundColor[3] = float(bgB) / 255.0f;
+        m_backgroundColor[0] = fgR;
+        m_backgroundColor[1] = fgG;
+        m_backgroundColor[2] = fgB;
+        m_backgroundColor[3] = fgA;
     }
-
-//    virtual void VSetBackgroundColor(float fgA, float fgR, float fgG, float fgB)
-//    {
-//        m_backgroundColor[0] = fgA;
-//        m_backgroundColor[1] = fgR;
-//        m_backgroundColor[2] = fgG;
-//        m_backgroundColor[3] = fgB;
-//    }
 
     virtual bool VPreRender();
     virtual bool VPostRender();
     virtual bool VOnRestore();
-    virtual void VCalcLighting(Lights *lights, int maximumLights) { }
+    virtual bool VPreRestore();
+    virtual bool VPostRestore();
+//    virtual void VCalcLighting(Lights *lights, int maximumLights) { }
 
     // These three functions are done for each shader, not as a part of beginning the render - so they do nothing in D3D11.
-    virtual void VSetWorldTransform(const Mat4x4 *m) { }
-    virtual void VSetViewTransform(const Mat4x4 *m) { }
-    virtual void VSetProjectionTransform(const Mat4x4 *m ) { }
+    virtual void VSetWorldTransform(const Mat4x4 *m) { Q_UNUSED(m) }
+    virtual void VSetViewTransform(const Mat4x4 *m) { Q_UNUSED(m) }
+    virtual void VSetProjectionTransform(const Mat4x4 *m) {Q_UNUSED(m)  }
 
-    virtual void VDrawLine(const Vec3& from, const Vec3& to, const Color& color);
+    virtual void VDrawLine(const Vec3& from,const Vec3& to,const Color& color);
 
 //    virtual shared_ptr<IRenderState> VPrepareAlphaPass();
 //    virtual shared_ptr<IRenderState> VPrepareSkyBoxPass();
@@ -107,12 +103,27 @@ public:
     // You should leave this global - it does wacky things otherwise.
 //    static CDialogResourceManager g_DialogResourceManager;
 //	static CDXUTTextHelper* g_pTextHelper;
+
+signals:
+    void updateFrame();
+
 protected:
     float m_backgroundColor[4];
+    void resizeEvent(QResizeEvent ev);
+    bool event(QEvent *event) override;
+
+    GLLineDrawer *m_pLineDrawer;
+
+
+private:
+    QOpenGLContext* context;
     QOpenGLShaderProgram *m_program;
     QOpenGLVertexArrayObject m_object;
 
-    GLLineDrawer *m_pLineDrawer;
+    int vertexLocation;
+    int colorLocation;
+    int texCoordLocation;
+    int uniformSamplerLocation;
 };
 
-#endif // GLRENDERER_H
+#endif // OPENGLRENDERWINDOW_H
