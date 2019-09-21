@@ -1,9 +1,7 @@
 #ifndef USERINTERFACE_H
 #define USERINTERFACE_H
 
-//#include "../Graphics3D/Scene.h"
-//#include "GameEngineStd.h" // until Graphics3D/Scene is available
-
+#include "../Graphics3D/Scene.h"
 
 enum
 {
@@ -47,6 +45,37 @@ public:
     virtual bool vOnLostDevice() { return true; }
     virtual bool VIsVisible() const { return m_bIsVisible; }
     virtual void VSetVisible(bool visible) { m_bIsVisible = visible; }
+};
+
+//
+// class ScreenElementScene						- Chapter X, page Y
+//
+class ScreenElementScene : public IScreenElement, public Scene
+{
+public:
+    ScreenElementScene(QSharedPointer<IRenderer> renderer) : Scene(renderer) { }
+    virtual ~ScreenElementScene(void)
+    {
+//        GCC_WARNING("~ScreenElementScene()");
+    }
+
+    // IScreenElement Implementation
+    virtual void VOnUpdate(int deltaMS) { OnUpdate(deltaMS); }
+    virtual bool VOnRestore()
+        { OnRestore(); return true; }
+    virtual void VOnRender(double fTime, float fElapsedTime)
+        {   Q_UNUSED(fTime); Q_UNUSED(fElapsedTime); OnRender(); }
+    virtual bool VOnLostDevice()
+        { OnLostDevice(); return true; }
+    virtual int VGetZOrder() const { return 0; }
+    virtual void VSetZOrder(int const zOrder) {Q_UNUSED(zOrder); }
+
+    // Don't handle any messages
+    virtual bool VOnMsgProc( AppMsg msg ) { Q_UNUSED(msg); return false; }
+
+    virtual bool VIsVisible() const { return true; }
+    virtual void VSetVisible(bool visible) {Q_UNUSED(visible); }
+//    virtual bool VAddChild(ActorId id, QSharedPointer<ISceneNode> kid) { return Scene::AddChild(id, kid); }
 };
 
 #endif // USERINTERFACE_H
