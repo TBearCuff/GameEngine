@@ -30,6 +30,7 @@ GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv),
     g_pApp = this;
 
     //Initialize member variables here or
+//    m_screenSize = Point(0,0);
 
 }
 
@@ -145,6 +146,8 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
     m_Renderer = QSharedPointer<OpenGLRenderWindow>( new OpenGLRenderWindow());
 //    window->setTitle(VGetGameTitle());
 //    window->setIcon(VGetIcon());
+//    m_screenSize = Point(screenWidth, screenHeight);
+
     m_Renderer->setFormat(format);
     m_Renderer->resize(QSize(800, 600));
     m_Renderer->show();
