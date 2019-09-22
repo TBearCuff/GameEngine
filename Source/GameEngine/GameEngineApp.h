@@ -11,6 +11,9 @@
 
 #include "../MainWindow/OpenGLRenderWindow.h"
 
+class Rect;
+class Point;
+
 class GameEngineApp : public QApplication
 {
 //    MainWindow* window;
@@ -20,6 +23,8 @@ protected:
     bool m_bQuitting;						// true if the app is running the exit sequence
     bool m_bQuitRequested;					// true if the app should run the exit sequence
 
+    Rect m_rcDesktop;						// current desktop size - not necessarilly the client window size
+//    Point m_screenSize;					// game screen size
     bool m_bIsEditorRunning;				// true if the game editor is running
 
 
@@ -38,6 +43,7 @@ public:
     bool IsRunning() { return m_bIsRunning; }
     void SetQuitting(bool quitting) { m_bQuitting = quitting; }
 
+//    const Point &GetScreenSize()  { return m_screenSize; }
     BaseGameLogic* GetGameLogic(void) const { return m_pGame; }
 
     QSharedPointer<OpenGLRenderWindow> m_Renderer;
