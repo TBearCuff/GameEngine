@@ -1,5 +1,6 @@
 
-//#include "gameenginestd.h"
+#include "GameEngineStd.h"
+
 #include <QSharedMemory>
 #include <QStorageInfo>
 #include <QDebug>

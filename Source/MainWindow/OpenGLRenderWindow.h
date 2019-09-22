@@ -64,7 +64,7 @@ protected:
 //    LineDraw_Hlsl_Shader		m_LineDrawerShader;     //Shaders.h
     QOpenGLBuffer* m_pVertexBuffer;
 };
-
+class IRenderState;
 class OpenGLRenderWindow : public QWindow, protected QOpenGLFunctions
 {
     Q_OBJECT
@@ -94,8 +94,8 @@ public:
 
     virtual void VDrawLine(const Vec3& from,const Vec3& to,const Color& color);
 
-//    virtual shared_ptr<IRenderState> VPrepareAlphaPass();
-//    virtual shared_ptr<IRenderState> VPrepareSkyBoxPass();
+    virtual QSharedPointer<IRenderState> VPrepareAlphaPass();
+    virtual QSharedPointer<IRenderState> VPrepareSkyBoxPass();
 
     bool CompileShader(const char *source, QOpenGLShader *shader);
     bool CompileShaderFromFile( std::wstring szFileName, QOpenGLShader *shader );
@@ -119,10 +119,12 @@ private:
     QOpenGLContext* context;
     QOpenGLShaderProgram *m_program;
     QOpenGLVertexArrayObject m_object;
+    Mat4x4 *trans;
 
     int vertexLocation;
     int colorLocation;
     int texCoordLocation;
+    int uniformTransformLocation;
     int uniformSamplerLocation;
 };
 

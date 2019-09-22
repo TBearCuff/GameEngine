@@ -21,7 +21,7 @@ class XmlResourceLoader : public IResourceLoader
 public:
     virtual bool VUseRawFile() {return false; }
     virtual bool VDiscardRawBufferAfterLoad() { return true; }
-    virtual unsigned int VGetLoadedResourceSize(char *rawBuffer, unsigned int rawSize) {return rawSize; }
+    virtual unsigned int VGetLoadedResourceSize(char *rawBuffer, unsigned int rawSize) {Q_UNUSED(rawBuffer); return rawSize; }
     virtual bool VLoadResource(char *rawBuffer, unsigned int rawSize, QSharedPointer<ResHandle> handle);
     virtual QString VGetPattern() { return "*.xml"; }
 

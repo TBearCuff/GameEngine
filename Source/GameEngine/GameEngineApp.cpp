@@ -46,6 +46,8 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
         return false;
 #endif
 #endif
+    Q_UNUSED(argc);
+    Q_UNUSED(argv);
     //here is where we whould handle command line args
     //QCommandLineParser
 

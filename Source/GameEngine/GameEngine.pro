@@ -42,7 +42,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         GameEngineApp.cpp \
-    ../MainWindow/MainWindow.cpp \
     ../MainWindow/Transform3D.cpp \
     BaseGameLogic.cpp \
     ../MainLoop/Initialization.cpp \
@@ -67,7 +66,6 @@ SOURCES += \
 
 HEADERS += \
         GameEngineApp.h \
-    ../MainWindow/MainWindow.h \
     ../MainWindow/Transform3D.h \
     ../MainWindow/vertex.h \
     BaseGameLogic.h \
