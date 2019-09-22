@@ -258,24 +258,18 @@ public:
 
     virtual void VSetTransform(const Mat4x4 *toWorld, const Mat4x4 *fromWorld=NULL)=0;
 
-    virtual void VOnUpdate(Scene *pScene, DWORD const elapsedMs)=0;
-    //    virtual HRESULT VOnUpdate(Scene *pScene, DWORD const elapsedMs)=0;
-    virtual void VOnRestore(Scene *pScene)=0;
-    //    virtual HRESULT VOnRestore(Scene *pScene)=0;
+    virtual bool VOnUpdate(Scene *pScene, unsigned long const elapsedMs)=0;
+    virtual bool VOnRestore(Scene *pScene)=0;
 
     virtual bool VPreRender(Scene *pScene)=0;
     virtual bool VIsVisible(Scene *pScene) const=0;
-    virtual void VRender(Scene *pScene)=0;
-    //    virtual HRESULT VRender(Scene *pScene)=0;
-    virtual void VRenderChildren(Scene *pScene)=0;
-    //    virtual HRESULT VRenderChildren(Scene *pScene)=0;
-    virtual void VPostRender(Scene *pScene)=0;
-    //    virtual HRESULT VPostRender(Scene *pScene)=0;
+    virtual bool VRender(Scene *pScene)=0;
+    virtual bool VRenderChildren(Scene *pScene)=0;
+    virtual bool VPostRender(Scene *pScene)=0;
 
     virtual bool VAddChild(QSharedPointer<ISceneNode> kid)=0;
     virtual bool VRemoveChild(ActorId id)=0;
-    virtual void VOnLostDevice(Scene *pScene)=0;
-    //    virtual HRESULT VOnLostDevice(Scene *pScene)=0;
+    virtual bool VOnLostDevice(Scene *pScene)=0;
     virtual bool VPick(Scene *pScene, RayCast *pRayCast)=0;
 
 

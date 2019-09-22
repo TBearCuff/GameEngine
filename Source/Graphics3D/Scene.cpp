@@ -1,8 +1,10 @@
 #include "GameEngineStd.h"
 
-
+#include "GameEngineApp.h"
+//#include "../EventManager/EventManager.h"
+//#include "../EventManager/Events.h"
 //#include "../Utilities/string.h"
-//#include "geometry.h"
+#include "Geometry.h"
 //#include "Lights.h"
 
 #include "Scene.h"
@@ -20,11 +22,11 @@
 //
 Scene::Scene(QSharedPointer<IRenderer> renderer)
 {
-//    m_Root.reset(GCC_NEW RootNode());
+    m_Root.reset(new RootNode());
     m_Renderer = renderer;
-//    m_LightManager = GCC_NEW LightManager;
+//    m_LightManager = new LightManager;
 
-//    m_MatrixStack = GCC_NEW QStack<Mat4x4>();
+    m_MatrixStack = GCC_NEW QStack<Mat4x4>();
 
     //Add event manager stuff here?
 }
@@ -49,24 +51,24 @@ void Scene::OnRender()
     // 3. The Sky
     // 4. Anything with Alpha
 
-//    if(m_Root && m_Camera)
+    if(m_Root && m_Camera)
     {
         // The scene root could be anything, but it
         // is usually a SceneNode with the identity
         // matrix
 
-//        m_Camera->SetViewTransform(this);
+        m_Camera->SetViewTransform(this);
 
 //        m_LightManager->CalcLighting(this);
 
-//        if(m_Root->VPreRender(this))
-//        {
-//            m_Root->VRender(this);
-//            m_Root->VRenderChildren(this);
-//            m_Root->VPostRender(this);
-//        }
+        if(m_Root->VPreRender(this))
+        {
+            m_Root->VRender(this);
+            m_Root->VRenderChildren(this);
+            m_Root->VPostRender(this);
+        }
 
-//        RenderAlphaPass();
+        RenderAlphaPass();
     }
     return;
 }
@@ -78,11 +80,11 @@ void Scene::OnRender()
 //
 void Scene::OnLostDevice()
 {
-//    if(m_Root)
-//    {
-//        m_Root->VOnLostDevice(this);
-//    }
-//    return;
+    if(m_Root)
+    {
+        m_Root->VOnLostDevice(this);
+    }
+    return;
 }
 
 //
@@ -90,15 +92,15 @@ void Scene::OnLostDevice()
 //
 void Scene::OnRestore()
 {
-//    if(!m_Root)
-//    {
-//        return;
-//    }
+    if(!m_Root)
+    {
+        return;
+    }
 
-//    m_Renderer->VOnRestore();
+    m_Renderer->VOnRestore();
 
-//    m_Root->VOnRestore(this);
-//    return;
+    m_Root->VOnRestore(this);
+    return;
 }
 
 bool Scene::AddChild(ActorId id, QSharedPointer<ISceneNode> kid)

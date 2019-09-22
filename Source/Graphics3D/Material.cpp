@@ -1,6 +1,10 @@
 #include "GameEngineStd.h"
 
-#include "Material.h"
+#include "GameEngineApp.h"
+#include "../ResourceCache/ResCache.h"
+#include "SceneNodes.h"
+
+//#include "Material.h"
 
 Material::Material()
 {

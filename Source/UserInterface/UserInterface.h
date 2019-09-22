@@ -75,7 +75,7 @@ public:
 
     virtual bool VIsVisible() const { return true; }
     virtual void VSetVisible(bool visible) {Q_UNUSED(visible); }
-//    virtual bool VAddChild(ActorId id, QSharedPointer<ISceneNode> kid) { return Scene::AddChild(id, kid); }
+    virtual bool VAddChild(ActorId id, QSharedPointer<ISceneNode> kid) { return Scene::AddChild(id, kid); }
 };
 
 #endif // USERINTERFACE_H
