@@ -62,7 +62,8 @@ SOURCES += \
     ../Graphics3D/Shaders.cpp \
     ../MainWindow/OpenGLRenderWindow.cpp \
     ../Graphics3D/Material.cpp \
-    ../Graphics3D/Scene.cpp
+    ../Graphics3D/Scene.cpp \
+    ../Graphics3D/SceneNodes.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -92,7 +93,8 @@ HEADERS += \
     ../Graphics3D/Shaders.h \
     ../MainWindow/OpenGLRenderWindow.h \
     ../Graphics3D/Material.h \
-    ../Graphics3D/Scene.h
+    ../Graphics3D/Scene.h \
+    ../Graphics3D/SceneNodes.h
 
 RESOURCES += \
     resources.qrc

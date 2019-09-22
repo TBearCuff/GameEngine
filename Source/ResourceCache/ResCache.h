@@ -1,7 +1,7 @@
 #ifndef RESCACHE_H
 #define RESCACHE_H
 
-#include "GameEngineStd.h"
+//#include "GameEngineStd.h"
 #include <QFileInfo>
 #include <QFile>
 #include <QDir>

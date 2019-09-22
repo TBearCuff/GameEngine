@@ -2,7 +2,7 @@
 #define SCENE_H
 
 #include "Geometry.h"
-//#include "SceneNodes.h"
+#include "SceneNodes.h"
 #include <QStack>
 
 // Forward declarations
@@ -34,13 +34,13 @@ class LightManager;
 class Scene
 {
 protected:
-//    QSharedPointer<SceneNode>       m_Root;
+    QSharedPointer<SceneNode>       m_Root;
     QSharedPointer<CameraNode>      m_Camera;
     QSharedPointer<IRenderer>       m_Renderer;
 
     QStack<Mat4x4>           		*m_MatrixStack;
 
-//    AlphaSceneNodes         m_AlphaSceneNodes;
+    AlphaSceneNodes         m_AlphaSceneNodes;
     SceneActorMap           m_ActorMap;
 
     LightManager            *m_LightManager;
@@ -95,9 +95,9 @@ public:
 
     LightManager *GetLightManager() { return m_LightManager; }
 
-//    void AddAlphaSceneNode(AlphaSceneNode *asn) { m_AlphaSceneNodes.push_back(asn); }
+    void AddAlphaSceneNode(AlphaSceneNode *asn) { m_AlphaSceneNodes.push_back(asn); }
 
-//    bool Pick(RayCast *pRayCast) { return m_Root->VPick(this, pRayCast); }
+    bool Pick(RayCast *pRayCast) { return m_Root->VPick(this, pRayCast); }
 
     QSharedPointer<IRenderer> GetRenderer() { return m_Renderer; }
 };

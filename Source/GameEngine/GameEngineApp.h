@@ -4,11 +4,10 @@
 #include <QApplication>
 #include <QElapsedTimer>
 
-#include "../MainWindow/OpenGLRenderWindow.h"
 #include "BaseGameLogic.h"
-#include <QOpenGLContext>
-
+#include "../Graphics3D/SceneNodes.h"
 #include "../UserInterface/UserInterface.h"
+#include "../MainWindow/OpenGLRenderWindow.h"
 
 class GameEngineApp : public QApplication
 {
