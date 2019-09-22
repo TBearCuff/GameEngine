@@ -53,7 +53,7 @@ public:
 class ScreenElementScene : public IScreenElement, public Scene
 {
 public:
-    ScreenElementScene(QSharedPointer<IRenderer> renderer) : Scene(renderer) { }
+    ScreenElementScene(QSharedPointer<OpenGLRenderWindow> renderer) : Scene(renderer) { }
     virtual ~ScreenElementScene(void)
     {
 //        GCC_WARNING("~ScreenElementScene()");

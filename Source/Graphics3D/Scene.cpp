@@ -7,7 +7,7 @@
 #include "Geometry.h"
 //#include "Lights.h"
 
-#include "Scene.h"
+//#include "Scene.h"
 
 ////////////////////////////////////////////////////
 // Scene Implementation
@@ -20,9 +20,9 @@
 //    Note: The shared_ptr<IRenderer> was added to allow for both D3D9 and D3D11 renderer implementations.
 //          The book only describes D3D11, so to find all the differences, just search for m_Renderer!
 //
-Scene::Scene(QSharedPointer<IRenderer> renderer)
+Scene::Scene(QSharedPointer<OpenGLRenderWindow> renderer)
 {
-    m_Root.reset(new RootNode());
+    m_Root.reset(GCC_NEW RootNode());
     m_Renderer = renderer;
 //    m_LightManager = new LightManager;
 

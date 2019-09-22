@@ -4,6 +4,7 @@
 void XmlResourceExtraData::ParseXml(char* pRawBuffer)
 {
 //    m_xmlDocument.Parse(pRawBuffer);
+    Q_UNUSED(pRawBuffer);
 }
 
 bool XmlResourceLoader::VLoadResource(char* rawBuffer, unsigned int rawSize, QSharedPointer<ResHandle> handle)

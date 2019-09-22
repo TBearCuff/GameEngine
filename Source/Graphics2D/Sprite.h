@@ -45,7 +45,7 @@ public:
     virtual void VSetZOrder(int const zOrder) { m_ZOrder = zOrder; }
     virtual bool VIsVisible() const { return m_IsVisible; }
     virtual void VSetVisible(bool visible) { m_IsVisible = visible; }
-    virtual bool VOnMsgProc( AppMsg msg ) { return false; }
+    virtual bool VOnMsgProc( AppMsg msg ) {Q_UNUSED(msg); return false; }
     virtual bool VOnRestore();
 
 //	void *GetSurface() { return m_d3dSprite; }

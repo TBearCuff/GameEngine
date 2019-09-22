@@ -72,7 +72,6 @@ GLRendererSkyBoxPass::~GLRendererSkyBoxPass()
 void GLLineDrawer::DrawLine(const Vec3& from,const Vec3& to,const Color& color)
 {
 #if 0
-    HRESULT hr;
 
     shared_ptr<Scene> pScene = g_pApp->GetHumanView()->m_pScene;
     shared_ptr<IRenderer> pRenderer = pScene->GetRenderer();
@@ -180,11 +179,12 @@ bool OpenGLRenderWindow::VOnRestore()
                                        "attribute vec3 position; \n"
                                        "attribute vec3 color; \n"
                                        "attribute vec2 texCoord; \n"
+                                       "uniform mat4 transform; \n"
                                        "varying vec3 ourColor; \n"
                                        "varying vec2 TexCoord; \n"
                                        "void main() \n"
                                        "{ \n"
-                                       " gl_Position = vec4(position, 1.0); \n"
+                                       " gl_Position = transform * vec4(position, 1.0); \n"
                                        " ourColor = color; \n"
                                        " TexCoord = texCoord; \n"
                                        "} \n");
@@ -207,6 +207,7 @@ bool OpenGLRenderWindow::VOnRestore()
     vertexLocation = m_program->attributeLocation("position");
     colorLocation = m_program->attributeLocation("color");
     texCoordLocation = m_program->attributeLocation("texCoord");
+    uniformTransformLocation = m_program->uniformLocation("transform");
     uniformSamplerLocation = m_program->uniformLocation("ourTexture");
 
     m_program->release();
@@ -225,6 +226,10 @@ bool OpenGLRenderWindow::VPreRestore()
         return false;
     }
     m_object.bind();
+    trans = new Mat4x4;
+    trans->BuildRotationZ(90.0f);
+    trans->scale(Vec3(1.5f, 1.5f, 1.5f));
+
     return true;
 }
 
@@ -237,6 +242,7 @@ bool OpenGLRenderWindow::VPostRestore()
     m_program->enableAttributeArray(colorLocation);
     m_program->enableAttributeArray(texCoordLocation);
     m_program->setUniformValue(uniformSamplerLocation, 0);
+    m_program->setUniformValue(uniformTransformLocation, *trans);
     m_object.release();
     m_program->release();
     return true;
@@ -295,3 +301,16 @@ bool OpenGLRenderWindow::event(QEvent *event)
     }
 
 }
+
+
+QSharedPointer<IRenderState> OpenGLRenderWindow::VPrepareAlphaPass()
+{
+    return QSharedPointer<IRenderState>(GCC_NEW GLRendererAlphaPass());
+}
+
+
+QSharedPointer<IRenderState> OpenGLRenderWindow::VPrepareSkyBoxPass()
+{
+    return QSharedPointer<IRenderState>(GCC_NEW GLRendererSkyBoxPass());
+}
+

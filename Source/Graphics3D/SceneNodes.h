@@ -4,7 +4,7 @@
 
 #include "Geometry.h"
 #include "Material.h"
-//#include "Shaders.h"
+#include "Shaders.h"
 
 // Forward declarations
 class SceneNode;
@@ -53,7 +53,7 @@ class SceneNodeProperties
 
 protected:
     ActorId         m_ActorId;
-    std::string     m_Name;
+    QString     m_Name;
     Mat4x4          m_ToWorld, m_FromWorld;
     float           m_Radius;
     RenderPass      m_RenderPass;
@@ -69,7 +69,7 @@ public:
     Mat4x4 const &FromWorld() const { return m_FromWorld; }
     void Transform(Mat4x4 *toWorld, Mat4x4 *fromWorld) const;
 
-    const char *Name() const {return m_Name.c_str(); }
+    const char *Name() const {return m_Name.toStdString().c_str(); }
 
     bool HasAlpha() const {return m_Material.HasAlpha(); }
 
@@ -128,7 +128,7 @@ public:
 
     virtual bool VPreRender(Scene *pScene);
     virtual bool VIsVisible(Scene *pScene) const;
-    virtual bool VRender(Scene *pScene) { return true; }
+    virtual bool VRender(Scene *pScene) { Q_UNUSED(pScene); return true; }
     virtual bool VRenderChildren(Scene *pScene);
     virtual bool VPostRender(Scene *pScene);
 
@@ -156,7 +156,7 @@ public:
 class GLSceneNode : public SceneNode
 {
 public:
-    virtual bool VRender(Scene *pScene) {return true; }
+    virtual bool VRender(Scene *pScene) {Q_UNUSED(pScene); return true; }
 };
 
 
@@ -222,7 +222,7 @@ public:
     virtual bool VAddChild(QSharedPointer<ISceneNode> kid);
     virtual bool VRenderChildren(Scene *pScene);
     virtual bool VRemoveChild(ActorId id);
-    virtual bool VIsVisible(Scene *pScene) const { return true; }
+    virtual bool VIsVisible(Scene *pScene) const { Q_UNUSED(pScene); return true; }
 };
 
 
@@ -250,7 +250,7 @@ public:
 
     virtual bool VRender(Scene *pScene);
     virtual bool VOnRestore(Scene *pScene);
-    virtual bool VIsVisible(Scene *pScene) const { return m_bActive; }
+    virtual bool VIsVisible(Scene *pScene) const {Q_UNUSED(pScene) return m_bActive; }
 
     const Frustum &GetFrustum() { return m_Frustum; }
     void SetTarget(QSharedPointer<SceneNode> pTarget)
@@ -303,8 +303,8 @@ public:
     virtual ~GLGrid();
     virtual bool VOnRestore(Scene *pScene);
     virtual bool VRender(Scene *pScene);
-    virtual bool VOnUpdate(Scene *pScene, DWORD const elapsedMs) {  }
-    virtual bool VPick(Scene *pScene, RayCast *pRayCast) {  }
+    virtual bool VOnUpdate(Scene *pScene, DWORD const elapsedMs) { Q_UNUSED(pScene); Q_UNUSED(elapsedMs); return true;  }
+    virtual bool VPick(Scene *pScene, RayCast *pRayCast) {Q_UNUSED(pScene); Q_UNUSED(pRayCast); return false;  }
 
     bool VHasAlpha() const { return m_bTextureHasAlpha; }
 };

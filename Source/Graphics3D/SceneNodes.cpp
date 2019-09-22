@@ -138,7 +138,7 @@ bool SceneNode::VPreRender(Scene *pScene)
 //        }
 //    }
 
-//    pScene->PushAndSetMatrix(m_Props.m_ToWorld);
+    pScene->PushAndSetMatrix(m_Props.m_ToWorld);
     return true;
 }
 
@@ -231,7 +231,7 @@ bool SceneNode::VRenderChildren(Scene *pScene)
                     AlphaSceneNode *asn = GCC_NEW AlphaSceneNode;
                     Q_ASSERT(asn);
                     asn->m_pNode = *i;
-//                    asn->m_Concat = pScene->GetTopMatrix();
+                    asn->m_Concat = pScene->GetTopMatrix();
 
                     Vec4 worldPos(asn->m_Concat.GetPosition());
 
@@ -241,7 +241,7 @@ bool SceneNode::VRenderChildren(Scene *pScene)
 
                     asn->m_ScreenZ = screenPos.z();
 
-//                    pScene->AddAlphaSceneNode(asn);
+                    pScene->AddAlphaSceneNode(asn);
                 }
 
                 //see comment just below
@@ -411,7 +411,7 @@ bool RootNode::VRenderChildren(Scene *pScene)
             break;
         case RenderPass_Sky:
         {
-//            QSharedPointer<IRenderState> skyPass = pScene->GetRenderer()->VPrepareSkyBoxPass();
+            QSharedPointer<IRenderState> skyPass = pScene->GetRenderer()->VPrepareSkyBoxPass();
             m_Children[pass]->VRenderChildren(pScene);
             break;
         }

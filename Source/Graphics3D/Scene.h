@@ -4,6 +4,7 @@
 #include "Geometry.h"
 #include "SceneNodes.h"
 #include <QStack>
+#include "../MainWindow/OpenGLRenderWindow.h"
 
 // Forward declarations
 ////////////////////////////////////////////////////
@@ -36,7 +37,7 @@ class Scene
 protected:
     QSharedPointer<SceneNode>       m_Root;
     QSharedPointer<CameraNode>      m_Camera;
-    QSharedPointer<IRenderer>       m_Renderer;
+    QSharedPointer<OpenGLRenderWindow>       m_Renderer;
 
     QStack<Mat4x4>           		*m_MatrixStack;
 
@@ -48,7 +49,7 @@ protected:
     void RenderAlphaPass();
 
 public:
-    Scene(QSharedPointer<IRenderer> renderer);
+    Scene(QSharedPointer<OpenGLRenderWindow> renderer);
     virtual ~Scene();
 
     void OnRender();
@@ -99,7 +100,7 @@ public:
 
     bool Pick(RayCast *pRayCast) { return m_Root->VPick(this, pRayCast); }
 
-    QSharedPointer<IRenderer> GetRenderer() { return m_Renderer; }
+    QSharedPointer<OpenGLRenderWindow> GetRenderer() { return m_Renderer; }
 };
 
 #endif // SCENE_H

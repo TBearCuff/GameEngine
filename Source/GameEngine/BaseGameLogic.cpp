@@ -108,6 +108,7 @@ WeakActorPtr BaseGameLogic::VGetActor(const ActorId actorId)
 
 void BaseGameLogic::VOnUpdate(float time, float elapsedTime)
 {
+    Q_UNUSED(time);
     int deltaMilliseconds = int(elapsedTime);
     m_Lifetime += elapsedTime;
 
