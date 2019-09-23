@@ -142,6 +142,9 @@ bool OpenGLRenderWindow::VPreRender()
 //        glClearDepth(1);//initial value is 1
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_program->bind();
+    m_program->setUniformValue(uniformModelLocation, *model);
+    m_program->setUniformValue(uniformViewLocation, *view);
+    m_program->setUniformValue(uniformProjectionLocation, *projection);
     m_object.bind();
     return true;
 }
@@ -179,12 +182,14 @@ bool OpenGLRenderWindow::VOnRestore()
                                        "attribute vec3 position; \n"
                                        "attribute vec3 color; \n"
                                        "attribute vec2 texCoord; \n"
-                                       "uniform mat4 transform; \n"
+                                       "uniform mat4 model; \n"
+                                       "uniform mat4 view; \n"
+                                       "uniform mat4 projection; \n"
                                        "varying vec3 ourColor; \n"
                                        "varying vec2 TexCoord; \n"
                                        "void main() \n"
                                        "{ \n"
-                                       " gl_Position = transform * vec4(position, 1.0); \n"
+                                       " gl_Position = projection * view * model * vec4(position, 1.0); \n"
                                        " ourColor = color; \n"
                                        " TexCoord = texCoord; \n"
                                        "} \n");
@@ -207,7 +212,9 @@ bool OpenGLRenderWindow::VOnRestore()
     vertexLocation = m_program->attributeLocation("position");
     colorLocation = m_program->attributeLocation("color");
     texCoordLocation = m_program->attributeLocation("texCoord");
-    uniformTransformLocation = m_program->uniformLocation("transform");
+    uniformModelLocation = m_program->uniformLocation("model");
+    uniformViewLocation = m_program->uniformLocation("view");
+    uniformProjectionLocation = m_program->uniformLocation("projection");
     uniformSamplerLocation = m_program->uniformLocation("ourTexture");
 
     m_program->release();
@@ -226,9 +233,12 @@ bool OpenGLRenderWindow::VPreRestore()
         return false;
     }
     m_object.bind();
-    trans = new Mat4x4;
-    trans->BuildRotationZ(90.0f);
-    trans->scale(Vec3(1.5f, 1.5f, 1.5f));
+    model = new Mat4x4;
+    view = new Mat4x4;
+    projection = new Mat4x4;
+    model->BuildRotationX(-55.0f);
+    view->BuildTranslation(Vec3(0.0f, 0.0f, -3.0f));
+    projection->perspective(45.0f, float(this->width())/float(this->height()), 0.1f, 100.0f);
 
     return true;
 }
@@ -242,7 +252,6 @@ bool OpenGLRenderWindow::VPostRestore()
     m_program->enableAttributeArray(colorLocation);
     m_program->enableAttributeArray(texCoordLocation);
     m_program->setUniformValue(uniformSamplerLocation, 0);
-    m_program->setUniformValue(uniformTransformLocation, *trans);
     m_object.release();
     m_program->release();
     return true;

@@ -119,12 +119,16 @@ private:
     QOpenGLContext* context;
     QOpenGLShaderProgram *m_program;
     QOpenGLVertexArrayObject m_object;
-    Mat4x4 *trans;
+    Mat4x4 *model;
+    Mat4x4 *view;
+    Mat4x4 *projection;
 
     int vertexLocation;
     int colorLocation;
     int texCoordLocation;
-    int uniformTransformLocation;
+    int uniformModelLocation;
+    int uniformViewLocation;
+    int uniformProjectionLocation;
     int uniformSamplerLocation;
 };
 
