@@ -250,7 +250,7 @@ public:
 
     virtual bool VRender(Scene *pScene);
     virtual bool VOnRestore(Scene *pScene);
-    virtual bool VIsVisible(Scene *pScene) const {Q_UNUSED(pScene) return m_bActive; }
+    virtual bool VIsVisible(Scene *pScene) const {Q_UNUSED(pScene); return m_bActive; }
 
     const Frustum &GetFrustum() { return m_Frustum; }
     void SetTarget(QSharedPointer<SceneNode> pTarget)

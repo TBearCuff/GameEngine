@@ -55,7 +55,7 @@ public:
     void OnRender();
     void OnRestore();
     void OnLostDevice();
-    void OnUpdate(const int deltaMilliseconds);
+    bool OnUpdate(const int deltaMilliseconds);
     QSharedPointer<ISceneNode> FindActor(ActorId id);
     bool AddChild(ActorId id, QSharedPointer<ISceneNode> kid);
     bool RemoveChild(ActorId id);

@@ -343,7 +343,7 @@ bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
         msg.m_param[1] = me->y();
         msg.m_param[2] = me->button();
         processInput = true;
-//        qDebug() << ev->type() << me->x() << ", " << me->y();
+        qDebug() << ev->type() << me->x() << ", " << me->y();
 
 
         break;

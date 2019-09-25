@@ -4,9 +4,18 @@
 #include "HumanView.h"
 
 //#include "../Actors/rendercomponentinterface.h"
+//#include "../Actors/AudioComponent.h"
+//#include "../Actors/RenderComponentInterface.h"
+//#include "../Audio/DirectSoundAudio.h"
+//#include "../Audio/SoundProcess.h"
+//#include "../EventManager/Events.h"
+//#include "../EventManager/EventManagerImpl.h"
 
-//#include "../MainWindow/OpenGLRenderWindow.h"
-//#include "../Graphics3D/Scene.h"
+#include "../MainWindow/OpenGLRenderWindow.h"
+#include "../Graphics3D/Scene.h"
+//#include "../MainLoop/Process.h"
+//#include "../Utilities/String.h"
+//#include "../LUAScripting/LuaStateManager.h"
 
 
 
@@ -18,7 +27,7 @@ const GameViewId gc_InvalidGameViewId = 0xffffffff;
 //
 HumanView::HumanView(QSharedPointer<OpenGLRenderWindow> renderer)
 {
-//    InitAudio();
+    InitAudio();
 
     m_pProcessManager = GCC_NEW ProcessManager;
 
@@ -26,28 +35,38 @@ HumanView::HumanView(QSharedPointer<OpenGLRenderWindow> renderer)
     m_ViewId = gc_InvalidGameViewId;
 
     //Added post press for move, new and destroy actor events and others
-//    RegisterAllDelegates();
+    RegisterAllDelegates();
     m_BaseGameState = BGS_Initializing;     //what is the curren game state
 
     if(renderer)
     {
         //Moved to the HumanView class post press
-//        m_pScene.reset(GCC_NEW ScreenElementScene(renderer));
+        m_pScene.reset(GCC_NEW ScreenElementScene(renderer));
 
         Frustum frustum;
         frustum.Init(GCC_PI/4.0f, 1.0f, 1.0f, 100.0f);
-//        m_pCamera.reset(GCC_NEW CameraNode(&Mat4x4::g_Identity, frustum));
-//        GCC_ASSERT(m_pScene && m_pCamera && _T("Out of Memory"));
+        m_pCamera.reset(GCC_NEW CameraNode(&Mat4x4::g_Identity, frustum));
+        Q_ASSERT(m_pScene && m_pCamera && "Out of Memory");
 
-//        m_pScene->VAddChild(INVALID_ACTOR_ID, m_pCamera);
-//        m_pScene->SetCamera(m_pCamera);
+        m_pScene->VAddChild(INVALID_ACTOR_ID, m_pCamera);
+        m_pScene->SetCamera(m_pCamera);
     }
+}
+
+void HumanView::RegisterAllDelegates()
+{
+
+}
+
+void HumanView::RemoveAllDelegates()
+{
+
 }
 
 HumanView::~HumanView()
 {
     //RemoveAllDelegates was added post press to handle move, new, and destroy actor events
-//    RemoveAllDelegates();
+    RemoveAllDelegates();
 
     while(!m_ScreenElements.empty())
     {
@@ -68,7 +87,6 @@ bool HumanView::LoadGame(XMLElement *pLevelData)
 #endif
 void HumanView::VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)
 {
-//    m_currTick = g_pApp->timeGetTime();
     if(uiTime == m_lastDraw)
         return;
 
@@ -77,7 +95,7 @@ void HumanView::VOnRender(unsigned int uiTime, unsigned int uiElapsedTime)
     {
         if(g_pApp->m_Renderer->VPreRender())
         {
-//            m_ScreenElements.sort(SortBy_SharedPtr_Content<IScreenElement>());
+            m_ScreenElements.sort(SortBy_SharedPtr_Content<IScreenElement>());
 
             for(ScreenElementList::iterator i = m_ScreenElements.begin(); i!=m_ScreenElements.end(); ++i)
             {
@@ -122,24 +140,37 @@ bool HumanView::VOnLostDevice()
     return true;
 }
 
+bool HumanView::InitAudio()
+{
+    return true;
+}
+
+
+void HumanView::TogglePause(bool active)
+{
+    // Pause or resume audio
+    if ( active )
+    {
+//		if (g_pAudio)
+//			g_pAudio->VPauseAllSounds();
+    }
+    else
+    {
+//		if (g_pAudio)
+//			g_pAudio->VResumeAllSounds();
+    }
+}
+
 void HumanView::VOnUpdate(unsigned long deltaMilliseconds)
 {
     m_pProcessManager->UpdateProcesses(deltaMilliseconds);
 
 //    m_Console.Update(deltaMilliseconds);
 
-    // This section of code was added post-press. It runs through the screenlist
-    // and calls VOnUpdate. Some screen elements need to update every frame, one
-    // example of this is a 3D scene attached to the human view.
     for(ScreenElementList::iterator i=m_ScreenElements.begin(); i!=m_ScreenElements.end(); ++i)
     {
         (*i)->VOnUpdate(deltaMilliseconds);
     }
-}
-
-void HumanView::VPushElement(QSharedPointer<IScreenElement> pElement)
-{
-    m_ScreenElements.push_front(pElement);
 }
 
 bool HumanView::VOnMsgProc(AppMsg msg)
@@ -225,5 +256,35 @@ bool HumanView::VOnMsgProc(AppMsg msg)
 
     return result;
 }
+
+void HumanView::VPushElement(QSharedPointer<IScreenElement> pElement)
+{
+    m_ScreenElements.push_front(pElement);
+}
+
+//
+// HumanView::VPopElement						- Chapter 10, page 274
+//
+//
+//
+void HumanView::VRemoveElement(QSharedPointer<IScreenElement> pElement)
+{
+    m_ScreenElements.remove(pElement);
+}
+
+//
+// HumanView::VSetCameraOffset					- not described in the book
+//
+//   Sets a camera offset, useful for making a 1st person or 3rd person game
+//
+void HumanView::VSetCameraOffset(const Vec4 & camOffset )
+{
+    Q_ASSERT(m_pCamera);
+    if (m_pCamera)
+    {
+        m_pCamera->SetCameraOffset( camOffset );
+    }
+}
+
 
 
