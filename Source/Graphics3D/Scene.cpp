@@ -87,6 +87,21 @@ void Scene::OnLostDevice()
     return;
 }
 
+bool Scene::OnUpdate(const int deltaMilliseconds)
+{
+    if (!m_Root)
+        return true;
+
+//    static DWORD lastTime = timeGetTime();
+//    DWORD elapsedTime = 0;
+//    DWORD now = timeGetTime();
+
+//    elapsedTime = now - lastTime;
+//    lastTime = now;
+
+    return m_Root->VOnUpdate(this, deltaMilliseconds);
+}
+
 //
 // Scene::OnRestore					- Chapter 16, page 540
 //
@@ -127,7 +142,7 @@ bool Scene::RemoveChild(ActorId id)
         return false;
     }
 
-    QSharedPointer<ISceneNode> kid = FindActor(id);
+//    QSharedPointer<ISceneNode> kid = FindActor(id);
 //    QSharedPointer<LightNode> pLight =  dynamic_pointer_cast<LightNode>(kid);
 //    if(pLight != NULL)
 //    {
@@ -136,6 +151,23 @@ bool Scene::RemoveChild(ActorId id)
 //    m_ActorMap.erase(id);
 //    return m_Root->VRemoveChild(id);
     return true;
+}
+
+void Scene::RenderAlphaPass()
+{
+    QSharedPointer<IRenderState> alphaPass = m_Renderer->VPrepareAlphaPass();
+
+    std::sort(m_AlphaSceneNodes.begin(), m_AlphaSceneNodes.end());
+//    m_AlphaSceneNodes.sort();
+    while (!m_AlphaSceneNodes.empty())
+    {
+        AlphaSceneNodes::reverse_iterator i = m_AlphaSceneNodes.rbegin();
+        PushAndSetMatrix((*i)->m_Concat);
+        (*i)->m_pNode->VRender(this);
+        delete (*i);
+        PopMatrix();
+        m_AlphaSceneNodes.pop_back();
+    }
 }
 
 

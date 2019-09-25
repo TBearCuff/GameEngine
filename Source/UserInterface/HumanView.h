@@ -1,7 +1,6 @@
 #ifndef HUMANVIEW_H
 #define HUMANVIEW_H
 
-//#include "../GameEngine/interfaces.h"
 
 class HumanView : public IGameView
 {
@@ -44,7 +43,7 @@ public:
 
     //Virtual methods to control the layering of interface elements
     virtual void VPushElement(QSharedPointer<IScreenElement> pElement);
-//    virtual void VRemoveElement(shared_ptr<IScreenElement> pElement);
+    virtual void VRemoveElement(QSharedPointer<IScreenElement> pElement);
 
     void TogglePause(bool active);
 
@@ -63,11 +62,11 @@ public:
     ProcessManager* GetProcessManager() { return m_pProcessManager; }
 
     //Camera Adjustments
-//    virtual void VSetCameraOffset(const Vec4 &camOffset );
+    virtual void VSetCameraOffset(const Vec4 &camOffset );
 
     //Added post press
-//    QSharedPointer<ScreenElementScene> m_pScene;
-//    QSharedPointer<CameraNode> m_pCamera;
+    QSharedPointer<ScreenElementScene> m_pScene;
+    QSharedPointer<CameraNode> m_pCamera;
 
 //    void HandleGameState(BaseGameState newState);
 

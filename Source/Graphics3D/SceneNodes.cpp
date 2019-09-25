@@ -434,7 +434,7 @@ bool CameraNode::VRender(Scene *pScene)
     {
         pScene->PopMatrix();
 
-        m_Frustum.Render();
+//        m_Frustum.Render();
 
         pScene->PushAndSetMatrix(m_Props.ToWorld());
     }
