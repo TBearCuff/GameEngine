@@ -7,7 +7,7 @@
 //#include "../EventManager/EventManager.h"
 #include "../Actor/Actor.h"
 //#include <QVector>
-#include "interfaces.h"
+//#include "interfaces.h"
 #include "../Graphics3D/Geometry.h"
 
 class PathingGraph;

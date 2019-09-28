@@ -93,8 +93,7 @@ struct AppMsg
 };
 
 
-#include "interfaces.h"
-
+#include "../GameEngine/interfaces.h"
 
 // Useful #defines
 

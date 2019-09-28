@@ -1,7 +1,8 @@
 #include "GameEngineStd.h"
-#include "OpenGLRenderWindow.h"
-
+//#include "GameEngineApp.h"
+#include "../Graphics3D/Lights.h"
 #include "../UserInterface/HumanView.h"
+#include "OpenGLRenderWindow.h"
 
 
 //
@@ -71,6 +72,7 @@ GLRendererSkyBoxPass::~GLRendererSkyBoxPass()
 
 void GLLineDrawer::DrawLine(const Vec3& from,const Vec3& to,const Color& color)
 {
+    Q_UNUSED(from); Q_UNUSED(to); Q_UNUSED(color);
 #if 0
 
     shared_ptr<Scene> pScene = g_pApp->GetHumanView()->m_pScene;
@@ -128,9 +130,10 @@ bool GLLineDrawer::OnRestore()
 
 OpenGLRenderWindow::OpenGLRenderWindow(QWindow *parent)
     : QWindow(parent)
+    , m_pLineDrawer(NULL)
     , context(0)
     , m_program(0)
-    , m_pLineDrawer(NULL)
+
 {
     setSurfaceType(QWindow::OpenGLSurface);
 }

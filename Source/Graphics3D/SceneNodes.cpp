@@ -11,10 +11,11 @@
 
 #include "../MainWindow/OpenGLRenderWindow.h"
 #include "Geometry.h"
-//#include "Lights.h"
-
+#include "Lights.h"
+//#include "Mesh.h
+//#include "Raycast.h
 #include "SceneNodes.h"
-
+#include "Shaders.h"
 #include "../ResourceCache/ResCache.h"
 
 ////////////////////////////////////////////////////
@@ -485,6 +486,7 @@ void CameraNode::SetViewTransform(Scene *pScene)
 //
 Mat4x4 CameraNode::GetWorldViewProjection(Scene *pScene)
 {
+    Q_UNUSED(pScene);
     //TODO: REPLACE THIS WITH STUFF THAT WILL WORK FOR OPENGL
 //    Mat4x4 world = pScene->GetTopMatrix();
     Mat4x4 world;//tHIS WILL BE JUST AN IDENTITY MATRIX FOR NOW

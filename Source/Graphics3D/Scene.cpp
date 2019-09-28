@@ -1,13 +1,14 @@
 #include "GameEngineStd.h"
 
+#include "../MainWindow/OpenGLRenderWindow.h"
 #include "GameEngineApp.h"
 //#include "../EventManager/EventManager.h"
 //#include "../EventManager/Events.h"
 //#include "../Utilities/string.h"
 #include "Geometry.h"
-//#include "Lights.h"
+#include "Lights.h"
 
-//#include "Scene.h"
+#include "Scene.h"
 
 ////////////////////////////////////////////////////
 // Scene Implementation
@@ -153,12 +154,31 @@ bool Scene::RemoveChild(ActorId id)
     return true;
 }
 
+void Scene::PushAndSetMatrix(const Mat4x4 &toWorld)
+{
+    // Note this code carefully!!!!! It is COMPLETELY different
+    // from some DirectX 9 documentation out there....
+    // Scene::PushAndSetMatrix - Chapter 16, page 541
+
+    m_MatrixStack->push(toWorld);
+    Mat4x4 mat = m_MatrixStack->top();
+    m_Renderer->VSetWorldTransform(&mat);
+}
+
+void Scene::PopMatrix()
+{
+    // Scene::PopMatrix - Chapter 16, page 541
+
+    Mat4x4 mat = m_MatrixStack->pop();
+    m_Renderer->VSetWorldTransform(&mat);
+}
+
 void Scene::RenderAlphaPass()
 {
     QSharedPointer<IRenderState> alphaPass = m_Renderer->VPrepareAlphaPass();
 
     std::sort(m_AlphaSceneNodes.begin(), m_AlphaSceneNodes.end());
-//    m_AlphaSceneNodes.sort();
+    //    m_AlphaSceneNodes.sort();
     while (!m_AlphaSceneNodes.empty())
     {
         AlphaSceneNodes::reverse_iterator i = m_AlphaSceneNodes.rbegin();
