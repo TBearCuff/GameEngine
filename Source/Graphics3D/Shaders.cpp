@@ -1,4 +1,13 @@
-#include "Shaders.h"
+#include "GameEngineStd.h"
+
+#include "GameEngineApp.h"
+#include "../MainWindow/OpenGLRenderWindow.h"
+#include "Geometry.h"
+#include "Lights.h"
+//#include "Mesh.h"
+#include "SceneNodes.h"
+#include "../ResourceCache/ResCache.h"
+//#include "Shaders.h"
 
 static const char *vertexShaderSource =
         "#version 100\n"

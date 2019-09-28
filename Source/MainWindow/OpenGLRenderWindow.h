@@ -7,42 +7,9 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
-#include "../Graphics3D/Geometry.h"
-typedef QVector4D Color;
-
-//
-// struct ConstantBuffer_Matrices
-//
-struct ConstantBuffer_Matrices
-{
-    Mat4x4 m_WorldViewProj;
-    Mat4x4 m_World;
-};
-
-//
-// struct ConstantBuffer_Material
-//
-struct ConstantBuffer_Material
-{
-    Vec4 m_vDiffuseObjectColor;
-    Vec4 m_vAmbientObjectColor;
-    bool m_bHasTexture;
-    Vec3 m_vUnused;
-};
-
-#define MAXIMUM_LIGHTS_SUPPORTED (8)
-
-//
-// struct ConstantBuffer_Lighting
-//
-struct ConstantBuffer_Lighting
-{
-    Vec4 m_vLightDiffuse[MAXIMUM_LIGHTS_SUPPORTED];
-    Vec4 m_vLightDir[MAXIMUM_LIGHTS_SUPPORTED];
-    Vec4 m_vLightAmbient;
-    unsigned int m_nNumLights;
-    Vec3 m_vUnused;
-};
+#include "GameEngineStd.h"
+//#include "../Graphics3D/Geometry.h"
+//typedef QVector4D Color;
 
 class GLLineDrawer
 {
@@ -85,7 +52,7 @@ public:
     virtual bool VOnRestore();
     virtual bool VPreRestore();
     virtual bool VPostRestore();
-//    virtual void VCalcLighting(Lights *lights, int maximumLights) { }
+    virtual void VCalcLighting(Lights *lights, int maximumLights) {Q_UNUSED(lights); Q_UNUSED(maximumLights); }
 
     // These three functions are done for each shader, not as a part of beginning the render - so they do nothing in D3D11.
     virtual void VSetWorldTransform(const Mat4x4 *m) { Q_UNUSED(m) }

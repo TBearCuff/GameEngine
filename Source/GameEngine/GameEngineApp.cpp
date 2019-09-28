@@ -1,12 +1,14 @@
 
 #include "GameEngineStd.h"
 
-#include "GameEngineApp.h"
+//#include "GameEngineApp.h"
 #include "../MainLoop/Initialization.h"
-#include "../ResourceCache/ResCache.h"
+#include "BaseGameLogic.h"
 #include "../MainWindow/OpenGLRenderWindow.h"
+#include "../ResourceCache/ResCache.h"
 #include "../ResourceCache/XMLResourceLoader.h"
 #include "../UserInterface/UserInterface.h"
+#include "../UserInterface/HumanView.h"
 #include <QStorageInfo>
 
 #include <QDomDocument>

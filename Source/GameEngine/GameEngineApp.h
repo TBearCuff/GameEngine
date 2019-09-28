@@ -9,8 +9,6 @@
 #include "../Graphics3D/SceneNodes.h"
 #include "../UserInterface/UserInterface.h"
 
-#include "../MainWindow/OpenGLRenderWindow.h"
-
 class Rect;
 class Point;
 

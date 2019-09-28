@@ -4,7 +4,6 @@
 #include "Geometry.h"
 #include "SceneNodes.h"
 #include <QStack>
-#include "../MainWindow/OpenGLRenderWindow.h"
 
 // Forward declarations
 ////////////////////////////////////////////////////
@@ -31,6 +30,7 @@ class CameraNode;
 class SkyNode;
 class LightNode;
 class LightManager;
+class OpenGLRenderWindow;
 
 class Scene
 {
@@ -69,24 +69,9 @@ public:
     const QSharedPointer<CameraNode> GetCamera() const { return m_Camera; }
 
 
-    void PushAndSetMatrix(const Mat4x4 &toWorld)
-    {
-        // Note this code carefully!!!!! It is COMPLETELY different
-        // from some DirectX 9 documentation out there....
-        // Scene::PushAndSetMatrix - Chapter 16, page 541
+    void PushAndSetMatrix(const Mat4x4 &toWorld);
 
-        m_MatrixStack->push(toWorld);
-        Mat4x4 mat = m_MatrixStack->top();
-        m_Renderer->VSetWorldTransform(&mat);
-    }
-
-    void PopMatrix()
-    {
-        // Scene::PopMatrix - Chapter 16, page 541
-
-        Mat4x4 mat = m_MatrixStack->pop();
-        m_Renderer->VSetWorldTransform(&mat);
-    }
+    void PopMatrix();
 
     const Mat4x4 GetTopMatrix()
     {

@@ -483,6 +483,26 @@ public:
     void Render();
 };
 
+//
+// struct ConstantBuffer_Matrices
+//
+struct ConstantBuffer_Matrices
+{
+    Mat4x4 m_WorldViewProj;
+    Mat4x4 m_World;
+};
+
+//
+// struct ConstantBuffer_Material
+//
+struct ConstantBuffer_Material
+{
+    Vec4 m_vDiffuseObjectColor;
+    Vec4 m_vAmbientObjectColor;
+    bool m_bHasTexture;
+    Vec3 m_vUnused;
+};
+
 
 
 #endif // GEOMETRY_H

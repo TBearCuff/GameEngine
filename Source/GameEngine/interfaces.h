@@ -213,7 +213,7 @@ class SceneNodeProperties;
 class RayCast;
 class LightNode;
 
-typedef std::list<shared_ptr<LightNode> > Lights;
+typedef QList<QSharedPointer<LightNode> > Lights;
 
 #endif
 

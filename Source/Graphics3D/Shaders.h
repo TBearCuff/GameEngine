@@ -2,7 +2,8 @@
 #define SHADERS_H
 
 #include <QOpenGLShader>
-
+#include "Geometry.h"
+#include "Material.h"
 
 class GLSL_VertexShader
 {
