@@ -56,7 +56,7 @@ void BaseGameLogic::VRemoveView(QSharedPointer<IGameView> pView)
     m_gameViews.removeOne(pView);
 }
 
-StrongActorPtr BaseGameLogic::VCreateActor(const QString &actorResource, QDomElement *overrides, const Mat4x4 *initialTransform, const ActorId serversActorId)
+StrongActorPtr BaseGameLogic::VCreateActor(const QString &actorResource, QDomElement overrides, const Mat4x4 *initialTransform, const ActorId serversActorId)
 {
     Q_ASSERT(m_pActorFactory);
     if (!m_bProxy && serversActorId != INVALID_ACTOR_ID)

@@ -17,7 +17,7 @@ Actor::Actor(ActorId id)
 Actor::~Actor()
 {
 //    GCC_LOG("Actor", std::string("Destroying Actor ") + std::to_string(m_id));
-//    GCC_ASSERT(m_components.empty()); //if this assert fires, the actor was destroyed without calling Actor::Destroy()
+    Q_ASSERT(m_components.empty()); //if this assert fires, the actor was destroyed without calling Actor::Destroy()
 }
 
 bool Actor::Init(QDomElement pData)
@@ -33,7 +33,7 @@ void Actor::PostInit(void)
 {
     for(ActorComponents::iterator it = m_components.begin(); it != m_components.end(); ++it)
     {
-        it->data()->VPostInit();
+        (*it)->VPostInit();
     }
 }
 

@@ -89,13 +89,14 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
     if(!m_ResCache->Init())
     {
-//        GCC_ERROR("Failed to initialize resource cache! Are the paths set up correctly?");
+//        Q_ERROR("Failed to initialize resource cache! Are the paths set up correctly?");
         return false;
     }
 
     extern QSharedPointer<IResourceLoader> CreateXmlResourceLoader();
 
     m_ResCache->RegisterLoader(CreateXmlResourceLoader());
+
     //Load strings that will be presented to the player (localization)
     if(!LoadStrings("English"))
     {
@@ -217,6 +218,7 @@ bool GameEngineApp::LoadStrings(QString language)
         file.close();
         return false;
     }
+    file.close();
 
     QDomElement pRoot = doc.documentElement();
 
@@ -250,7 +252,6 @@ bool GameEngineApp::LoadStrings(QString language)
             }
         }
     }
-    file.close();
     return true;
 }
 

@@ -1,6 +1,7 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
+#include <QOpenGLBuffer>
 #include <QVector2D>
 #include <QVector3D>
 #include <QVector4D>
@@ -318,7 +319,7 @@ inline void Mat4x4::BuildScale(const float x, const float y, const float z )
 
 inline Mat4x4 operator * (const Mat4x4 &a, const Mat4x4 &b)
 {
-    return a * b;
+    return QMatrix4x4(a) * QMatrix4x4(b);
 }
 
 inline void Quaternion::Build(const Mat4x4 &mat)

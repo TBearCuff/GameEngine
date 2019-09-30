@@ -13,7 +13,7 @@ protected:
 public:
     ActorFactory(void);
 
-    StrongActorPtr CreateActor(QString actorResource, QDomElement* overrides, const Mat4x4 *pInitialTransform, const ActorId serversActorId );
+    StrongActorPtr CreateActor(QString actorResource, QDomElement overrides, const Mat4x4 *pInitialTransform, const ActorId serversActorId );
 //    void ModifyActor(StrongActorPtr pActor, XMLElement* overrides);
 
 //protected:

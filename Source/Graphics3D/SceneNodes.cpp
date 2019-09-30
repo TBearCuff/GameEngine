@@ -4,9 +4,9 @@
 #include "GameEngineApp.h"
 
 
-//#include "../Actors/ActorComponent.h"
-//#include "../Actors/RenderComponent.h"
-//#include "../Actors/TransformComponent.h"
+#include "../Actor/ActorComponent.h"
+#include "../Actor/RenderComponent.h"
+#include "../Actor/TransformComponent.h"
 
 
 #include "../MainWindow/OpenGLRenderWindow.h"
@@ -50,7 +50,7 @@ SceneNode::SceneNode(ActorId actorId, WeakBaseRenderComponentPtr renderComponent
 {
     m_pParent = NULL;
     m_Props.m_ActorId = actorId;
-//    m_Props.m_Name = (renderComponent) ? renderComponent->VGetName() : "SceneNode";
+    m_Props.m_Name = (renderComponent) ? renderComponent->VGetName() : "SceneNode";
     m_Props.m_RenderPass = renderPass;
     m_Props.m_AlphaType = AlphaOpaque;
     m_RenderComponent = renderComponent;
@@ -58,8 +58,8 @@ SceneNode::SceneNode(ActorId actorId, WeakBaseRenderComponentPtr renderComponent
     SetRadius(0);
 
     // these lines were moved to VOnRestore() post press
-    //Color color = (renderComponent) ? renderComponent->GetColor() : g_White;
-    //m_Props.m_Material.SetDiffuse(color);
+    Color color = (renderComponent) ? renderComponent->GetColor() : g_White;
+    m_Props.m_Material.SetDiffuse(color);
 }
 
 SceneNode::~SceneNode()
@@ -72,8 +72,8 @@ SceneNode::~SceneNode()
 //
 bool SceneNode::VOnRestore(Scene *pScene)
 {
-//    Color color = (m_RenderComponent) ? m_RenderComponent->GetColor() : g_White;
-//    m_Props.m_Material.SetDiffuse(color);
+    Color color = (m_RenderComponent) ? m_RenderComponent->GetColor() : g_White;
+    m_Props.m_Material.SetDiffuse(color);
 
     // This is meant to be called from any class
     // that inherits from SceneNode and overloads
@@ -129,15 +129,16 @@ void SceneNode::VSetTransform(const Mat4x4 *toWorld, const Mat4x4 *fromWorld)
 bool SceneNode::VPreRender(Scene *pScene)
 {
     // This was added post press! Is is always ok to read directly from the game logic.
-//    StrongActorPtr pActor = MakeStrongPtr(g_pApp->GetGameLogic()->VGetActor(m_Props.m_ActorId));
-//    if (pActor)
-//    {
-//        shared_ptr<TransformComponent> pTc = MakeStrongPtr(pActor->GetComponent<TransformComponent>(TransformComponent::g_Name));
-//        if (pTc)
-//        {
-//            m_Props.m_ToWorld = pTc->GetTransform();
-//        }
-//    }
+    //How else can we get the transform matrix for the current SceneNode being rendered?
+    StrongActorPtr pActor = StrongActorPtr(g_pApp->GetGameLogic()->VGetActor(m_Props.m_ActorId));
+    if (pActor)
+    {
+        QSharedPointer<TransformComponent> pTc = QSharedPointer<TransformComponent>(pActor->GetComponent<TransformComponent>(TransformComponent::g_Name));
+        if (pTc)
+        {
+            m_Props.m_ToWorld = pTc->GetTransform();
+        }
+    }
 
     pScene->PushAndSetMatrix(m_Props.m_ToWorld);
     return true;
@@ -250,6 +251,7 @@ bool SceneNode::VRenderChildren(Scene *pScene)
             }
             // post-press fix - if the parent is not visible, the childrend
             //           shouldn't be visible either.
+            //What if something is fired from the current SceneNode
             //(*i)->VRenderChildren(pScene);
         }
         (*i)->VPostRender(pScene);
@@ -435,6 +437,7 @@ bool CameraNode::VRender(Scene *pScene)
     {
         pScene->PopMatrix();
 
+        //this will require a modern openGL function to render
 //        m_Frustum.Render();
 
         pScene->PushAndSetMatrix(m_Props.ToWorld());
@@ -488,12 +491,184 @@ Mat4x4 CameraNode::GetWorldViewProjection(Scene *pScene)
 {
     Q_UNUSED(pScene);
     //TODO: REPLACE THIS WITH STUFF THAT WILL WORK FOR OPENGL
-//    Mat4x4 world = pScene->GetTopMatrix();
-    Mat4x4 world;//tHIS WILL BE JUST AN IDENTITY MATRIX FOR NOW
+    Mat4x4 world = pScene->GetTopMatrix();
+//    Mat4x4 world;//tHIS WILL BE JUST AN IDENTITY MATRIX FOR NOW
     Mat4x4 view = VGet()->FromWorld();
     Mat4x4 worldView = world * view;
     return worldView * m_Projection;
 }
 
 
+// TestObject::g_CubeVerts
+//        - Chapter 14, page 495
 
+Vec3 Cube::g_CubeVerts[] =
+{
+    Vec3( 0.5,0.5,-0.5),		// Vertex 0.
+    Vec3(-0.5,0.5,-0.5),		// Vertex 1.
+    Vec3(-0.5,0.5,0.5),  		// And so on.
+    Vec3(0.5,0.5,0.5),
+    Vec3(0.5,-0.5,-0.5),
+    Vec3(-0.5,-0.5,-0.5),
+    Vec3(-0.5,-0.5,0.5),
+    Vec3(0.5,-0.5,0.5)
+};
+
+unsigned int Cube::g_TestObjectIndices[][3] =
+{
+    { 0,1,2 },                // Face 0 has three vertices.
+    { 0,2,3 },                // And so on.
+    { 0,4,5 },
+    { 0,5,1 },
+    { 1,5,6 },
+    { 1,6,2 },
+    { 2,6,7 },
+    { 2,7,3 },
+    { 3,7,4 },
+    { 3,4,0 },
+    { 4,7,6 },
+    { 4,6,5 }
+};
+
+
+
+Cube::Cube(ActorId actorId, WeakBaseRenderComponentPtr renderComponent, const Mat4x4 *pMatrix)
+    : SceneNode(actorId, renderComponent, RenderPass_Actor, pMatrix)
+    , m_pVerts(0)
+    , m_pIndices(0)
+    , m_numVerts(0)
+    , m_numPolys(0)
+    , m_bTextureHasAlpha(false)
+{
+
+}
+
+Cube::~Cube()
+{
+    if(m_pIndices)
+    {
+        m_pIndices->destroy();
+        delete m_pIndices;
+    }
+
+    if(m_pVerts)
+    {
+        m_pVerts->destroy();
+        delete m_pVerts;
+    }
+}
+
+bool Cube::VOnRestore(Scene *pScene)
+{
+    SceneNode::VOnRestore(pScene);
+
+    m_pVerts = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+
+    if(!m_pVerts->create())
+    {
+        qDebug() << "Vertex buffer not created";
+        return false;
+    }
+    if(!m_pVerts->bind())
+    {
+        qDebug() << "Vertex buffer not bound to context";
+        return false;
+    }
+    m_pVerts->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_pVerts->allocate(g_CubeVerts, sizeof(g_CubeVerts));
+
+    m_pIndices = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    m_pIndices->create();
+    m_pIndices->bind();
+    m_pIndices->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_pIndices->allocate(g_TestObjectIndices, sizeof(g_TestObjectIndices));
+
+//    QImage *image = new QImage("container.jpg");
+//    texture = new QOpenGLTexture(image->mirrored());
+    //    texture->bind();
+    return true;
+}
+
+bool Cube::VRender(Scene *pScene)
+{
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (GLvoid*)0);
+    return true;
+}
+
+
+Grid::Grid(ActorId actorId, WeakBaseRenderComponentPtr renderComponent, const Mat4x4 *pMatrix)
+    : SceneNode(actorId, renderComponent, RenderPass_0, pMatrix)
+{
+    m_bTextureHasAlpha = false;
+    m_numVerts = m_numPolys = 0;
+    m_pVertexBuffer = NULL;
+    m_pIndexBuffer = NULL;
+}
+
+Grid::~Grid()
+{
+    if(m_pIndexBuffer)
+    {
+        m_pIndexBuffer->release();
+        delete m_pIndexBuffer;
+    }
+    if(m_pVertexBuffer)
+    {
+        m_pVertexBuffer->release();
+        delete m_pVertexBuffer;
+    }
+}
+
+bool Grid::VOnRestore(Scene *pScene)
+{
+    SceneNode::VOnRestore(pScene);
+
+    if(m_pVertexBuffer)
+    {
+        m_pVertexBuffer->destroy();
+    }
+    else
+    {
+        m_pVertexBuffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    }
+    if(m_pIndexBuffer)
+    {
+        m_pIndexBuffer->destroy();
+    }
+    else
+    {
+        m_pIndexBuffer = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    }
+
+    m_pVertexBuffer->create();
+    m_pIndexBuffer->create();
+
+    //Shader stuff here?
+//    V_RETURN (m_VertexShader.OnRestore(pScene) );
+//	V_RETURN (m_PixelShader.OnRestore(pScene) );
+
+    GridRenderComponent* grc = static_cast<GridRenderComponent*>(m_RenderComponent);
+
+    int squares = grc->GetDivision();
+
+    SetRadius( sqrt(squares * squares / 2.0f) );
+
+    // Create the vertex buffer - we'll need enough verts
+    // to populate the grid. If we want a 2x2 grid, we'll
+    // need 3x3 set of verts.
+    m_numVerts = (squares+1)*(squares+1);    // Create vertex buffer
+
+    // Fill the vertex buffer. We are setting the tu and tv texture
+    // coordinates, which range from 0.0 to 1.0
+//    D3D11Vertex_UnlitTextured *pVerts = GCC_NEW D3D11Vertex_UnlitTextured[m_numVerts];
+//	GCC_ASSERT(pVerts && "Out of memory in D3DGrid11::VOnRestore()");
+//	if (!pVerts)
+//		return E_FAIL;
+
+    return true;
+}
+
+bool Grid::VRender(Scene *pScene)
+{
+    return true;
+}
