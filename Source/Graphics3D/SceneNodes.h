@@ -282,16 +282,16 @@ protected:
 
 
 
-class GLGrid : public SceneNode
+class Grid : public SceneNode
 {
 protected:
     DWORD					m_numVerts;
     DWORD					m_numPolys;
 
-//    int                     m_squares;
+    int                     m_squares;
 
-//	ID3D11Buffer*               m_pIndexBuffer;
-//	ID3D11Buffer*               m_pVertexBuffer;
+    QOpenGLBuffer*               m_pIndexBuffer;
+    QOpenGLBuffer*               m_pVertexBuffer;
 
 //	GameCode4_Hlsl_VertexShader		m_VertexShader;
 //	GameCode4_Hlsl_PixelShader		m_PixelShader;
@@ -299,14 +299,41 @@ protected:
 public:
     bool					m_bTextureHasAlpha;
 
-    GLGrid(ActorId actorId, WeakBaseRenderComponentPtr renderComponent, /* const std::string& name, const char* textureResource, int squares, const Color &diffuseColor, */ const Mat4x4* pMatrix);
-    virtual ~GLGrid();
+    Grid(ActorId actorId, WeakBaseRenderComponentPtr renderComponent, const Mat4x4* pMatrix);
+    virtual ~Grid();
     virtual bool VOnRestore(Scene *pScene);
     virtual bool VRender(Scene *pScene);
     virtual bool VOnUpdate(Scene *pScene, DWORD const elapsedMs) { Q_UNUSED(pScene); Q_UNUSED(elapsedMs); return true;  }
     virtual bool VPick(Scene *pScene, RayCast *pRayCast) {Q_UNUSED(pScene); Q_UNUSED(pRayCast); return false;  }
 
     bool VHasAlpha() const { return m_bTextureHasAlpha; }
+};
+
+class Cube : public SceneNode
+{
+protected:
+    QOpenGLBuffer       *m_pVerts;
+    QOpenGLBuffer       *m_pIndices;
+    int					m_numVerts;
+    int					m_numPolys;
+
+    Color					m_color;
+    bool					m_squashed;
+
+public:
+    bool					m_bTextureHasAlpha;
+
+    Cube(ActorId actorId, WeakBaseRenderComponentPtr renderComponent, /* const std::string& name, const char* textureResource, int squares, const Color &diffuseColor, */ const Mat4x4* pMatrix);
+    virtual ~Cube();
+    virtual bool VOnRestore(Scene *pScene);
+    virtual bool VRender(Scene *pScene);
+//    virtual bool VOnUpdate(Scene *pScene, DWORD const elapsedMs) { Q_UNUSED(pScene); Q_UNUSED(elapsedMs); return true;  }
+//    virtual bool VPick(Scene *pScene, RayCast *pRayCast) {Q_UNUSED(pScene); Q_UNUSED(pRayCast); return false;  }
+
+    bool VHasAlpha() const { return m_bTextureHasAlpha; }
+
+    static unsigned int g_TestObjectIndices[][3];
+    static Vec3 g_CubeVerts[];
 };
 
 

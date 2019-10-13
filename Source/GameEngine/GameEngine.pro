@@ -63,7 +63,8 @@ SOURCES += \
     ../Graphics3D/Material.cpp \
     ../Graphics3D/Scene.cpp \
     ../Graphics3D/SceneNodes.cpp \
-    ../Graphics3D/Lights.cpp
+    ../Graphics3D/Lights.cpp \
+    ../Actor/RenderComponent.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -94,7 +95,9 @@ HEADERS += \
     ../Graphics3D/Material.h \
     ../Graphics3D/Scene.h \
     ../Graphics3D/SceneNodes.h \
-    ../Graphics3D/Lights.h
+    ../Graphics3D/Lights.h \
+    ../Actor/RenderComponent.h \
+    ../Actor/RenderComponentInterface.h
 
 RESOURCES += \
     resources.qrc

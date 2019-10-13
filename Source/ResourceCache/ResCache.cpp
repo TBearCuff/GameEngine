@@ -119,10 +119,7 @@ bool DevelopmentResourceZipFile::VOpen()
     }
     else
     {
-        // FUTURE WORK - iterate through the ZipFile contents and go grab WIN32_FIND_DATA
-        //   elements for each one. Then it would be possible to compare the dates/times of the
-        //   asset in the Zip file with the source asset.
-//        GCC_ASSERT(0 && "Not implemented yet");
+        Q_ASSERT(0 && "Not implemented yet");
     }
 
     return true;
@@ -182,7 +179,8 @@ void DevelopmentResourceZipFile::ReadAssetsDirectory(QString fileSpec)
 //    QFileInfo findData;
 
     //get first file
-    QDir dir(m_AssetsDir.append(fileSpec));
+    QString filePath = m_AssetsDir + fileSpec;
+    QDir dir(filePath);
 
     QFileInfoList fileInfoList = dir.entryInfoList();
 
@@ -280,7 +278,7 @@ QSharedPointer<ResHandle> ResCache::GetHandle(Resource *r)
     if(handle == NULL)
     {
         handle = Load(r);
-//        GCC_ASSERT(handle);
+        Q_ASSERT(handle);
     }
     else
     {

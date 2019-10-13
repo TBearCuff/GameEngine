@@ -4,7 +4,7 @@
 #include "../ResourceCache/XMLResourceLoader.h"
 #include "../Actor/TransformComponent.h"
 //#include "ActorComponent.h"
-//#include "RenderComponent.h"
+#include "../Actor/RenderComponent.h"
 #include "Actor.h"      //until we have actual actors...
 
 //#include "../Utilities/string.h"
@@ -15,9 +15,10 @@ ActorFactory::ActorFactory(void)
 
 
     m_componentFactory.Register<TransformComponent>(ActorComponent::GetIdFromName(TransformComponent::g_Name));
+    m_componentFactory.Register<GridRenderComponent>(ActorComponent::GetIdFromName(GridRenderComponent::g_Name));
 }
 
-StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *overrides, const Mat4x4 *pInitialTransform, const ActorId serversActorId)
+StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement overrides, const Mat4x4 *pInitialTransform, const ActorId serversActorId)
 {
     //Grab the root XML node
     QDomElement pRoot = XmlResourceLoader::LoadAndReturnXmlElement(actorResource);
@@ -44,10 +45,15 @@ StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *ove
 //    bool initialTransformSet = false;
 
     //Loop through each child element and load the component
-    for(QDomElement pNode = pRoot.firstChildElement(); !pNode.isNull(); pNode.nextSiblingElement())
+    for(QDomNode pNode = pRoot.firstChild(); !pNode.isNull(); pNode = pNode.nextSibling())
     {
-        StrongActorComponentPtr pComponent(VCreateComponent(pNode));
-        if(pComponent)
+        QDomElement pElement = pNode.toElement();
+        if(pElement.isNull())
+        {
+            continue;
+        }
+        StrongActorComponentPtr pComponent(VCreateComponent(pElement));
+        if(!pComponent.isNull())
         {
             pActor->AddComponent(pComponent);
             pComponent->SetOwner(pActor);
@@ -61,7 +67,7 @@ StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *ove
         }
     }
 
-    if(overrides)
+    if(!overrides.isNull())
     {
 //        ModifyActor(pActor, overrides);
     }
@@ -70,7 +76,7 @@ StrongActorPtr ActorFactory::CreateActor(QString actorResource, QDomElement *ove
     // This is a bit of a hack to get the initial transform of the transform component set before the
     // other components (like PhysicsComponent) read it.
     QSharedPointer<TransformComponent> pTransformComponent = (pActor->GetComponent<TransformComponent>(TransformComponent::g_Name).toStrongRef());
-    if(pInitialTransform && pTransformComponent)
+    if(pInitialTransform && !pTransformComponent.isNull())
     {
         pTransformComponent->SetPosition(pInitialTransform->GetPosition());
     }

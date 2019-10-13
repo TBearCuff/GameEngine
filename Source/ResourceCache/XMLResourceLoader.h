@@ -3,6 +3,7 @@
 
 #include "GameEngineStd.h"
 #include "ResCache.h"
+#include <QDomDocument>
 //#include <tinyxml2.h>
 //using namespace tinyxml2;
 
