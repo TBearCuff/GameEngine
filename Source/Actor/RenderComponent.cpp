@@ -1,7 +1,7 @@
 #include "GameEngineStd.h"
 
 //#include "../Utilities/String.h"
-//#include "../EventManager/Events.h"
+#include "../EventManager/Events.h"
 
 #include "RenderComponent.h"
 #include "TransformComponent.h"
@@ -29,13 +29,13 @@ bool BaseRenderComponent::VInit(QDomElement pData)
 void BaseRenderComponent::VPostInit()
 {
     QSharedPointer<SceneNode> pSceneNode(VGetSceneNode());
-//    shared_ptr<EvtData_New_Render_Component> pEvent(GCC_NEW EvtData_New_Render_Component(m_pOwner->GetId(), pSceneNode));
-//    IEventManager::Get()->VTriggerEvent(pEvent);
+    QSharedPointer<EvtData_New_Render_Component> pEvent(GCC_NEW EvtData_New_Render_Component(m_pOwner->GetId(), pSceneNode));
+    IEventManager::Get()->VTriggerEvent(pEvent);
 }
 
 void BaseRenderComponent::VOnChanged()
 {
-//    shared_ptr<Evt_Data_Modified_Render_Component> pEvent(GCC_NEW EvtData_Modified_Render_Component(m_pOwner->GetId()));
+//    QSharedPointer<Evt_Data_Modified_Render_Component> pEvent(GCC_NEW EvtData_Modified_Render_Component(m_pOwner->GetId()));
 //    IEventManager::Get()->VTriggerEvent(pEvent);
 }
 

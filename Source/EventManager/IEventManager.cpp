@@ -25,7 +25,7 @@ IEventManager::~IEventManager()
         g_pEventMgr = NULL;
 }
 
-IEventManager *IEventManager::GetGlobal()
+IEventManager *IEventManager::Get()
 {
     Q_ASSERT(g_pEventMgr);
     return g_pEventMgr;
