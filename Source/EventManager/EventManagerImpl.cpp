@@ -7,16 +7,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 EventManager::EventManager(const QString &name, bool setAsGlobal) : IEventManager(name, setAsGlobal)
 {
-
-}
-
-#if 0
-EventManager::EventManager(const char* pName, bool setAsGlobal)
-	: IEventManager(pName, setAsGlobal)
-{
     m_activeQueue = 0;
 }
-#endif
 
 //---------------------------------------------------------------------------------------------------------------------
 // EventManager::~EventManager
@@ -49,27 +41,6 @@ bool EventManager::VAddListener(const QObject *listener, const char* slot, const
 
     return true;
 }
-#if 0
-bool EventManager::VAddListener(const EventListenerDelegate& eventDelegate, const EventType& type)
-{
-    GCC_LOG("Events", "Attempting to add delegate function for event type: " + ToStr(type, 16));
-
-    EventListenerList& eventListenerList = m_eventListeners[type];  // this will find or create the entry
-    for (auto it = eventListenerList.begin(); it != eventListenerList.end(); ++it)
-    {
-        if (eventDelegate == (*it))
-        {
-            GCC_WARNING("Attempting to double-register a delegate");
-            return false;
-        }
-    }
-
-    eventListenerList.push_back(eventDelegate);
-    GCC_LOG("Events", "Successfully added delegate for event type: " + ToStr(type, 16));
-
-	return true;
-}
-#endif
 
 //---------------------------------------------------------------------------------------------------------------------
 // EventManager::VRemoveListener
@@ -101,34 +72,8 @@ bool EventManager::VRemoveListener(const QObject *listener, const char *slot, co
     return processed;
 }
 
-#if 0
-bool EventManager::VRemoveListener(const EventListenerDelegate& eventDelegate, const EventType& type)
-{
-    GCC_LOG("Events", "Attempting to remove delegate function from event type: " + ToStr(type, 16));
-	bool success = false;
-
-    auto findIt = m_eventListeners.find(type);
-    if (findIt != m_eventListeners.end())
-    {
-        EventListenerList& listeners = findIt->second;
-        for (auto it = listeners.begin(); it != listeners.end(); ++it)
-        {
-            if (eventDelegate == (*it))
-            {
-                listeners.erase(it);
-                GCC_LOG("Events", "Successfully removed delegate function from event type: " + ToStr(type, 16));
-                success = true;
-                break;  // we don't need to continue because it should be impossible for the same delegate function to be registered for the same event more than once
-            }
-        }
-    }
-
-    return success;
-}
-#endif
-
 //---------------------------------------------------------------------------------------------------------------------
-// EventManager::VTrigger
+// EventManager::VTriggerEvent
 //---------------------------------------------------------------------------------------------------------------------
 bool EventManager::VTriggerEvent(const IEventDataPtr& pEvent) const
 {
@@ -146,77 +91,34 @@ bool EventManager::VTriggerEvent(const IEventDataPtr& pEvent) const
     return processed;
 }
 
-#if 0
-bool EventManager::VTriggerEvent(const IEventDataPtr& pEvent) const
-{
-    GCC_LOG("Events", "Attempting to trigger event " + std::string(pEvent->GetName()));
-    bool processed = false;
-
-    auto findIt = m_eventListeners.find(pEvent->VGetEventType());
-	if (findIt != m_eventListeners.end())
-    {
-	    const EventListenerList& eventListenerList = findIt->second;
-	    for (EventListenerList::const_iterator it = eventListenerList.begin(); it != eventListenerList.end(); ++it)
-	    {
-		    EventListenerDelegate listener = (*it);
-            GCC_LOG("Events", "Sending Event " + std::string(pEvent->GetName()) + " to delegate.");
-		    listener(pEvent);  // call the delegate
-            processed = true;
-	    }
-    }
-	
-	return processed;
-}
-#endif
-
 //---------------------------------------------------------------------------------------------------------------------
 // EventManager::VQueueEvent
 //---------------------------------------------------------------------------------------------------------------------
-/*******************************************************INCOMPLETE
-******************************************************************************/
-void EventManager::VQueueEvent(const IEventDataPtr &pEvent)
+bool EventManager::VQueueEvent(const IEventDataPtr &pEvent)
 {
-//    QSharedPointer<QEvent> pQEvent = qSharedPointerCast<QEvent, IEventData>(pEvent);
-//    g_pApp->postEvent(g_pApp, pQEvent.data());
-}
+    Q_ASSERT(m_activeQueue >= 0);
+    Q_ASSERT(m_activeQueue < EVENTMANAGER_NUM_QUEUES);
 
-#if 0
-bool EventManager::VQueueEvent(const IEventDataPtr& pEvent)
-{
-	GCC_ASSERT(m_activeQueue >= 0);
-	GCC_ASSERT(m_activeQueue < EVENTMANAGER_NUM_QUEUES);
-
-    // make sure the event is valid
-    if (!pEvent)
+    //make sure the event is valid
+    if(!pEvent)
     {
-        GCC_ERROR("Invalid event in VQueueEvent()");
+        qDebug() << "Invalid event in VQueueEvent()";
         return false;
     }
 
-    GCC_LOG("Events", "Attempting to queue event: " + std::string(pEvent->GetName()));
+    qDebug() << "Events: Attempting to queue event: " << pEvent->GetName();
 
-	auto findIt = m_eventListeners.find(pEvent->VGetEventType());
-    if (findIt != m_eventListeners.end())
+    if(m_eventSignals.contains(pEvent->VGetEventType()))
     {
+        qDebug() << "Events: Successfully queued event: " << pEvent->GetName();
         m_queues[m_activeQueue].push_back(pEvent);
-        GCC_LOG("Events", "Successfully queued event: " + std::string(pEvent->GetName()));
         return true;
     }
     else
     {
-        GCC_LOG("Events", "Skipping event since there are no delegates registered to receive it: " + std::string(pEvent->GetName()));
+        qDebug() << "Skipping event since there are no delegates registered to receive it: " << pEvent->GetName();
         return false;
     }
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------
-// EventManager::VThreadSafeQueueEvent
-//---------------------------------------------------------------------------------------------------------------------
-bool EventManager::VThreadSafeQueueEvent(const IEventDataPtr& pEvent)
-{
-	m_realtimeEventQueue.push(pEvent);
-	return true;
 }
 
 
@@ -225,13 +127,12 @@ bool EventManager::VThreadSafeQueueEvent(const IEventDataPtr& pEvent)
 //---------------------------------------------------------------------------------------------------------------------
 bool EventManager::VAbortEvent(const EventType& inType, bool allOfType)
 {
-	GCC_ASSERT(m_activeQueue >= 0);
-	GCC_ASSERT(m_activeQueue < EVENTMANAGER_NUM_QUEUES);
+    Q_ASSERT(m_activeQueue >= 0);
+    Q_ASSERT(m_activeQueue < EVENTMANAGER_NUM_QUEUES);
 
     bool success = false;
-	EventListenerMap::iterator findIt = m_eventListeners.find(inType);
 
-	if (findIt != m_eventListeners.end())
+    if(m_eventSignals.contains(inType))
     {
         EventQueue& eventQueue = m_queues[m_activeQueue];
         auto it = eventQueue.begin();
@@ -261,31 +162,15 @@ bool EventManager::VAbortEvent(const EventType& inType, bool allOfType)
 //---------------------------------------------------------------------------------------------------------------------
 bool EventManager::VUpdate(unsigned long maxMillis)
 {
-	unsigned long currMs = GetTickCount();
-	unsigned long maxMs = ((maxMillis == IEventManager::kINFINITE) ? (IEventManager::kINFINITE) : (currMs + maxMillis));
-
-	// This section added to handle events from other threads.  Check out Chapter 20.
-	IEventDataPtr pRealtimeEvent;
-	while (m_realtimeEventQueue.try_pop(pRealtimeEvent))
-	{
-		VQueueEvent(pRealtimeEvent);
-
-		currMs = GetTickCount();
-		if (maxMillis != IEventManager::kINFINITE)
-		{
-			if (currMs >= maxMs)
-			{
-				GCC_ERROR("A realtime process is spamming the event manager!");
-			}
-		}
-	}
+    unsigned long currMs = g_pApp->GetClockTick();
+    unsigned long maxMs = ((maxMillis == 0xFFFFFFFF) ? (0xFFFFFFFF) : (currMs + maxMillis));
 
 	// swap active queues and clear the new queue after the swap
     int queueToProcess = m_activeQueue;
 	m_activeQueue = (m_activeQueue + 1) % EVENTMANAGER_NUM_QUEUES;
 	m_queues[m_activeQueue].clear();
 
-    GCC_LOG("EventLoop", "Processing Event Queue " + ToStr(queueToProcess) + "; " + ToStr((unsigned long)m_queues[queueToProcess].size()) + " events to process");
+    qDebug() << "Processing the Event Queue #" << queueToProcess << ";" << m_queues[queueToProcess].size() << " events to process.";
 
 	// Process the queue
 	while (!m_queues[queueToProcess].empty())
@@ -293,31 +178,19 @@ bool EventManager::VUpdate(unsigned long maxMillis)
         // pop the front of the queue
 		IEventDataPtr pEvent = m_queues[queueToProcess].front();
         m_queues[queueToProcess].pop_front();
-        GCC_LOG("EventLoop", "\t\tProcessing Event " + std::string(pEvent->GetName()));
 
-		const EventType& eventType = pEvent->VGetEventType();
-
-        // find all the delegate functions registered for this event
-		auto findIt = m_eventListeners.find(eventType);
-		if (findIt != m_eventListeners.end())
-		{
-			const EventListenerList& eventListeners = findIt->second;
-            GCC_LOG("EventLoop", "\t\tFound " + ToStr((unsigned long)eventListeners.size()) + " delegates");
-
-            // call each listener
-			for (auto it = eventListeners.begin(); it != eventListeners.end(); ++it)
-			{
-                EventListenerDelegate listener = (*it);
-                GCC_LOG("EventLoop", "\t\tSending event " + std::string(pEvent->GetName()) + " to delegate");
-				listener(pEvent);
-			}
-		}
+        if(m_eventSignals.contains(pEvent->VGetEventType()))
+        {
+            qDebug() << "Events: Sending event " << pEvent->GetName() << "to attached slots.";
+            SignalDelegate *sd = m_eventSignals[pEvent->VGetEventType()];
+            sd->fireEvent(pEvent);
+        }
 
         // check to see if time ran out
-		currMs = GetTickCount();
-		if (maxMillis != IEventManager::kINFINITE && currMs >= maxMs)
+        currMs = g_pApp->GetClockTick();
+        if (maxMillis != 0xFFFFFFFF && currMs >= maxMs)
         {
-            GCC_LOG("EventLoop", "Aborting event processing; time ran out");
+            qDebug() << "Aborting event processing; time ran out";
 			break;
         }
 	}
@@ -337,5 +210,4 @@ bool EventManager::VUpdate(unsigned long maxMillis)
 	
 	return queueFlushed;
 }
-#endif
 

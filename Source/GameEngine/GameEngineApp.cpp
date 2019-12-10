@@ -332,6 +332,11 @@ QString GameEngineApp::GetString(QString sID)
     return localizedString.value();
 }
 
+qint64 GameEngineApp::GetClockTick()
+{
+    return m_AppElapsedTimer.elapsed();
+}
+
 bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
 {
     AppMsg msg;

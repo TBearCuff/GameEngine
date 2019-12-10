@@ -46,7 +46,7 @@ typedef unsigned long       DWORD;
 typedef unsigned char       BYTE;
 
 //Qt-specific includes
-#include <QMessageBox>
+//#include <QMessageBox>
 #include <QDomElement>
 #include <QSharedPointer>
 #include <QWeakPointer>

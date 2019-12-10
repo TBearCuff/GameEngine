@@ -87,7 +87,7 @@ public:
     virtual bool VTriggerEvent(const IEventDataPtr& pEvent) const = 0;
 
     //Fire off event. This uses the queue
-    virtual void VQueueEvent(const IEventDataPtr& pEvent) = 0;
+    virtual bool VQueueEvent(const IEventDataPtr& pEvent) = 0;
 
     //Find the next-available instance of the event type and remove it from the processing queue. This
     //may be done up to the point that it is actively being processed; it is safe to happen during event

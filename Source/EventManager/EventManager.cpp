@@ -29,11 +29,11 @@ IEventManager::~IEventManager()
         g_pEventMgr = NULL;
 }
 
-IEventManager *IEventManager::Get()
-{
-    Q_ASSERT(g_pEventMgr);
-    return g_pEventMgr;
-}
+//IEventManager *IEventManager::Get()
+//{
+//    Q_ASSERT(g_pEventMgr);
+//    return g_pEventMgr;
+//}
 
 
 
