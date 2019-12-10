@@ -4,8 +4,8 @@
 
 
 
-#include <QObject>
-#include "IEventData.h"
+//#include <QObject>
+#include "EventManager.h"
 
 /******************************************************************************
 *

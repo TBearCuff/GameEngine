@@ -7,9 +7,9 @@
 
 //
 #include "EventManager.h"
-#include "../GameEngine/GameEngineApp.h"
-//#include "IEventData.h"
+//#include "../GameEngine/GameEngineApp.h"
 
+#if 0
 //---------------------------------------------------------------------------------------------------------------------
 // EvtData_New_Actor - This event is sent out when an actor is *actually* created.
 //---------------------------------------------------------------------------------------------------------------------
@@ -279,7 +279,7 @@ public:
     }
 };
 
-
+#endif
 
 
 #endif // EVENTS_H

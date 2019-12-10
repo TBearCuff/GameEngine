@@ -67,9 +67,8 @@ SOURCES += \
     ../Actor/RenderComponent.cpp \
     ../EventManager/EventManager.cpp \
     ../EventManager/Events.cpp \
-    ../EventManager/IEventData.cpp \
-    ../EventManager/IEventManager.cpp \
-    ../EventManager/SignalDelegate.cpp
+    ../EventManager/SignalDelegate.cpp \
+    ../EventManager/EventManagerImpl.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -105,9 +104,8 @@ HEADERS += \
     ../Actor/RenderComponentInterface.h \
     ../EventManager/EventManager.h \
     ../EventManager/Events.h \
-    ../EventManager/IEventData.h \
-    ../EventManager/IEventManager.h \
-    ../EventManager/SignalDelegate.h
+    ../EventManager/SignalDelegate.h \
+    ../EventManager/EventManagerImpl.h
 
 RESOURCES += \
     resources.qrc

@@ -3,7 +3,7 @@
 
 //#include "../Mainloop/initialization.h" // only for game options
 #include "../MainLoop/Process.h"
-
+#include "EventManager/EventManager.h"
 //#include "../ResourceCache/xmlresourceloader.h"
 
 //#include "../Actors/Actor.h"

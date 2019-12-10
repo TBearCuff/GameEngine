@@ -8,6 +8,7 @@
 #include "BaseGameLogic.h"
 #include "../Graphics3D/SceneNodes.h"
 #include "../UserInterface/UserInterface.h"
+#include "../EventManager/EventManager.h"
 
 class Rect;
 class Point;
@@ -50,8 +51,6 @@ public:
     class ResCache *m_ResCache;
 
     QString m_saveGameDirectory;
-    // Event manager
-//	EventManager *m_pEventManager;
 
 
     bool LoadStrings(QString language);
@@ -70,6 +69,8 @@ private:
     QElapsedTimer m_AppElapsedTimer;
     qint64 m_LastTime;
     qint64 m_lastRender;
+    // Event manager
+//    EventManager* m_pEventManager;
 
 private slots:
     void OnClose();

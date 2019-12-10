@@ -51,7 +51,7 @@
 //
 //========================================================================
 
-
+#include <QSharedPointer>
 //---------------------------------------------------------------------------------------------------------------------
 // singleton template manages setting/resettting global variables.
 //---------------------------------------------------------------------------------------------------------------------
@@ -82,12 +82,12 @@ public:
 // headache away.
 //---------------------------------------------------------------------------------------------------------------------
 template <class Type>
-shared_ptr<Type> MakeStrongPtr(weak_ptr<Type> pWeakPtr)
+QSharedPointer<Type> MakeStrongPtr(QWeakPointer<Type> pWeakPtr)
 {
     if (!pWeakPtr.expired())
-        return shared_ptr<Type>(pWeakPtr);
+        return QSharedPointer<Type>(pWeakPtr);
     else
-        return shared_ptr<Type>();
+        return QSharedPointer<Type>();
 }
 
 

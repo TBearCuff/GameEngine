@@ -1,91 +1,39 @@
 
-
-/** public includes files **/
-
 #include "GameEngineStd.h"
 #include "EventManager.h"
-#include "IEventData.h"
 #include <QDebug>
 
+static IEventManager* g_pEventMgr = NULL;
+GenericObjectFactory<IEventData, EventType> g_eventFactory;
 
-EventManager::EventManager(const QString &name, bool setAsGlobal) : IEventManager(name, setAsGlobal)
+
+IEventManager::IEventManager(const QString &name, bool setAsGlobal)
 {
+    Q_UNUSED(name);
 
-}
-
-EventManager::~EventManager()
-{
-
-}
-
-bool EventManager::VAddListener(const QObject *listener, const char* slot, const EventType& type)
-{
-//    qDebug() << "Events: Attempting to add listener delegate to event type: " << type;
-
-    if(!m_eventSignals.contains(type))
+    if(setAsGlobal)
     {
-        m_eventSignals[type] = new SignalDelegate();
-//        qDebug() << "Events: First listener for event type: " << type;
-    }
-
-    SignalDelegate *sd = m_eventSignals[type];
-
-//    qDebug() << "Events: Connecting listener to signal delegate";
-
-    QObject::connect(sd, SIGNAL(fireEvent(IEventDataPtr)) , listener, slot, Qt::UniqueConnection);
-    sd->m_connectionCount++;
-
-    return true;
-}
-
-bool EventManager::VRemoveListener(const QObject *listener, const char *slot, const EventType &type)
-{
-//    qDebug() << "Events: Attempting to remove listener delegate to event type: " << type;
-    bool processed = false;
-    auto findIt = m_eventSignals.find(type);
-    if(findIt != m_eventSignals.end())
-    {
-        SignalDelegate *sd = findIt.value();
-        if(sd->m_connectionCount != 0)
+        if(g_pEventMgr)
         {
-            //a connection exists
-            if(QObject::disconnect(sd, SIGNAL(fireEvent(IEventDataPtr)), listener, slot))
-            {
-                sd->m_connectionCount--;
-                processed = true;
-            }
+            qDebug() << "Attempting to create two global event managers! The old one will be overwritten.";
+            delete g_pEventMgr;
         }
 
-        if(sd->m_connectionCount == 0)
-        {
-//            qDebug() << "Events: No more listeners of event type: " << type << "/nErasing signal delegate.";
-            m_eventSignals.erase(findIt);
-        }
+        g_pEventMgr = this;
     }
-    return processed;
 }
 
-bool EventManager::VTriggerEvent(const IEventDataPtr& pEvent) const
+IEventManager::~IEventManager()
 {
-//    qDebug() << "Events: Attempting to trigger event: " << pEvent->GetName();
-    bool processed = false;
-
-    if(m_eventSignals.contains(pEvent->VGetEventType()))
-    {
-//        qDebug() << "Events: Sending event " << pEvent->GetName() << "to attached slots.";
-        SignalDelegate *sd = m_eventSignals[pEvent->VGetEventType()];
-        sd->fireEvent(pEvent);
-
-        processed = true;
-    }
-    return processed;
+    if(g_pEventMgr == this)
+        g_pEventMgr = NULL;
 }
 
-/*******************************************************INCOMPLETE
-******************************************************************************/
-void EventManager::VQueueEvent(const IEventDataPtr &pEvent)
+IEventManager *IEventManager::Get()
 {
-    QSharedPointer<QEvent> pQEvent = qSharedPointerCast<QEvent, IEventData>(pEvent);
-    QCoreApplication::instance()->postEvent(QCoreApplication::instance(), pQEvent.data());
+    Q_ASSERT(g_pEventMgr);
+    return g_pEventMgr;
 }
+
+
 
