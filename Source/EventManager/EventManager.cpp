@@ -4,7 +4,8 @@
 #include <QDebug>
 
 static IEventManager* g_pEventMgr = NULL;
-GenericObjectFactory<IEventData, EventType> g_eventFactory;
+
+//GenericObjectFactory<IEventData, EventType> g_eventFactory;
 
 
 IEventManager::IEventManager(const QString &name, bool setAsGlobal)

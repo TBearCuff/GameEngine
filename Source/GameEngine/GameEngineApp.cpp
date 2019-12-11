@@ -24,7 +24,7 @@
 GameEngineApp *g_pApp = NULL;
 
 
-GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv),
+GameEngineApp::GameEngineApp(int &argc, char **argv) : QApplication(argc, argv),
     m_bIsRunning(false),
     m_bQuitting(false),
     m_bQuitRequested(false),

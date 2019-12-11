@@ -7,6 +7,7 @@
 #include <QMap>
 #include <QTextStream>
 #include <QSharedPointer>
+#include <QEvent>
 //#include "../Utilities/templates.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -30,39 +31,60 @@ typedef QSharedPointer<IEventData> IEventDataPtr;
 * IEventData
 *
 ******************************************************************************/
-class IEventData
+class IEventData : public QEvent
 {
+
 public:
-    virtual ~IEventData(void) {}
-    virtual const EventType& VGetEventType(void) const = 0;
+    IEventData(QEvent::Type type) : QEvent(type) {}
+    ~IEventData() {}
+
+    virtual EventType VGetEventType() const { return type(); }
     virtual float GetTimeStamp(void) const = 0;
     virtual void VSerialize(QTextStream& out) const = 0;
     virtual void VDeserialize(QTextStream& in) = 0;
     virtual IEventDataPtr VCopy(void) const = 0;
-    virtual const char* GetName(void) const = 0;
+    virtual QString GetName(void) const = 0;
+
+//    bool fireEvent(const IEventDataPtr& pEvent);
 };
 
 /******************************************************************************
 *
-* BaseEventData
+* BaseEventData Abstract Object
 *
 ******************************************************************************/
+template<typename T>
 class BaseEventData : public IEventData
 {
     const float m_timeStamp;
+protected:
+    static QEvent::Type m_eventType;
 
 public:
-    explicit BaseEventData(const float timeStamp = 0.0f) : m_timeStamp(timeStamp) { }
-
-    // Returns the type of the event
-    virtual const EventType& VGetEventType(void) const = 0;
+    explicit BaseEventData(const float timeStamp = 0.0f)
+        : IEventData(RegisteredType()), m_timeStamp(timeStamp){ }
+    virtual ~BaseEventData() { }
 
     float GetTimeStamp(void) const { return m_timeStamp; }
 
     // Serializing for network input / output
     virtual void VSerialize(QTextStream &) const	{ }
     virtual void VDeserialize(QTextStream& ) { }
+
+    static QEvent::Type RegisteredType()
+    {
+        if(m_eventType == QEvent::None)
+        {
+            int generatedType = QEvent::registerEventType();
+            m_eventType = static_cast<QEvent::Type>(generatedType);
+        }
+        return m_eventType;
+    }
+
 };
+
+template<typename _T>
+QEvent::Type BaseEventData<_T>::m_eventType = QEvent::None;
 
 /******************************************************************************
 *
@@ -103,7 +125,7 @@ public:
     virtual bool VUpdate(unsigned long maxMillis = 0xFFFFFFFF) = 0;
 
     //Getter for the main global event manager. It is not valid to have more than one global event manager.
-    static IEventManager* Get();
+//    static IEventManager* Get();
 
 };
 

@@ -158,7 +158,7 @@ bool EventManager::VAbortEvent(const EventType& inType, bool allOfType)
 
 
 //---------------------------------------------------------------------------------------------------------------------
-// EventManager::VTick
+// EventManager::VUpdate
 //---------------------------------------------------------------------------------------------------------------------
 bool EventManager::VUpdate(unsigned long maxMillis)
 {

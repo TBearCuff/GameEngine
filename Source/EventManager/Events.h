@@ -7,7 +7,7 @@
 
 //
 #include "EventManager.h"
-//#include "../GameEngine/GameEngineApp.h"
+#include "../GameEngine/GameEngineStd.h"
 
 #if 0
 //---------------------------------------------------------------------------------------------------------------------
@@ -174,8 +174,8 @@ public:
         return m_matrix;
     }
 };
-
-
+#endif
+#if 0
 //---------------------------------------------------------------------------------------------------------------------
 // EvtData_New_Render_Component - This event is sent out when an actor is *actually* created.
 //---------------------------------------------------------------------------------------------------------------------
@@ -230,8 +230,8 @@ public:
         return m_pSceneNode;
     }
 };
-
-
+#endif
+#if 0
 //---------------------------------------------------------------------------------------------------------------------
 // EvtData_Modified_Render_Component - This event is sent out when a render component is changed
 //   NOTE: This class is not described in the book!

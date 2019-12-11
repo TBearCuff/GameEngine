@@ -8,7 +8,7 @@
 #include "BaseGameLogic.h"
 #include "../Graphics3D/SceneNodes.h"
 #include "../UserInterface/UserInterface.h"
-#include "../EventManager/EventManager.h"
+#include "../EventManager/EventManagerImpl.h"
 
 class Rect;
 class Point;
@@ -28,7 +28,7 @@ protected:
 
 
 public:
-    GameEngineApp(int argc, char *argv[]);
+    GameEngineApp(int &argc, char **argv);
 
     virtual bool InitInstance(int argc, char *argv[]);
 //    virtual bool VLoadGame(void);
@@ -64,6 +64,8 @@ protected:
     bool eventFilter(QObject *obj, QEvent *ev) override;
 
 private:
+    // Event manager
+    EventManager* m_pEventManager;
     void RegisterEngineEvents(void);
 
     unsigned int MapCharToKeycode(const char);
@@ -71,8 +73,6 @@ private:
     QElapsedTimer m_AppElapsedTimer;
     qint64 m_LastTime;
     qint64 m_lastRender;
-    // Event manager
-//    EventManager* m_pEventManager;
 
 private slots:
     void OnClose();
