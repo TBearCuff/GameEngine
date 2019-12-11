@@ -175,7 +175,7 @@ public:
     }
 };
 #endif
-#if 0
+
 //---------------------------------------------------------------------------------------------------------------------
 // EvtData_New_Render_Component - This event is sent out when an actor is *actually* created.
 //---------------------------------------------------------------------------------------------------------------------
@@ -230,7 +230,7 @@ public:
         return m_pSceneNode;
     }
 };
-#endif
+
 #if 0
 //---------------------------------------------------------------------------------------------------------------------
 // EvtData_Modified_Render_Component - This event is sent out when a render component is changed

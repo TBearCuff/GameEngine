@@ -36,7 +36,7 @@ GameEngineApp::GameEngineApp(int &argc, char **argv) : QApplication(argc, argv),
 
     //Initialize member variables here or
 //    m_screenSize = Point(0,0);
-//    m_pEventManager = NULL;
+    m_pEventManager = NULL;
 
 }
 
@@ -128,13 +128,13 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
     // The event manager should be created next so that subsystems can hook in as desired.
     // Discussed in Chapter 5, page 144
-//    m_pEventManager = new EventManager("GameApp Event Mgr", true );
+    m_pEventManager = new EventManager("GameApp Event Mgr", true );
 
-//    if(!m_pEventManager)
-//    {
-//        qDebug("Failed to create EventManager.");
-//        return false;
-//    }
+    if(!m_pEventManager)
+    {
+        qDebug("Failed to create EventManager.");
+        return false;
+    }
 
     //Set the directory for save games and other temporary files
     m_saveGameDirectory = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +

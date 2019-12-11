@@ -28,9 +28,9 @@ bool BaseRenderComponent::VInit(QDomElement pData)
 
 void BaseRenderComponent::VPostInit()
 {
-//    QSharedPointer<SceneNode> pSceneNode(VGetSceneNode());
-//    QSharedPointer<EvtData_New_Render_Component> pEvent(GCC_NEW EvtData_New_Render_Component(m_pOwner->GetId(), pSceneNode));
-//    IEventManager::Get()->VTriggerEvent(pEvent);
+    QSharedPointer<SceneNode> pSceneNode(VGetSceneNode());
+    QSharedPointer<EvtData_New_Render_Component> pEvent(GCC_NEW EvtData_New_Render_Component(m_pOwner->GetId(), pSceneNode));
+    IEventManager::Get()->VTriggerEvent(pEvent);
 }
 
 void BaseRenderComponent::VOnChanged()

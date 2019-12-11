@@ -125,7 +125,7 @@ public:
     virtual bool VUpdate(unsigned long maxMillis = 0xFFFFFFFF) = 0;
 
     //Getter for the main global event manager. It is not valid to have more than one global event manager.
-//    static IEventManager* Get();
+    static IEventManager* Get();
 
 };
 
