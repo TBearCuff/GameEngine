@@ -64,7 +64,11 @@ SOURCES += \
     ../Graphics3D/Scene.cpp \
     ../Graphics3D/SceneNodes.cpp \
     ../Graphics3D/Lights.cpp \
-    ../Actor/RenderComponent.cpp
+    ../Actor/RenderComponent.cpp \
+    ../EventManager/EventManager.cpp \
+    ../EventManager/Events.cpp \
+    ../EventManager/SignalDelegate.cpp \
+    ../EventManager/EventManagerImpl.cpp
 
 HEADERS += \
         GameEngineApp.h \
@@ -97,7 +101,11 @@ HEADERS += \
     ../Graphics3D/SceneNodes.h \
     ../Graphics3D/Lights.h \
     ../Actor/RenderComponent.h \
-    ../Actor/RenderComponentInterface.h
+    ../Actor/RenderComponentInterface.h \
+    ../EventManager/EventManager.h \
+    ../EventManager/Events.h \
+    ../EventManager/SignalDelegate.h \
+    ../EventManager/EventManagerImpl.h
 
 RESOURCES += \
     resources.qrc

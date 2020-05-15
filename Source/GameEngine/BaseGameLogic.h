@@ -4,7 +4,7 @@
 
 #include "../MainLoop/ProcessManager.h"
 
-//#include "../EventManager/EventManager.h"
+//#include "../EventManager/IEventData.h"
 #include "../Actor/Actor.h"
 //#include <QVector>
 //#include "interfaces.h"

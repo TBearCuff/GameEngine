@@ -8,6 +8,7 @@
 #include "BaseGameLogic.h"
 #include "../Graphics3D/SceneNodes.h"
 #include "../UserInterface/UserInterface.h"
+#include "../EventManager/EventManagerImpl.h"
 
 class Rect;
 class Point;
@@ -27,7 +28,7 @@ protected:
 
 
 public:
-    GameEngineApp(int argc, char *argv[]);
+    GameEngineApp(int &argc, char **argv);
 
     virtual bool InitInstance(int argc, char *argv[]);
 //    virtual bool VLoadGame(void);
@@ -50,12 +51,12 @@ public:
     class ResCache *m_ResCache;
 
     QString m_saveGameDirectory;
-    // Event manager
-//	EventManager *m_pEventManager;
 
 
     bool LoadStrings(QString language);
     QString GetString(QString sID);
+
+    qint64 GetClockTick();
 protected:
     QMap<QString,QString> m_textResource;
     QMap<QString,unsigned int> m_hotkeys;
@@ -63,6 +64,8 @@ protected:
     bool eventFilter(QObject *obj, QEvent *ev) override;
 
 private:
+    // Event manager
+    EventManager* m_pEventManager;
     void RegisterEngineEvents(void);
 
     unsigned int MapCharToKeycode(const char);

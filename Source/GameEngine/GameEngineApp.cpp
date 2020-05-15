@@ -5,6 +5,7 @@
 #include "../MainLoop/Initialization.h"
 #include "BaseGameLogic.h"
 #include "../MainWindow/OpenGLRenderWindow.h"
+//#include "../EventManager/EventManager.h"
 #include "../ResourceCache/ResCache.h"
 #include "../ResourceCache/XMLResourceLoader.h"
 #include "../UserInterface/UserInterface.h"
@@ -18,10 +19,12 @@
 #include <QKeyEvent>
 #include <QTouchEvent>
 
+#include "../EventManager/Events.h"
+
 GameEngineApp *g_pApp = NULL;
 
 
-GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv),
+GameEngineApp::GameEngineApp(int &argc, char **argv) : QApplication(argc, argv),
     m_bIsRunning(false),
     m_bQuitting(false),
     m_bQuitRequested(false),
@@ -33,6 +36,7 @@ GameEngineApp::GameEngineApp(int argc, char *argv[]) : QApplication(argc, argv),
 
     //Initialize member variables here or
 //    m_screenSize = Point(0,0);
+    m_pEventManager = NULL;
 
 }
 
@@ -120,17 +124,17 @@ bool GameEngineApp::InitInstance(int argc, char *argv[])
 
     ScriptExports::Register();
     ScriptProcess::RegisterScriptClass();
+#endif
 
     // The event manager should be created next so that subsystems can hook in as desired.
     // Discussed in Chapter 5, page 144
-//    m_pEventManager = GCC_NEW EventManager("GameApp Event Mgr", true );
+    m_pEventManager = new EventManager("GameApp Event Mgr", true );
 
     if(!m_pEventManager)
     {
-        GCC_ERROR("Failed to create EventManager.");
+        qDebug("Failed to create EventManager.");
         return false;
     }
-#endif
 
     //Set the directory for save games and other temporary files
     m_saveGameDirectory = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
@@ -326,6 +330,11 @@ QString GameEngineApp::GetString(QString sID)
         return QString("");
     }
     return localizedString.value();
+}
+
+qint64 GameEngineApp::GetClockTick()
+{
+    return m_AppElapsedTimer.elapsed();
 }
 
 bool GameEngineApp::eventFilter(QObject *obj, QEvent *ev)
